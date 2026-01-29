@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+
 import { Link } from 'react-router-dom';
 import {
   EnvelopeIcon,
@@ -25,20 +24,13 @@ const hizmetLinks = [
 ];
 
 export default function Footer() {
-  const [links, setLinks] = useState([
+  const links = [
     { title: 'Ermenek Kaymakamlığı', url: 'http://www.ermenek.gov.tr/' },
     { title: 'Karaman Valiliği', url: 'http://www.karaman.gov.tr/' },
     { title: 'Ermenek Belediyesi', url: 'https://www.ermenek.bel.tr/' },
     { title: 'Ermenek Haber', url: 'https://www.ermenekhaber.com/' }
-  ]);
-  const [socials, setSocials] = useState([]);
-
-  useEffect(() => {
-    axios.get('/api/sitesettings/links').then(res => {
-      if (res.data.length > 0) setLinks(res.data);
-    }).catch(() => { });
-    axios.get('/api/sitesettings/social').then(res => setSocials(res.data)).catch(() => { });
-  }, []);
+  ];
+  const socials = [];
 
   return (
     <footer className="bg-slate-900 border-t border-white/5 pt-24 pb-12">

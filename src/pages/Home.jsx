@@ -22,7 +22,6 @@ import {
   SparklesIcon,
   PuzzlePieceIcon
 } from '@heroicons/react/24/outline';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const iconMap = {
@@ -92,56 +91,25 @@ const slides = [
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [activeSlides, setActiveSlides] = useState(slides); // Start with default, then fetch
-  const [headlines, setHeadlines] = useState([]);
+  const [headlines, setHeadlines] = useState([
+    { id: 1, title: 'Güneyyurt Kültür Merkezi İnşaatı Hızla Devam Ediyor', content: 'Beldemizin vizyon projelerinden olan kültür merkezi projesinde kaba inşaat %80 oranında tamamlandı.', createdDate: new Date().toISOString(), imageUrl: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=800' },
+    { id: 2, title: 'Yeni Park Alanları ve Peyzaj Çalışmaları Başladı', content: 'Gelecek nesiller için daha yeşil bir Güneyyurt hedefiyle park ve bahçelerimizde yenileme çalışmaları sürüyor.', createdDate: new Date().toISOString(), imageUrl: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&q=80&w=800' },
+    { id: 3, title: 'Belediyemizden Dijital Dönüşüm Hamlesi', content: 'Vatandaşlarımızın işlemlerini daha hızlı yapabilmesi için e-belediye sistemimiz baştan aşağı yenilendi.', createdDate: new Date().toISOString(), imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800' },
+  ]);
   const [featuredProjects, setFeaturedProjects] = useState([]);
   const [events, setEvents] = useState([]);
-  const [announcements, setAnnouncements] = useState([]);
-  const [weather, setWeather] = useState({ temp: '12', condition: 'Parçalı Bulutlu', icon: 'Cloud' });
+  const [announcements, setAnnouncements] = useState([
+    { id: 1, title: 'Su Kesintisi Hakkında Bilgilendirme', content: 'Şebeke yenileme çalışmaları nedeniyle 15:00-18:00 saatleri arasında geçici kesinti yapılacaktır.', createdDate: new Date().toISOString() },
+    { id: 2, title: 'Emlak Vergisi Yapılandırma Son Gün', content: 'Vatandaşlarımızın mağduriyet yaşamaması için yapılandırma işlemlerini hafta sonuna kadar tamamlaması gerekmektedir.', createdDate: new Date().toISOString() },
+  ]);
+  const [weather, setWeather] = useState({ temp: '14', condition: 'Açık', icon: 'Sun' });
   const [dynamicServices, setDynamicServices] = useState([]);
   const [activeGreeting, setActiveGreeting] = useState(null);
   const [showGreeting, setShowGreeting] = useState(false);
 
   useEffect(() => {
-    // Fetch dynamic data
-    axios.get('/api/news/headlines').then(res => {
-      if (res.data.length > 0) setHeadlines(res.data);
-      else setHeadlines([
-        { id: 1, title: 'Güneyyurt Kültür Merkezi İnşaatı Hızla Devam Ediyor', content: 'Beldemizin vizyon projelerinden olan kültür merkezi projesinde kaba inşaat %80 oranında tamamlandı.', createdDate: new Date().toISOString(), imageUrl: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=800' },
-        { id: 2, title: 'Yeni Park Alanları ve Peyzaj Çalışmaları Başladı', content: 'Gelecek nesiller için daha yeşil bir Güneyyurt hedefiyle park ve bahçelerimizde yenileme çalışmaları sürüyor.', createdDate: new Date().toISOString(), imageUrl: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&q=80&w=800' },
-        { id: 3, title: 'Belediyemizden Dijital Dönüşüm Hamlesi', content: 'Vatandaşlarımızın işlemlerini daha hızlı yapabilmesi için e-belediye sistemimiz baştan aşağı yenilendi.', createdDate: new Date().toISOString(), imageUrl: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=800' },
-      ]);
-    }).catch(() => { });
-
-    axios.get('/api/news?category=Duyuru').then(res => {
-      if (res.data.length > 0) setAnnouncements(res.data.slice(0, 4));
-      else setAnnouncements([
-        { id: 1, title: 'Su Kesintisi Hakkında Bilgilendirme', content: 'Şebeke yenileme çalışmaları nedeniyle 15:00-18:00 saatleri arasında geçici kesinti yapılacaktır.', createdDate: new Date().toISOString() },
-        { id: 2, title: 'Emlak Vergisi Yapılandırma Son Gün', content: 'Vatandaşlarımızın mağduriyet yaşamaması için yapılandırma işlemlerini hafta sonuna kadar tamamlaması gerekmektedir.', createdDate: new Date().toISOString() },
-      ]);
-    }).catch(() => { });
-
-    axios.get('/api/projects').then(res => setFeaturedProjects(res.data.slice(0, 3))).catch(() => { });
-    axios.get('/api/events').then(res => setEvents(res.data.slice(0, 3))).catch(() => { });
-
-    // In a real app, this would be an API call to a weather service
-    setTimeout(() => {
-      setWeather({ temp: '14', condition: 'Açık', icon: 'Sun' });
-    }, 1000);
-
-    axios.get('/api/sitesettings/services').then(res => {
-      if (res.data.length > 0) setDynamicServices(res.data);
-    }).catch(() => { });
-
-    axios.get('/api/sitesettings/slides').then(res => {
-      if (res.data.length > 0) setActiveSlides(res.data.map(s => ({
-        title: s.title,
-        subtitle: s.subtitle,
-        desc: s.description || s.subtitle,
-        img: s.imageUrl,
-        link: s.linkUrl,
-        cta: s.buttonText
-      })));
-    }).catch(() => { });
+    // All API calls removed - running in client-side only mode
+    // Data is initialized with defaults above
 
     const timer = setInterval(() => {
       setCurrentSlide(s => (s + 1) % activeSlides.length);
