@@ -855,8 +855,19 @@ class MockAPI {
         }
         
         // Projects
-        if (endpoint === '/api/projects') {
-            return { data: getFromStorage(STORAGE_KEYS.PROJECTS, []) };
+        if (endpoint.startsWith('/api/projects')) {
+            const allProjects = getFromStorage(STORAGE_KEYS.PROJECTS, []);
+            
+            // Check for status filter in query params
+            const url = new URL(endpoint, 'http://localhost');
+            const statusFilter = url.searchParams.get('status');
+            
+            if (statusFilter) {
+                const filtered = allProjects.filter(p => p.status === statusFilter);
+                return { data: filtered };
+            }
+            
+            return { data: allProjects };
         }
         
         // Feedback

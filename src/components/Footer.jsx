@@ -115,12 +115,12 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-slate-500 text-xs font-medium">
-            &copy; {new Date().getFullYear()} Güneyyurt Belediyesi. Tüm Hakları Saklıdır.
+            &copy; 1953 - {new Date().getFullYear()} Güneyyurt Belediyesi. Tüm Hakları Saklıdır.
           </p>
           <div className="flex gap-8 text-xs font-bold text-slate-500 tracking-wider uppercase">
             <Link to="#" className="hover:text-white transition-colors">Gizlilik Politikası</Link>
             <Link to="#" className="hover:text-white transition-colors">KVKK</Link>
-            <Link to="#" className="hover:text-white transition-colors">Yazılım Destek</Link>
+            <span className="hover:text-white transition-colors cursor-pointer">Güneyyurt Belediyesi</span>
           </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import axios from 'axios';
 import Seo from '../components/Seo';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -13,62 +14,24 @@ import {
     PhotoIcon
 } from '@heroicons/react/24/outline';
 
-const mockProjects = [
-    {
-        id: 1,
-        title: 'Yeni Kent Meydanı ve Saat Kulesi',
-        category: 'Üstyapı',
-        status: 'Devam Eden',
-        budget: '12.5M ₺',
-        startDate: '2023-06-12',
-        endDate: '2024-12-30',
-        location: 'Merkez Kavşağı',
-        progress: 65,
-        imageUrl: 'https://images.unsplash.com/photo-1577083552431-6e5fd01988ec?auto=format&fit=crop&q=80&w=1200',
-        description: 'Güneyyurt merkezine modern bir çehre kazandıracak kent meydanı projemizde; yeşil alanlar, oturma grupları, süs havuzları ve beldemizin simgesi olacak bir saat kulesi yer alıyor.',
-        features: [
-            '5000 m² Toplam Alan',
-            'Yeraltı Otoparkı (100 Araç)',
-            'Modern Işıklandırma Sistemleri',
-            'Kuru Havuz ve Çocuk Oyun Alanları'
-        ],
-        contractor: 'GNY İnşaat A.Ş.',
-        gallery: [
-            'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=600',
-            'https://images.unsplash.com/photo-1541810232773-6784534346bb?auto=format&fit=crop&q=80&w=600',
-            'https://images.unsplash.com/photo-1503387762-5929c6293f2d?auto=format&fit=crop&q=80&w=600'
-        ]
-    },
-    {
-        id: 2,
-        title: 'Güneş Enerji Santrali (GES)',
-        category: 'Enerji',
-        status: 'Tamamlanan',
-        budget: '8.2M ₺',
-        startDate: '2022-01-10',
-        endDate: '2023-02-15',
-        location: 'Güney Yamaçlar',
-        progress: 100,
-        imageUrl: 'https://images.unsplash.com/photo-1509391366360-fe5bb58583bb?auto=format&fit=crop&q=80&w=1200',
-        description: 'Belediyemizin tüm enerji ihtiyacını karşılayacak olan 1.2 MW gücündeki GES projemiz tamamlanarak devreye alınmıştır. Doğayı koruyor, ekonomik tasarruf sağlıyoruz.',
-        features: [
-            '3000+ Güneş Paneli',
-            'Yıllık 1.8 Milyon kWh Üretim',
-            'Kendi Enerjisini Üreten Belediye',
-            'Sıfır Karbon Emisyonu'
-        ]
-    }
-];
-
 export default function ProjectDetail() {
     const { id } = useParams();
     const [project, setProject] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const found = mockProjects.find(p => p.id === parseInt(id));
-        setProject(found);
-        setLoading(false);
+        const fetchProject = async () => {
+            try {
+                const res = await axios.get('/api/projects');
+                const found = res.data.find(p => p.id === id);
+                setProject(found);
+            } catch (err) {
+                console.error('Failed to fetch project');
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProject();
     }, [id]);
 
     if (loading) return null;
