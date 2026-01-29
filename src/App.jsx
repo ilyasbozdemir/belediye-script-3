@@ -70,6 +70,7 @@ import {
 import ResourceManager from './pages/admin/ResourceManager';
 import WeatherPrayerManager from './pages/admin/WeatherPrayerManager';
 import MediaManager from './pages/admin/MediaManager';
+import AnnouncementsManager from './pages/admin/AnnouncementsManager';
 
 function App() {
   console.log('App Rendering...');
@@ -125,6 +126,7 @@ function App() {
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="news" element={<NewsManager />} />
+        <Route path="announcements" element={<AnnouncementsManager />} />
         <Route path="projects" element={<ProjectManager />} />
         <Route path="businesses" element={<BusinessManager />} />
         <Route path="president" element={<GovernanceManager />} />
