@@ -85,6 +85,7 @@ function App() {
         <Route path="kurumsal/baskan-mesaj" element={<PresidentMessage />} />
         <Route path="kurumsal/birimler" element={<Units />} />
         <Route path="kurumsal/muhtarliklar" element={<Muhtarliklar />} />
+        <Route path="projeler" element={<ProjectList />} />
         <Route path="projeler/biten" element={<ProjectList statusFilter="Biten" />} />
         <Route path="projeler/devam-eden" element={<ProjectList statusFilter="Devam Eden" />} />
         <Route path="projeler/planlanan" element={<ProjectList statusFilter="Planlanan" />} />
