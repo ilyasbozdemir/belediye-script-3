@@ -108,8 +108,33 @@ export default function Home() {
   const [showGreeting, setShowGreeting] = useState(false);
 
   useEffect(() => {
-    // All API calls removed - running in client-side only mode
-    // Data is initialized with defaults above
+    // Fetch data from API
+    const fetchData = async () => {
+      try {
+        // Fetch news/headlines
+        const newsRes = await axios.get('/api/news');
+        setHeadlines(newsRes.data.slice(0, 3));
+
+        // Fetch projects
+        const projectsRes = await axios.get('/api/projects');
+        setFeaturedProjects(projectsRes.data.slice(0, 3));
+
+        // Fetch announcements (from news with category filter)
+        const allNewsRes = await axios.get('/api/news');
+        const duyurular = allNewsRes.data.filter(n => n.category === 'Duyuru').slice(0, 4);
+        if (duyurular.length > 0) {
+          setAnnouncements(duyurular);
+        }
+
+        // Fetch events
+        const eventsRes = await axios.get('/api/events');
+        setEvents(eventsRes.data.slice(0, 3));
+      } catch (err) {
+        console.error('Failed to fetch homepage data:', err);
+      }
+    };
+
+    fetchData();
 
     const timer = setInterval(() => {
       setCurrentSlide(s => (s + 1) % activeSlides.length);

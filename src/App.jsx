@@ -69,6 +69,7 @@ import {
 } from '@heroicons/react/24/outline';
 import ResourceManager from './pages/admin/ResourceManager';
 import WeatherPrayerManager from './pages/admin/WeatherPrayerManager';
+import MediaManager from './pages/admin/MediaManager';
 
 function App() {
   console.log('App Rendering...');
@@ -138,6 +139,7 @@ function App() {
         <Route path="reports" element={<ReportsManager />} />
         <Route path="tenders" element={<TendersManager />} />
         <Route path="weather-prayer" element={<WeatherPrayerManager />} />
+        <Route path="media" element={<MediaManager />} />
         <Route path="*" element={<div className="p-8 text-slate-400">Bu modül yakında eklenecek.</div>} />
       </Route>
     </Routes>

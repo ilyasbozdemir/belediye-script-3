@@ -17,7 +17,8 @@ import {
   CalendarDaysIcon,
   StarIcon,
   SparklesIcon,
-  CloudIcon
+  CloudIcon,
+  PhotoIcon
 } from '@heroicons/react/24/outline';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -36,6 +37,7 @@ const adminNavigation = [
       { name: 'Haber & Duyuru', href: '/admin/news', icon: NewspaperIcon },
       { name: 'Etkinlik Takvimi', href: '/admin/events', icon: CalendarDaysIcon },
       { name: 'İşletme Rehberi', href: '/admin/businesses', icon: FolderIcon },
+      { name: 'Medya Yönetimi', href: '/admin/media', icon: PhotoIcon },
       { name: 'Slayt & Ayarlar', href: '/admin/settings', icon: Cog6ToothIcon },
       { name: 'Önemli Günler', href: '/admin/special-days', icon: SparklesIcon },
       { name: 'Hava Durumu & Vakitler', href: '/admin/weather-prayer', icon: CloudIcon },
