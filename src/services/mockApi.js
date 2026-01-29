@@ -50,29 +50,92 @@ const initializeDefaultData = () => {
         const defaultNews = [
             {
                 id: '1',
-                title: 'Yeni Park Açılışı Gerçekleştirildi',
-                content: 'Belediyemiz tarafından yapılan Millet Parkı törenle hizmete açıldı. Açılışa çok sayıda vatandaş katıldı.',
-                imageUrl: 'https://picsum.photos/seed/news1/800/600',
+                title: 'Kültür Merkezi Törenle Hizmete Açıldı',
+                content: 'Güneyyurt Belediyesi tarafından inşa edilen Kültür Merkezi, Belediye Başkanı Ahmet Arı ve çok sayıda vatandaşın katılımıyla düzenlenen törenle hizmete açıldı. 500 kişi kapasiteli nikah salonu, 200 kişilik konferans salonu ve 5000 kitap kapasiteli kütüphane içeren modern tesis, beldemizin kültürel hayatına önemli katkı sağlayacak.',
+                imageUrl: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=800',
                 category: 'Etkinlik',
                 createdDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
                 isActive: true
             },
             {
                 id: '2',
-                title: 'Asfalt Çalışmaları Devam Ediyor',
-                content: 'İlçemizin çeşitli mahallelerinde yürütülen asfalt çalışmaları hızla devam ediyor.',
-                imageUrl: 'https://picsum.photos/seed/news2/800/600',
+                title: 'Asfalt ve Kaldırım Çalışmaları Sürüyor',
+                content: 'Belediyemiz tarafından başlatılan asfalt ve kaldırım yenileme çalışmaları hız kesmeden devam ediyor. Merkez mahalle ve bağlı mahallelerimizde toplam 12 km asfalt ve 8 km kaldırım yenileme çalışması yapılıyor. Çalışmalar sonunda vatandaşlarımız daha konforlu yollara kavuşacak.',
+                imageUrl: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=800',
                 category: 'Hizmet',
-                createdDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                createdDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
                 isActive: true
             },
             {
                 id: '3',
-                title: 'Gençlik Merkezi Yenilendi',
-                content: 'Gençlerimizin sosyal ve kültürel aktiviteler yapabileceği Gençlik Merkezi tamamen yenilendi.',
-                imageUrl: 'https://picsum.photos/seed/news3/800/600',
+                title: 'Yüzme Havuzu İnşaatında Sona Yaklaşıldı',
+                content: 'Güneyyurt Belediyesi tarafından yapımı süren Kapalı Yüzme Havuzu ve Spor Kompleksi inşaatında sona yaklaşıldı. Kaba inşaatı tamamlanan tesiste iç mekan çalışmaları devam ediyor. Tesis, yüzme havuzu, fitness salonu, sauna ve spor alanlarından oluşacak.',
+                imageUrl: 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&q=80&w=800',
+                category: 'Proje',
+                createdDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+                isActive: true
+            },
+            {
+                id: '4',
+                title: 'Millet Bahçesi Vatandaşların Gözdesi Oldu',
+                content: '12.000 m² alan üzerine kurulan Millet Bahçesi, açılışından bu yana vatandaşların en çok tercih ettiği sosyal alan haline geldi. Yürüyüş parkurları, çocuk oyun alanları ve spor alanlarıyla her yaştan vatandaşımıza hizmet veren tesis, özellikle hafta sonları yoğun ilgi görüyor.',
+                imageUrl: 'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&q=80&w=800',
                 category: 'Sosyal',
                 createdDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                isActive: true
+            },
+            {
+                id: '5',
+                title: 'Belediye Başkanı Mahalle Ziyaretlerini Sürdürüyor',
+                content: 'Belediye Başkanı Ahmet Arı, mahalle ziyaretlerini sürdürüyor. Vatandaşlarla bir araya gelen Başkan Arı, talep ve önerileri dinleyerek not alıyor. "Halkımızın sesi bizim için çok önemli" diyen Başkan Arı, tüm taleplerin değerlendirileceğini belirtti.',
+                imageUrl: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=800',
+                category: 'Duyuru',
+                createdDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+                isActive: true
+            },
+            {
+                id: '6',
+                title: 'Kanalizasyon Altyapısı Yenileniyor',
+                content: 'Belediyemiz tarafından başlatılan kanalizasyon altyapı modernizasyon projesi kapsamında eski hatlar yenileniyor. 8 km yeni hat döşeme işlemi devam eden çalışmalar, çevre sağlığı ve yaşam kalitesi açısından büyük önem taşıyor.',
+                imageUrl: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=800',
+                category: 'Hizmet',
+                createdDate: new Date(Date.now() - 12 * 24 * 60 * 60 * 1000).toISOString(),
+                isActive: true
+            },
+            {
+                id: '7',
+                title: 'Ramazan Ayı Hazırlıkları Tamamlandı',
+                content: 'Güneyyurt Belediyesi, Ramazan ayı hazırlıklarını tamamladı. Ramazan boyunca vatandaşlarımıza sıcak yemek dağıtımı yapılacak. Ayrıca mahalle iftarları ve sosyal yardım programları düzenlenecek. Başkan Arı, "Ramazan ayının bereketini tüm hemşehrilerimizle paylaşacağız" dedi.',
+                imageUrl: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&q=80&w=800',
+                category: 'Sosyal',
+                createdDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+                isActive: true
+            },
+            {
+                id: '8',
+                title: 'LED Aydınlatma Projesi Tamamlandı',
+                content: 'Belediyemiz tarafından hayata geçirilen LED aydınlatma projesi tamamlandı. Tüm cadde ve sokaklarda 850 adet LED armatür ile enerji tasarrufu %65 artırıldı. Modern aydınlatma sistemi hem enerji verimliliği sağlıyor hem de güvenliği artırıyor.',
+                imageUrl: 'https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&q=80&w=800',
+                category: 'Proje',
+                createdDate: new Date(Date.now() - 18 * 24 * 60 * 60 * 1000).toISOString(),
+                isActive: true
+            },
+            {
+                id: '9',
+                title: 'Kreş ve Sosyal Tesis İnşaatı Devam Ediyor',
+                content: '120 çocuk kapasiteli kreş ve sosyal tesis binası inşaatı hızla ilerliyor. İç mekan çalışmalarının başladığı tesiste, çocuklarımız için modern ve güvenli bir eğitim ortamı hazırlanıyor. Tesisin yıl sonuna kadar tamamlanması planlanıyor.',
+                imageUrl: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&q=80&w=800',
+                category: 'Proje',
+                createdDate: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
+                isActive: true
+            },
+            {
+                id: '10',
+                title: 'Çevre Temizliği Kampanyası Başladı',
+                content: 'Güneyyurt Belediyesi "Temiz Çevre, Sağlıklı Gelecek" sloganıyla çevre temizliği kampanyası başlattı. Vatandaşlarımızın da katılımıyla gerçekleştirilen kampanya kapsamında park ve yeşil alanlar, piknik alanları ve mesire yerleri temizleniyor.',
+                imageUrl: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&q=80&w=800',
+                category: 'Etkinlik',
+                createdDate: new Date(Date.now() - 25 * 24 * 60 * 60 * 1000).toISOString(),
                 isActive: true
             }
         ];
@@ -82,35 +145,142 @@ const initializeDefaultData = () => {
     // Projects
     if (!localStorage.getItem(STORAGE_KEYS.PROJECTS)) {
         const defaultProjects = [
+            // Biten Projeler
             {
                 id: '1',
-                title: 'Kent Meydanı Düzenleme Projesi',
-                description: 'İlçe merkezindeki meydan tamamen yenilenecek. Modern peyzaj düzenlemesi yapılacak.',
-                status: 'Devam Eden',
-                budget: '2.500.000',
-                startDate: '2024-01-15',
-                endDate: '2024-12-31',
-                imageUrl: 'https://picsum.photos/seed/proj1/800/600'
+                title: 'Kültür Merkezi İnşaatı',
+                description: 'Modern nikah salonu, konferans salonu ve kütüphane içeren kültür merkezi projemiz tamamlanmıştır. 500 kişi kapasiteli nikah salonu, 200 kişilik konferans salonu ve 5000 kitap kapasiteli kütüphane hizmete açılmıştır.',
+                status: 'Biten',
+                budget: '8.500.000',
+                startDate: '2022-03-15',
+                endDate: '2024-06-30',
+                imageUrl: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=800',
+                completionRate: 100
             },
             {
                 id: '2',
-                title: 'Spor Kompleksi İnşaatı',
-                description: 'Kapalı spor salonu, yüzme havuzu ve açık spor alanlarından oluşan kompleks.',
-                status: 'Planlanan',
-                budget: '5.000.000',
-                startDate: '2024-06-01',
-                endDate: '2025-12-31',
-                imageUrl: 'https://picsum.photos/seed/proj2/800/600'
+                title: 'İçme Suyu Şebeke Yenileme',
+                description: 'Beldemizin tüm mahallelerinde içme suyu şebekesi tamamen yenilenmiştir. 15 km ana hat ve 25 km dağıtım hattı döşenmiş, su kayıpları %40 azaltılmıştır.',
+                status: 'Biten',
+                budget: '3.200.000',
+                startDate: '2023-01-10',
+                endDate: '2023-12-20',
+                imageUrl: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=800',
+                completionRate: 100
             },
             {
                 id: '3',
-                title: 'Kanalizasyon Yenileme',
-                description: 'Eski kanalizasyon hatları yenilendi ve altyapı güçlendirildi.',
+                title: 'Millet Bahçesi Projesi',
+                description: '12.000 m² alan üzerine kurulan Millet Bahçesi projemiz tamamlanmıştır. Yürüyüş parkurları, çocuk oyun alanları, spor alanları ve sosyal tesisler vatandaşlarımızın hizmetindedir.',
                 status: 'Biten',
-                budget: '1.800.000',
-                startDate: '2023-03-01',
+                budget: '4.750.000',
+                startDate: '2022-06-01',
+                endDate: '2023-09-15',
+                imageUrl: 'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&q=80&w=800',
+                completionRate: 100
+            },
+            {
+                id: '4',
+                title: 'LED Aydınlatma Projesi',
+                description: 'Tüm cadde ve sokaklarda LED aydınlatmaya geçilmiştir. 850 adet LED armatür ile enerji tasarrufu %65 artırılmış, aydınlatma kalitesi iyileştirilmiştir.',
+                status: 'Biten',
+                budget: '1.850.000',
+                startDate: '2023-04-01',
                 endDate: '2023-11-30',
-                imageUrl: 'https://picsum.photos/seed/proj3/800/600'
+                imageUrl: 'https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&q=80&w=800',
+                completionRate: 100
+            },
+            
+            // Devam Eden Projeler
+            {
+                id: '5',
+                title: 'Yüzme Havuzu ve Spor Kompleksi',
+                description: 'Kapalı yüzme havuzu, fitness salonu, sauna ve spor alanlarından oluşan kompleks inşaatı devam etmektedir. Kaba inşaat %80 tamamlanmıştır.',
+                status: 'Devam Eden',
+                budget: '12.500.000',
+                startDate: '2023-09-01',
+                endDate: '2025-06-30',
+                imageUrl: 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&q=80&w=800',
+                completionRate: 75
+            },
+            {
+                id: '6',
+                title: 'Kanalizasyon Altyapı Modernizasyonu',
+                description: 'Eski kanalizasyon hatlarının yenilenmesi ve yeni mahallelere kanalizasyon götürülmesi çalışmaları sürüyor. 8 km hat döşeme işlemi devam etmektedir.',
+                status: 'Devam Eden',
+                budget: '5.600.000',
+                startDate: '2024-02-15',
+                endDate: '2024-12-31',
+                imageUrl: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&q=80&w=800',
+                completionRate: 45
+            },
+            {
+                id: '7',
+                title: 'Asfalt ve Kaldırım Yenileme',
+                description: 'Merkez mahalle ve bağlı mahallelerimizde toplam 12 km asfalt ve 8 km kaldırım yenileme çalışmaları devam etmektedir.',
+                status: 'Devam Eden',
+                budget: '6.800.000',
+                startDate: '2024-03-01',
+                endDate: '2024-10-31',
+                imageUrl: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=800',
+                completionRate: 60
+            },
+            {
+                id: '8',
+                title: 'Sosyal Tesis ve Kreş Binası',
+                description: '120 çocuk kapasiteli kreş ve sosyal tesis binası inşaatı devam etmektedir. İç mekan çalışmaları başlamıştır.',
+                status: 'Devam Eden',
+                budget: '4.200.000',
+                startDate: '2024-01-10',
+                endDate: '2024-12-15',
+                imageUrl: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&q=80&w=800',
+                completionRate: 55
+            },
+            
+            // Planlanan Projeler
+            {
+                id: '9',
+                title: 'Kent Meydanı Düzenleme Projesi',
+                description: 'Belde merkezinde 8.000 m² alan üzerine modern kent meydanı projesi planlanmaktadır. Çeşme, oturma alanları, yeşil alanlar ve otopark düzenlemesi yapılacaktır.',
+                status: 'Planlanan',
+                budget: '7.500.000',
+                startDate: '2025-03-01',
+                endDate: '2025-12-31',
+                imageUrl: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=800',
+                completionRate: 0
+            },
+            {
+                id: '10',
+                title: 'Gençlik Merkezi ve Kütüphane',
+                description: 'Gençlerimiz için modern bir gençlik merkezi ve dijital kütüphane projesi planlanmaktadır. Bilgisayar laboratuvarı, çalışma salonları ve etkinlik alanları içerecektir.',
+                status: 'Planlanan',
+                budget: '5.800.000',
+                startDate: '2025-06-01',
+                endDate: '2026-06-30',
+                imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&q=80&w=800',
+                completionRate: 0
+            },
+            {
+                id: '11',
+                title: 'Atık Su Arıtma Tesisi',
+                description: 'Çevre dostu atık su arıtma tesisi projesi planlanmaktadır. Günlük 2.000 m³ kapasiteli modern tesis ile çevre kirliliği önlenecektir.',
+                status: 'Planlanan',
+                budget: '18.500.000',
+                startDate: '2025-09-01',
+                endDate: '2027-03-31',
+                imageUrl: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800',
+                completionRate: 0
+            },
+            {
+                id: '12',
+                title: 'Bisiklet Yolu ve Yeşil Koridor',
+                description: '15 km bisiklet yolu ve yeşil koridor projesi planlanmaktadır. Sürdürülebilir ulaşım ve sağlıklı yaşam için önemli bir adım olacaktır.',
+                status: 'Planlanan',
+                budget: '3.400.000',
+                startDate: '2025-04-15',
+                endDate: '2025-11-30',
+                imageUrl: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&q=80&w=800',
+                completionRate: 0
             }
         ];
         saveToStorage(STORAGE_KEYS.PROJECTS, defaultProjects);
@@ -164,42 +334,139 @@ const initializeDefaultData = () => {
         const defaultEvents = [
             {
                 id: '1',
-                title: 'Bahar Şenliği',
-                description: 'Geleneksel bahar şenliğimiz tüm vatandaşlarımızı bekliyor.',
-                date: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-                location: 'Kent Meydanı',
-                imageUrl: 'https://picsum.photos/seed/event1/800/600'
+                title: 'Bahar Şenliği 2024',
+                description: 'Geleneksel Güneyyurt Bahar Şenliği tüm vatandaşlarımızı bekliyor. Konser, yöresel yemekler, çocuk etkinlikleri ve çeşitli yarışmalar programda yer alıyor.',
+                startDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString(),
+                endDate: new Date(Date.now() + 17 * 24 * 60 * 60 * 1000).toISOString(),
+                location: 'Millet Bahçesi',
+                imageUrl: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&q=80&w=800'
             },
             {
                 id: '2',
-                title: 'Kitap Fuarı',
-                description: 'Yıllık kitap fuarımız 3 gün sürecek.',
-                date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                title: 'Kitap Fuarı ve Söyleşi',
+                description: 'Güneyyurt Belediyesi Kültür Merkezi\'nde düzenlenecek kitap fuarında yazarlarla söyleşi, imza günü ve çocuk atölyeleri yapılacak.',
+                startDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+                endDate: new Date(Date.now() + 33 * 24 * 60 * 60 * 1000).toISOString(),
                 location: 'Kültür Merkezi',
-                imageUrl: 'https://picsum.photos/seed/event2/800/600'
+                imageUrl: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&q=80&w=800'
+            },
+            {
+                id: '3',
+                title: 'Geleneksel Güreş Müsabakaları',
+                description: 'Yıllık geleneksel güreş müsabakalarımız bu yıl da düzenlenecek. Bölgeden ve çevre illerden pehlivanlar yarışacak.',
+                startDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString(),
+                endDate: new Date(Date.now() + 46 * 24 * 60 * 60 * 1000).toISOString(),
+                location: 'Spor Kompleksi',
+                imageUrl: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=80&w=800'
+            },
+            {
+                id: '4',
+                title: 'Çocuk Tiyatrosu Gösterisi',
+                description: 'Çocuklarımız için özel olarak hazırlanan tiyatro gösterisi ücretsiz olarak sahnelenecek. Ailelerin katılımı bekleniyor.',
+                startDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+                endDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(),
+                location: 'Kültür Merkezi Konferans Salonu',
+                imageUrl: 'https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&q=80&w=800'
+            },
+            {
+                id: '5',
+                title: 'Kadınlar Günü Etkinliği',
+                description: '8 Mart Dünya Kadınlar Günü münasebetiyle kadınlarımız için özel program düzenlenecek. Konser, söyleşi ve ikramlar programda.',
+                startDate: new Date(Date.now() + 38 * 24 * 60 * 60 * 1000).toISOString(),
+                endDate: new Date(Date.now() + 38 * 24 * 60 * 60 * 1000).toISOString(),
+                location: 'Kültür Merkezi',
+                imageUrl: 'https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=800'
             }
         ];
         saveToStorage(STORAGE_KEYS.EVENTS, defaultEvents);
     }
 
-    // Tenders
+    // Tenders (EKAP Tarzı)
     if (!localStorage.getItem(STORAGE_KEYS.TENDERS)) {
         const defaultTenders = [
             {
                 id: '1',
                 title: 'Belediye Hizmet Binası Tadilat İşi',
-                description: 'Belediye ana hizmet binasının tadilat işi ihale edilecektir.',
+                description: 'Güneyyurt Belediyesi Hizmet Binası tadilat işi 4734 sayılı Kamu İhale Kanunu\'nun 19. maddesi kapsamında Açık İhale Usulü ile ihale edilecektir.',
+                type: 'Yapım İşi',
+                method: 'Açık İhale',
                 deadline: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                 budget: '850.000',
-                status: 'Aktif'
+                status: 'Aktif',
+                announcementDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                ekapNo: 'EKAP-2024-001234'
             },
             {
                 id: '2',
-                title: 'Araç Kiralama Hizmeti',
-                description: '2 adet iş makinesi 1 yıllığına kiralanacaktır.',
+                title: 'İş Makinesi Kiralama Hizmeti Alımı',
+                description: '2 adet iş makinesi (greyder ve loder) 1 yıllığına kiralanacaktır. 4734 sayılı Kamu İhale Kanunu\'nun 19. maddesi kapsamında Açık İhale Usulü ile ihale edilecektir.',
+                type: 'Hizmet Alımı',
+                method: 'Açık İhale',
                 deadline: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                 budget: '450.000',
-                status: 'Aktif'
+                status: 'Aktif',
+                announcementDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                ekapNo: 'EKAP-2024-001235'
+            },
+            {
+                id: '3',
+                title: 'Çöp Konteyneri Alımı',
+                description: '100 adet 1100 lt hacimli çöp konteyneri alınacaktır. 4734 sayılı Kamu İhale Kanunu\'nun 19. maddesi kapsamında Açık İhale Usulü ile ihale edilecektir.',
+                type: 'Mal Alımı',
+                method: 'Açık İhale',
+                deadline: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                budget: '320.000',
+                status: 'Aktif',
+                announcementDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                ekapNo: 'EKAP-2024-001236'
+            },
+            {
+                id: '4',
+                title: 'Park ve Bahçe Bakım Hizmeti',
+                description: 'Belediyemize ait park ve yeşil alanların bakım ve onarım hizmeti alınacaktır. İhale 4734 sayılı Kamu İhale Kanunu\'nun 19. maddesi kapsamında Açık İhale Usulü ile yapılacaktır.',
+                type: 'Hizmet Alımı',
+                method: 'Açık İhale',
+                deadline: new Date(Date.now() + 25 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                budget: '580.000',
+                status: 'Aktif',
+                announcementDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                ekapNo: 'EKAP-2024-001237'
+            },
+            {
+                id: '5',
+                title: 'Asfalt ve Kaldırım Yapım İşi',
+                description: 'Merkez mahalle ve bağlı mahallelerimizde toplam 5 km asfalt ve 3 km kaldırım yapım işi ihale edilecektir. 4734 sayılı Kamu İhale Kanunu\'nun 19. maddesi kapsamında Açık İhale Usulü ile ihale edilecektir.',
+                type: 'Yapım İşi',
+                method: 'Açık İhale',
+                deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                budget: '2.500.000',
+                status: 'Aktif',
+                announcementDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                ekapNo: 'EKAP-2024-001238'
+            },
+            {
+                id: '6',
+                title: 'Belediye Araç Filosu Yakıt Alımı',
+                description: 'Belediye araç filosu için 1 yıllık yakıt (motorin ve benzin) alımı yapılacaktır. 4734 sayılı Kamu İhale Kanunu\'nun 19. maddesi kapsamında Açık İhale Usulü ile ihale edilecektir.',
+                type: 'Mal Alımı',
+                method: 'Açık İhale',
+                deadline: new Date(Date.now() + 18 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                budget: '750.000',
+                status: 'Aktif',
+                announcementDate: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                ekapNo: 'EKAP-2024-001239'
+            },
+            {
+                id: '7',
+                title: 'Kültür Merkezi Mobilya Alımı',
+                description: 'Yeni hizmete açılan Kültür Merkezi için masa, sandalye ve diğer mobilya alımı yapılacaktır. 4734 sayılı Kamu İhale Kanunu\'nun 19. maddesi kapsamında Açık İhale Usulü ile ihale edilecektir.',
+                type: 'Mal Alımı',
+                method: 'Açık İhale',
+                deadline: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                budget: '420.000',
+                status: 'Tamamlandı',
+                announcementDate: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                ekapNo: 'EKAP-2024-001200'
             }
         ];
         saveToStorage(STORAGE_KEYS.TENDERS, defaultTenders);
