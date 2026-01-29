@@ -122,11 +122,6 @@ const initializeDefaultData = () => {
             },
             {
                 id: '9',
-                title: 'Kreş ve Sosyal Tesis İnşaatı Devam Ediyor',
-                content: '120 çocuk kapasiteli kreş ve sosyal tesis binası inşaatı hızla ilerliyor. İç mekan çalışmalarının başladığı tesiste, çocuklarımız için modern ve güvenli bir eğitim ortamı hazırlanıyor. Tesisin yıl sonuna kadar tamamlanması planlanıyor.',
-                imageUrl: 'https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&q=80&w=800',
-                category: 'Proje',
-                createdDate: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString(),
                 isActive: true
             },
             {

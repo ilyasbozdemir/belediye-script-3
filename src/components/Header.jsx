@@ -52,6 +52,17 @@ const navigation = [
     ]
   },
   {
+    name: 'YATIRIM & İHALE',
+    href: '#',
+    children: [
+      { name: 'Devam Eden Projeler', href: '/projeler/devam-eden' },
+      { name: 'Biten Projeler', href: '/projeler/biten' },
+      { name: 'Planlanan Projeler', href: '/projeler/planlanan' },
+      { name: 'İhale Duyuruları', href: '/kurumsal/ihale-duyurulari' },
+      { name: 'İmar Planları', href: '/hizmetler/imar' },
+    ]
+  },
+  {
     name: 'GÜNCEL',
     href: '#',
     children: [

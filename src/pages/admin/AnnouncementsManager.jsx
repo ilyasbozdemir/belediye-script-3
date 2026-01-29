@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import {
     PlusIcon,
     PencilIcon,
@@ -120,17 +118,6 @@ export default function AnnouncementsManager() {
         } catch (err) {
             console.error(err);
         }
-    };
-
-    const modules = {
-        toolbar: [
-            [{ 'header': [1, 2, 3, false] }],
-            ['bold', 'italic', 'underline'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            [{ 'color': [] }, { 'background': [] }],
-            ['link'],
-            ['clean']
-        ],
     };
 
     const getPriorityBadge = (priority) => {
@@ -270,21 +257,20 @@ export default function AnnouncementsManager() {
                                 />
                             </div>
 
-                            {/* Rich Text Editor */}
+                            {/* Content */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
                                     Duyuru İçeriği *
                                 </label>
-                                <div className="border border-slate-300 rounded-xl overflow-hidden">
-                                    <ReactQuill
-                                        theme="snow"
-                                        value={formData.content}
-                                        onChange={(value) => setFormData({ ...formData, content: value })}
-                                        modules={modules}
-                                        className="bg-white"
-                                        style={{ minHeight: '300px' }}
-                                    />
-                                </div>
+                                <textarea
+                                    required
+                                    rows={12}
+                                    value={formData.content}
+                                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-base resize-none font-mono"
+                                    placeholder="Duyuru içeriğini buraya yazın..."
+                                />
+                                <p className="text-xs text-slate-500 mt-2">HTML etiketleri kullanabilirsiniz (örn: &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt;, &lt;li&gt;)</p>
                             </div>
 
                             {/* Actions */}

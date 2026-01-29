@@ -123,33 +123,35 @@ export default function Legislation() {
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
 
                     {/* Sidebar / Quick Links */}
-                    <div className="lg:col-span-1 space-y-6">
-                        <div className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm sticky top-32">
-                            <h3 className="text-xl font-black text-slate-900 mb-8 uppercase tracking-tighter italic">Kategoriler</h3>
-                            <div className="space-y-4">
-                                {categories.map((cat, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => {
-                                            setActiveCategory(cat);
-                                            setSearchParams({ cat: cat });
-                                        }}
-                                        className={`w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${activeCategory === cat
-                                            ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
-                                            : 'text-slate-400 hover:bg-slate-50 hover:text-blue-600'
-                                            }`}
-                                    >
-                                        {cat}
-                                    </button>
-                                ))}
+                    <div className="lg:col-span-1">
+                        <div className="sticky top-32 space-y-6">
+                            <div className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm">
+                                <h3 className="text-xl font-black text-slate-900 mb-8 uppercase tracking-tighter italic">Kategoriler</h3>
+                                <div className="space-y-4">
+                                    {categories.map((cat, i) => (
+                                        <button
+                                            key={i}
+                                            onClick={() => {
+                                                setActiveCategory(cat);
+                                                setSearchParams({ cat: cat });
+                                            }}
+                                            className={`w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 ${activeCategory === cat
+                                                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                                                : 'text-slate-400 hover:bg-slate-50 hover:text-blue-600'
+                                                }`}
+                                        >
+                                            {cat}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
 
-                        <div className="bg-blue-600 p-10 rounded-[3rem] text-white shadow-2xl shadow-blue-600/30">
-                            <ShieldCheckIcon className="h-12 w-12 mb-8" />
-                            <h4 className="text-2xl font-black mb-4 tracking-tight uppercase italic">Hukuki Portal</h4>
-                            <p className="text-blue-100 font-medium text-sm leading-relaxed mb-8 italic">Tüm güncel kanun metinlerine Cumhurbaşkanlığı Mevzuat Bilgi Sistemi üzerinden erişebilirsiniz.</p>
-                            <a href="https://www.mevzuat.gov.tr/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 text-[10px] font-black text-white uppercase tracking-widest">Sistemi Aç <LinkIcon className="h-4 w-4" /></a>
+                            <div className="bg-blue-600 p-10 rounded-[3rem] text-white shadow-2xl shadow-blue-600/30">
+                                <ShieldCheckIcon className="h-12 w-12 mb-8" />
+                                <h4 className="text-2xl font-black mb-4 tracking-tight uppercase italic">Hukuki Portal</h4>
+                                <p className="text-blue-100 font-medium text-sm leading-relaxed mb-8 italic">Tüm güncel kanun metinlerine Cumhurbaşkanlığı Mevzuat Bilgi Sistemi üzerinden erişebilirsiniz.</p>
+                                <a href="https://www.mevzuat.gov.tr/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 text-[10px] font-black text-white uppercase tracking-widest">Sistemi Aç <LinkIcon className="h-4 w-4" /></a>
+                            </div>
                         </div>
                     </div>
 
