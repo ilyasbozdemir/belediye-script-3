@@ -35,6 +35,7 @@ const adminNavigation = [
     category: 'İÇERİK YÖNETİMİ',
     items: [
       { name: 'Haber & Duyuru', href: '/admin/news', icon: NewspaperIcon },
+      { name: 'Duyurular', href: '/admin/announcements', icon: MegaphoneIcon },
       { name: 'Etkinlik Takvimi', href: '/admin/events', icon: CalendarDaysIcon },
       { name: 'İşletme Rehberi', href: '/admin/businesses', icon: FolderIcon },
       { name: 'Medya Yönetimi', href: '/admin/media', icon: PhotoIcon },
