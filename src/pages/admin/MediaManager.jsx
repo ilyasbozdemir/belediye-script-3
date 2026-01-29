@@ -9,11 +9,13 @@ import {
     ChevronRightIcon,
     ArrowUpTrayIcon,
     MagnifyingGlassIcon,
-    FunnelIcon,
     Squares2X2Icon,
     ListBulletIcon,
     TrashIcon,
-    ArrowDownTrayIcon
+    ArrowDownTrayIcon,
+    PencilIcon,
+    LinkIcon,
+    CheckIcon
 } from '@heroicons/react/24/outline';
 
 const MEDIA_TYPES = {
@@ -36,7 +38,8 @@ const mockMedia = [
         thumbnail: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=400',
         size: '2.4 MB',
         uploadDate: '2024-01-15',
-        dimensions: '1920x1080'
+        dimensions: '1920x1080',
+        orientation: 'landscape'
     },
     {
         id: '2',
@@ -47,7 +50,8 @@ const mockMedia = [
         thumbnail: 'https://images.unsplash.com/photo-1599305445671-ac291c95aaa9?auto=format&fit=crop&q=80&w=400',
         size: '256.8 KB',
         uploadDate: '2024-01-10',
-        dimensions: '512x512'
+        dimensions: '512x512',
+        orientation: 'square'
     },
     {
         id: '3',
@@ -58,7 +62,8 @@ const mockMedia = [
         thumbnail: 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&q=80&w=400',
         size: '15.2 MB',
         uploadDate: '2024-01-12',
-        duration: '2:34'
+        duration: '2:34',
+        orientation: 'landscape'
     },
     {
         id: '4',
@@ -69,7 +74,8 @@ const mockMedia = [
         thumbnail: 'https://images.unsplash.com/photo-1519331379826-f10be5486c6f?auto=format&fit=crop&q=80&w=400',
         size: '3.1 MB',
         uploadDate: '2024-01-14',
-        dimensions: '1920x1080'
+        dimensions: '1920x1080',
+        orientation: 'landscape'
     },
     {
         id: '5',
@@ -80,7 +86,8 @@ const mockMedia = [
         thumbnail: 'https://i.pravatar.cc/200?img=33',
         size: '128.5 KB',
         uploadDate: '2024-01-08',
-        dimensions: '400x400'
+        dimensions: '400x400',
+        orientation: 'square'
     },
     {
         id: '6',
@@ -91,7 +98,8 @@ const mockMedia = [
         thumbnail: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&q=80&w=400',
         size: '4.2 MB',
         uploadDate: '2024-01-16',
-        dimensions: '2560x1440'
+        dimensions: '2560x1440',
+        orientation: 'landscape'
     },
     {
         id: '7',
@@ -113,7 +121,8 @@ const mockMedia = [
         thumbnail: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&q=80&w=400',
         size: '2.9 MB',
         uploadDate: '2024-01-13',
-        dimensions: '1920x1080'
+        dimensions: '1920x1080',
+        orientation: 'landscape'
     }
 ];
 
@@ -121,20 +130,20 @@ export default function MediaManager() {
     const [media, setMedia] = useState(mockMedia);
     const [filteredMedia, setFilteredMedia] = useState(mockMedia);
     const [selectedType, setSelectedType] = useState('ALL');
-    const [viewMode, setViewMode] = useState('grid'); // grid or list
+    const [viewMode, setViewMode] = useState('grid');
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedMedia, setSelectedMedia] = useState(null);
     const [lightboxIndex, setLightboxIndex] = useState(null);
+    const [editingId, setEditingId] = useState(null);
+    const [editName, setEditName] = useState('');
+    const [copiedUrl, setCopiedUrl] = useState(null);
 
     useEffect(() => {
         let filtered = media;
 
-        // Filter by type
         if (selectedType !== 'ALL') {
             filtered = filtered.filter(m => m.type === selectedType);
         }
 
-        // Filter by search
         if (searchQuery) {
             filtered = filtered.filter(m =>
                 m.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -160,6 +169,29 @@ export default function MediaManager() {
         setLightboxIndex((prev) => (prev - 1 + filteredMedia.length) % filteredMedia.length);
     };
 
+    const handleDelete = (id) => {
+        if (window.confirm('Bu dosyayı silmek istediğinizden emin misiniz?')) {
+            setMedia(media.filter(m => m.id !== id));
+        }
+    };
+
+    const handleEdit = (item) => {
+        setEditingId(item.id);
+        setEditName(item.name);
+    };
+
+    const handleSaveEdit = (id) => {
+        setMedia(media.map(m => m.id === id ? { ...m, name: editName } : m));
+        setEditingId(null);
+        setEditName('');
+    };
+
+    const handleCopyUrl = (url) => {
+        navigator.clipboard.writeText(url);
+        setCopiedUrl(url);
+        setTimeout(() => setCopiedUrl(null), 2000);
+    };
+
     const getMediaIcon = (type) => {
         switch (type) {
             case 'VIDEO':
@@ -169,6 +201,15 @@ export default function MediaManager() {
             default:
                 return <PhotoIcon className="h-5 w-5" />;
         }
+    };
+
+    const getOrientationBadge = (orientation) => {
+        const badges = {
+            landscape: { label: 'Yatay', color: 'bg-blue-500' },
+            portrait: { label: 'Dikey', color: 'bg-purple-500' },
+            square: { label: 'Kare', color: 'bg-green-500' }
+        };
+        return badges[orientation] || badges.landscape;
     };
 
     return (
@@ -182,7 +223,6 @@ export default function MediaManager() {
             {/* Toolbar */}
             <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
                 <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
-                    {/* Search */}
                     <div className="relative flex-1 w-full lg:max-w-md">
                         <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                         <input
@@ -194,14 +234,12 @@ export default function MediaManager() {
                         />
                     </div>
 
-                    {/* Actions */}
                     <div className="flex gap-3 w-full lg:w-auto">
                         <button className="flex-1 lg:flex-none px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2">
                             <ArrowUpTrayIcon className="h-5 w-5" />
                             Dosya Yükle
                         </button>
 
-                        {/* View Mode Toggle */}
                         <div className="flex bg-slate-100 rounded-xl p-1">
                             <button
                                 onClick={() => setViewMode('grid')}
@@ -221,7 +259,6 @@ export default function MediaManager() {
                     </div>
                 </div>
 
-                {/* Filter Tabs */}
                 <div className="flex gap-2 mt-6 overflow-x-auto pb-2">
                     {Object.entries(MEDIA_TYPES).map(([key, label]) => (
                         <button
@@ -248,20 +285,21 @@ export default function MediaManager() {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: index * 0.05 }}
                             className="group relative aspect-square bg-white rounded-2xl border-2 border-dashed border-slate-200 hover:border-blue-400 overflow-hidden cursor-pointer transition-all hover:shadow-xl"
-                            onClick={() => item.type !== 'DOCUMENT' && openLightbox(index)}
                         >
                             {/* Thumbnail */}
-                            {item.thumbnail ? (
-                                <img
-                                    src={item.thumbnail}
-                                    alt={item.name}
-                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                                />
-                            ) : (
-                                <div className="w-full h-full flex items-center justify-center bg-slate-50">
-                                    {getMediaIcon(item.type)}
-                                </div>
-                            )}
+                            <div onClick={() => item.type !== 'DOCUMENT' && openLightbox(index)} className="w-full h-full">
+                                {item.thumbnail ? (
+                                    <img
+                                        src={item.thumbnail}
+                                        alt={item.name}
+                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center bg-slate-50">
+                                        {getMediaIcon(item.type)}
+                                    </div>
+                                )}
+                            </div>
 
                             {/* Overlay */}
                             <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -274,11 +312,47 @@ export default function MediaManager() {
                                         </span>
                                     </div>
                                 </div>
+
+                                {/* Action Buttons */}
+                                <div className="absolute top-3 right-3 flex gap-2">
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); handleCopyUrl(item.url); }}
+                                        className="p-2 bg-white/90 hover:bg-white rounded-lg transition-colors"
+                                        title="URL Kopyala"
+                                    >
+                                        {copiedUrl === item.url ? (
+                                            <CheckIcon className="h-4 w-4 text-green-600" />
+                                        ) : (
+                                            <LinkIcon className="h-4 w-4 text-slate-700" />
+                                        )}
+                                    </button>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); handleEdit(item); }}
+                                        className="p-2 bg-white/90 hover:bg-white rounded-lg transition-colors"
+                                        title="Düzenle"
+                                    >
+                                        <PencilIcon className="h-4 w-4 text-blue-600" />
+                                    </button>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); handleDelete(item.id); }}
+                                        className="p-2 bg-white/90 hover:bg-white rounded-lg transition-colors"
+                                        title="Sil"
+                                    >
+                                        <TrashIcon className="h-4 w-4 text-red-600" />
+                                    </button>
+                                </div>
                             </div>
 
-                            {/* Type Badge */}
-                            <div className="absolute top-3 right-3 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold text-slate-700">
-                                {item.category}
+                            {/* Type & Orientation Badges */}
+                            <div className="absolute top-3 left-3 flex flex-col gap-2">
+                                <div className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold text-slate-700">
+                                    {item.category}
+                                </div>
+                                {item.orientation && (
+                                    <div className={`px-3 py-1 ${getOrientationBadge(item.orientation).color} backdrop-blur-sm rounded-full text-xs font-bold text-white`}>
+                                        {getOrientationBadge(item.orientation).label}
+                                    </div>
+                                )}
                             </div>
                         </motion.div>
                     ))}
@@ -292,13 +366,14 @@ export default function MediaManager() {
                                 <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Önizleme</th>
                                 <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Dosya Adı</th>
                                 <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Tür</th>
+                                <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Yön</th>
                                 <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Boyut</th>
                                 <th className="px-6 py-4 text-left text-xs font-bold text-slate-600 uppercase tracking-wider">Tarih</th>
                                 <th className="px-6 py-4 text-right text-xs font-bold text-slate-600 uppercase tracking-wider">İşlemler</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-200">
-                            {filteredMedia.map((item, index) => (
+                            {filteredMedia.map((item) => (
                                 <tr key={item.id} className="hover:bg-slate-50 transition-colors">
                                     <td className="px-6 py-4">
                                         <div className="h-12 w-12 rounded-lg overflow-hidden bg-slate-100 flex items-center justify-center">
@@ -310,22 +385,72 @@ export default function MediaManager() {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <p className="font-semibold text-slate-900">{item.name}</p>
-                                        {item.dimensions && <p className="text-xs text-slate-500">{item.dimensions}</p>}
+                                        {editingId === item.id ? (
+                                            <div className="flex items-center gap-2">
+                                                <input
+                                                    type="text"
+                                                    value={editName}
+                                                    onChange={(e) => setEditName(e.target.value)}
+                                                    className="px-3 py-1 border border-blue-300 rounded-lg text-sm"
+                                                    autoFocus
+                                                />
+                                                <button
+                                                    onClick={() => handleSaveEdit(item.id)}
+                                                    className="p-1 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                                                >
+                                                    <CheckIcon className="h-4 w-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => setEditingId(null)}
+                                                    className="p-1 bg-slate-300 text-slate-700 rounded-lg hover:bg-slate-400"
+                                                >
+                                                    <XMarkIcon className="h-4 w-4" />
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <p className="font-semibold text-slate-900">{item.name}</p>
+                                                {item.dimensions && <p className="text-xs text-slate-500">{item.dimensions}</p>}
+                                            </div>
+                                        )}
                                     </td>
                                     <td className="px-6 py-4">
                                         <span className="px-3 py-1 bg-slate-100 rounded-full text-xs font-semibold text-slate-700">
                                             {item.category}
                                         </span>
                                     </td>
+                                    <td className="px-6 py-4">
+                                        {item.orientation && (
+                                            <span className={`px-3 py-1 ${getOrientationBadge(item.orientation).color} rounded-full text-xs font-semibold text-white`}>
+                                                {getOrientationBadge(item.orientation).label}
+                                            </span>
+                                        )}
+                                    </td>
                                     <td className="px-6 py-4 text-slate-600">{item.size}</td>
                                     <td className="px-6 py-4 text-slate-600">{new Date(item.uploadDate).toLocaleDateString('tr-TR')}</td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center justify-end gap-2">
-                                            <button className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-                                                <ArrowDownTrayIcon className="h-5 w-5 text-slate-600" />
+                                            <button
+                                                onClick={() => handleCopyUrl(item.url)}
+                                                className="p-2 hover:bg-blue-50 rounded-lg transition-colors"
+                                                title="URL Kopyala"
+                                            >
+                                                {copiedUrl === item.url ? (
+                                                    <CheckIcon className="h-5 w-5 text-green-600" />
+                                                ) : (
+                                                    <LinkIcon className="h-5 w-5 text-slate-600" />
+                                                )}
                                             </button>
-                                            <button className="p-2 hover:bg-red-50 rounded-lg transition-colors">
+                                            <button
+                                                onClick={() => handleEdit(item)}
+                                                className="p-2 hover:bg-blue-50 rounded-lg transition-colors"
+                                            >
+                                                <PencilIcon className="h-5 w-5 text-blue-600" />
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(item.id)}
+                                                className="p-2 hover:bg-red-50 rounded-lg transition-colors"
+                                            >
                                                 <TrashIcon className="h-5 w-5 text-red-600" />
                                             </button>
                                         </div>
@@ -354,7 +479,6 @@ export default function MediaManager() {
                             <XMarkIcon className="h-6 w-6 text-white" />
                         </button>
 
-                        {/* Navigation */}
                         <button
                             onClick={(e) => { e.stopPropagation(); prevImage(); }}
                             className="absolute left-6 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors z-10"
@@ -368,7 +492,6 @@ export default function MediaManager() {
                             <ChevronRightIcon className="h-6 w-6 text-white" />
                         </button>
 
-                        {/* Image */}
                         <motion.div
                             key={lightboxIndex}
                             initial={{ scale: 0.8, opacity: 0 }}
@@ -383,7 +506,6 @@ export default function MediaManager() {
                                 className="max-w-full max-h-[90vh] object-contain rounded-2xl"
                             />
 
-                            {/* Info */}
                             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-2xl">
                                 <p className="text-white font-bold text-lg mb-2">{filteredMedia[lightboxIndex]?.name}</p>
                                 <div className="flex gap-4 text-sm text-slate-300">
@@ -391,12 +513,16 @@ export default function MediaManager() {
                                     {filteredMedia[lightboxIndex]?.dimensions && (
                                         <span>{filteredMedia[lightboxIndex]?.dimensions}</span>
                                     )}
+                                    {filteredMedia[lightboxIndex]?.orientation && (
+                                        <span className={`px-2 py-1 ${getOrientationBadge(filteredMedia[lightboxIndex]?.orientation).color} rounded text-white text-xs`}>
+                                            {getOrientationBadge(filteredMedia[lightboxIndex]?.orientation).label}
+                                        </span>
+                                    )}
                                     <span>{new Date(filteredMedia[lightboxIndex]?.uploadDate).toLocaleDateString('tr-TR')}</span>
                                 </div>
                             </div>
                         </motion.div>
 
-                        {/* Counter */}
                         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full text-white font-semibold">
                             {lightboxIndex + 1} / {filteredMedia.length}
                         </div>
@@ -404,7 +530,6 @@ export default function MediaManager() {
                 )}
             </AnimatePresence>
 
-            {/* Empty State */}
             {filteredMedia.length === 0 && (
                 <div className="text-center py-20">
                     <PhotoIcon className="h-20 w-20 text-slate-300 mx-auto mb-4" />

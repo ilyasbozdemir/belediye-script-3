@@ -1,17 +1,38 @@
 import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import {
+  PlusIcon,
+  PencilIcon,
+  TrashIcon,
+  XMarkIcon,
+  PhotoIcon,
+  EyeIcon,
+  NewspaperIcon
+} from '@heroicons/react/24/outline';
+
+const CATEGORIES = ['Haber', 'Etkinlik', 'Proje', 'Sosyal', 'Çevre'];
 
 export default function NewsManager() {
   const [news, setNews] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showForm, setShowForm] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
-  const { register, handleSubmit, reset, setValue } = useForm();
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    summary: '',
+    imageUrl: '',
+    category: 'Haber',
+    isHeadline: false
+  });
 
   const fetchNews = async () => {
     try {
       const res = await axios.get('/api/news');
-      setNews(res.data);
+      // Sadece haberler (Duyuru olmayanlar)
+      const haberler = res.data.filter(item => item.category !== 'Duyuru');
+      setNews(haberler);
     } catch (err) {
       console.error(err);
     }
@@ -21,35 +42,62 @@ export default function NewsManager() {
     fetchNews();
   }, []);
 
-  const openModal = (item = null) => {
+  const handleEdit = (item) => {
     setEditingItem(item);
-    if (item) {
-      setValue('title', item.title);
-      setValue('content', item.content);
-      setValue('summary', item.summary);
-      setValue('category', item.category);
-      setValue('isHeadline', item.isHeadline);
-    } else {
-      reset();
-    }
-    setIsModalOpen(true);
+    setFormData({
+      title: item.title,
+      content: item.content,
+      summary: item.summary || '',
+      imageUrl: item.imageUrl || '',
+      category: item.category,
+      isHeadline: item.isHeadline || false
+    });
+    setShowForm(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleNew = () => {
     setEditingItem(null);
-    reset();
-  }
+    setFormData({
+      title: '',
+      content: '',
+      summary: '',
+      imageUrl: '',
+      category: 'Haber',
+      isHeadline: false
+    });
+    setShowForm(true);
+  };
 
-  const onSubmit = async (data) => {
+  const handleCancel = () => {
+    setShowForm(false);
+    setEditingItem(null);
+    setFormData({
+      title: '',
+      content: '',
+      summary: '',
+      imageUrl: '',
+      category: 'Haber',
+      isHeadline: false
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       if (editingItem) {
-        await axios.put(`/api/news/${editingItem.id}`, { ...data, id: editingItem.id, createdDate: editingItem.createdDate });
+        await axios.put(`/api/news/${editingItem.id}`, {
+          ...formData,
+          id: editingItem.id,
+          createdDate: editingItem.createdDate
+        });
       } else {
-        await axios.post('/api/news', { ...data, createdDate: new Date().toISOString() });
+        await axios.post('/api/news', {
+          ...formData,
+          createdDate: new Date().toISOString()
+        });
       }
       fetchNews();
-      closeModal();
+      handleCancel();
     } catch (err) {
       alert('İşlem başarısız');
       console.error(err);
@@ -57,132 +105,268 @@ export default function NewsManager() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm('Silmek istediğinize emin misiniz?')) return;
+    if (!window.confirm('Bu haberi silmek istediğinize emin misiniz?')) return;
     try {
       await axios.delete(`/api/news/${id}`);
       fetchNews();
     } catch (err) {
       console.error(err);
     }
-  }
+  };
+
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+      [{ 'color': [] }, { 'background': [] }],
+      ['link', 'image'],
+      ['clean']
+    ],
+  };
 
   return (
-    <div>
-      <div className="sm:flex sm:items-center">
-        <div className="sm:flex-auto">
-          <h1 className="text-base font-semibold leading-6 text-gray-900">Haber Yönetimi</h1>
-          <p className="mt-2 text-sm text-gray-700">
-            Haberleri ekleyin, düzenleyin veya silin.
-          </p>
-        </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-          <button
-            type="button"
-            onClick={() => openModal()}
-            className="block rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-          >
-            Haber Ekle
-          </button>
-        </div>
-      </div>
-
-      {/* Table */}
-      <div className="mt-8 flow-root">
-        <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-          <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-            <table className="min-w-full divide-y divide-gray-300">
-              <thead>
-                <tr>
-                  <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Başlık</th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Tarih</th>
-                  <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0">
-                    <span className="sr-only">Edit</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {news.map((item) => (
-                  <tr key={item.id}>
-                    <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{item.title}</td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{new Date(item.createdDate).toLocaleDateString()}</td>
-                    <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                      <button onClick={() => openModal(item)} className="text-blue-600 hover:text-blue-900 mr-4">Düzenle</button>
-                      <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-900">Sil</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-          <div className="fixed inset-0 z-10 overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <div className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <div>
-                    <label className="block text-sm font-medium leading-6 text-gray-900">Başlık</label>
-                    <div className="mt-2">
-                      <input {...register("title", { required: true })} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">İçerik</label>
-                    <div className="mt-2">
-                      <textarea rows={4} {...register("content")} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">Özet (Kısa Açıklama)</label>
-                    <div className="mt-2">
-                      <textarea rows={2} {...register("summary")} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">Resim URL</label>
-                    <div className="mt-2">
-                      <input {...register("imageUrl")} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6" />
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium leading-6 text-gray-900">Kategori</label>
-                    <div className="mt-2">
-                      <select {...register("category")} className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6">
-                        <option value="Haber">Haber</option>
-                        <option value="Duyuru">Duyuru</option>
-                        <option value="Basin">Basın</option>
-                        <option value="Ihale">İhale</option>
-                        <option value="Vefat">Vefat</option>
-                        <option value="Etkinlik">Etkinlik</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                    <button
-                      type="submit"
-                      className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 sm:col-start-2"
-                    >
-                      Kaydet
-                    </button>
-                    <button
-                      type="button"
-                      className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0"
-                      onClick={closeModal}
-                    >
-                      İptal
-                    </button>
-                  </div>
-                </form>
-              </div>
+    <div className="min-h-screen bg-slate-50">
+      {/* Header - Mobile First */}
+      <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
+        <div className="p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
+                <NewspaperIcon className="h-6 w-6 sm:h-7 sm:w-7 text-blue-600" />
+                Haber Yönetimi
+              </h1>
+              <p className="text-sm text-slate-600 mt-1">Haberleri ekleyin, düzenleyin veya silin</p>
             </div>
+            {!showForm && (
+              <button
+                onClick={handleNew}
+                className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30"
+              >
+                <PlusIcon className="h-5 w-5" />
+                Yeni Haber
+              </button>
+            )}
           </div>
         </div>
-      )}
+      </div>
+
+      <div className="p-4 sm:p-6 lg:p-8">
+        {/* Form Section - Full Page */}
+        {showForm ? (
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 lg:p-8">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900">
+                {editingItem ? 'Haber Düzenle' : 'Yeni Haber Ekle'}
+              </h2>
+              <button
+                onClick={handleCancel}
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+              >
+                <XMarkIcon className="h-6 w-6 text-slate-600" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Title */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Haber Başlığı *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                  placeholder="Haber başlığını girin..."
+                />
+              </div>
+
+              {/* Category & Headline */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                    Kategori
+                  </label>
+                  <select
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                  >
+                    {CATEGORIES.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="flex items-end">
+                  <label className="flex items-center gap-3 cursor-pointer p-4 bg-slate-50 rounded-xl w-full hover:bg-slate-100 transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={formData.isHeadline}
+                      onChange={(e) => setFormData({ ...formData, isHeadline: e.target.checked })}
+                      className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                    />
+                    <span className="text-sm font-semibold text-slate-700">Manşet Haber</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Image URL */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <PhotoIcon className="h-4 w-4 inline mr-1" />
+                  Görsel URL
+                </label>
+                <input
+                  type="url"
+                  value={formData.imageUrl}
+                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base"
+                  placeholder="https://example.com/image.jpg"
+                />
+                {formData.imageUrl && (
+                  <div className="mt-3">
+                    <img
+                      src={formData.imageUrl}
+                      alt="Preview"
+                      className="w-full sm:w-64 h-40 object-cover rounded-xl border-2 border-slate-200"
+                      onError={(e) => e.target.style.display = 'none'}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Summary */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Özet (Kısa Açıklama)
+                </label>
+                <textarea
+                  rows={3}
+                  value={formData.summary}
+                  onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base resize-none"
+                  placeholder="Haberin kısa özetini yazın..."
+                />
+              </div>
+
+              {/* Rich Text Editor */}
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  Haber İçeriği *
+                </label>
+                <div className="border border-slate-300 rounded-xl overflow-hidden">
+                  <ReactQuill
+                    theme="snow"
+                    value={formData.content}
+                    onChange={(value) => setFormData({ ...formData, content: value })}
+                    modules={modules}
+                    className="bg-white"
+                    style={{ minHeight: '300px' }}
+                  />
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-slate-200">
+                <button
+                  type="button"
+                  onClick={handleCancel}
+                  className="w-full sm:w-auto px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-semibold hover:bg-slate-200 transition-colors"
+                >
+                  İptal
+                </button>
+                <button
+                  type="submit"
+                  className="w-full sm:flex-1 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/30"
+                >
+                  {editingItem ? 'Güncelle' : 'Kaydet'}
+                </button>
+              </div>
+            </form>
+          </div>
+        ) : (
+          /* News List - Mobile Optimized */
+          <div className="space-y-4">
+            {news.length === 0 ? (
+              <div className="bg-white rounded-2xl p-12 text-center border-2 border-dashed border-slate-200">
+                <NewspaperIcon className="h-16 w-16 text-slate-300 mx-auto mb-4" />
+                <p className="text-slate-600 font-semibold">Henüz haber eklenmemiş</p>
+                <p className="text-slate-500 text-sm mt-2">Yeni haber eklemek için yukarıdaki butona tıklayın</p>
+              </div>
+            ) : (
+              news.map((item) => (
+                <div
+                  key={item.id}
+                  className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow"
+                >
+                  <div className="flex flex-col sm:flex-row gap-4 p-4">
+                    {/* Image */}
+                    {item.imageUrl && (
+                      <div className="w-full sm:w-48 h-40 sm:h-32 flex-shrink-0 rounded-xl overflow-hidden bg-slate-100">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => e.target.parentElement.style.display = 'none'}
+                        />
+                      </div>
+                    )}
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-3 mb-2">
+                        <div className="flex-1">
+                          <div className="flex flex-wrap items-center gap-2 mb-2">
+                            <span className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold">
+                              {item.category}
+                            </span>
+                            {item.isHeadline && (
+                              <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">
+                                Manşet
+                              </span>
+                            )}
+                            <span className="text-xs text-slate-500">
+                              {new Date(item.createdDate).toLocaleDateString('tr-TR')}
+                            </span>
+                          </div>
+                          <h3 className="text-base sm:text-lg font-bold text-slate-900 line-clamp-2 mb-2">
+                            {item.title}
+                          </h3>
+                          {item.summary && (
+                            <p className="text-sm text-slate-600 line-clamp-2">
+                              {item.summary}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex gap-2 mt-3">
+                        <button
+                          onClick={() => handleEdit(item)}
+                          className="flex-1 sm:flex-none px-4 py-2 bg-blue-50 text-blue-600 rounded-lg font-semibold hover:bg-blue-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                        >
+                          <PencilIcon className="h-4 w-4" />
+                          Düzenle
+                        </button>
+                        <button
+                          onClick={() => handleDelete(item.id)}
+                          className="flex-1 sm:flex-none px-4 py-2 bg-red-50 text-red-600 rounded-lg font-semibold hover:bg-red-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                        >
+                          <TrashIcon className="h-4 w-4" />
+                          Sil
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
