@@ -1,13 +1,145 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>guneyyurt-portal-client</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Güneyyurt Belediyesi | Resmi Web Sitesi - Karaman Ermenek</title>
+    <meta name="title" content="Güneyyurt Belediyesi | Resmi Web Sitesi - Karaman Ermenek" />
+    <meta name="description" content="Güneyyurt Belediyesi resmi web sitesi. Haberler, duyurular, projeler, e-belediye hizmetleri, meclis kararları ve vatandaş hizmetleri. Modern, şeffaf ve halk odaklı belediyecilik." />
+    <meta name="keywords" content="güneyyurt belediyesi, karaman, ermenek, belediye, e-belediye, meclis, başkan, haberler, projeler, ihale, duyuru" />
+    <meta name="author" content="Güneyyurt Belediyesi" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="language" content="Turkish" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="theme-color" content="#2563eb" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="apple-touch-icon" href="/vite.svg" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.guneyyurt.bel.tr/" />
+    <meta property="og:title" content="Güneyyurt Belediyesi | Resmi Web Sitesi" />
+    <meta property="og:description" content="Güneyyurt Belediyesi resmi web sitesi. Modern, şeffaf ve halk odaklı belediyecilik anlayışı ile hizmetinizdeyiz." />
+    <meta property="og:image" content="https://www.guneyyurt.bel.tr/og-image.jpg" />
+    <meta property="og:locale" content="tr_TR" />
+    <meta property="og:site_name" content="Güneyyurt Belediyesi" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://www.guneyyurt.bel.tr/" />
+    <meta name="twitter:title" content="Güneyyurt Belediyesi | Resmi Web Sitesi" />
+    <meta name="twitter:description" content="Güneyyurt Belediyesi resmi web sitesi. Modern, şeffaf ve halk odaklı belediyecilik." />
+    <meta name="twitter:image" content="https://www.guneyyurt.bel.tr/twitter-image.jpg" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.guneyyurt.bel.tr/" />
+    
+    <!-- Geo Tags -->
+    <meta name="geo.region" content="TR-70" />
+    <meta name="geo.placename" content="Güneyyurt, Ermenek, Karaman" />
+    <meta name="geo.position" content="36.6333;32.9000" />
+    <meta name="ICBM" content="36.6333, 32.9000" />
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "GovernmentOrganization",
+      "name": "Güneyyurt Belediyesi",
+      "alternateName": "Güneyyurt Municipality",
+      "url": "https://www.guneyyurt.bel.tr",
+      "logo": "https://www.guneyyurt.bel.tr/logo.png",
+      "description": "Güneyyurt Belediyesi resmi web sitesi. Modern, şeffaf ve halk odaklı belediyecilik anlayışı ile hizmetinizdeyiz.",
+      "telephone": "+90-338-xxx-xxxx",
+      "email": "info@guneyyurt.bel.tr",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Cumhuriyet Mahallesi",
+        "addressLocality": "Güneyyurt",
+        "addressRegion": "Ermenek",
+        "postalCode": "70700",
+        "addressCountry": "TR"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "36.6333",
+        "longitude": "32.9000"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Güneyyurt",
+        "containedIn": {
+          "@type": "City",
+          "name": "Ermenek",
+          "containedIn": {
+            "@type": "AdministrativeArea",
+            "name": "Karaman"
+          }
+        }
+      },
+      "sameAs": [
+        "https://www.facebook.com/guneyyurtbelediyesi",
+        "https://www.instagram.com/guneyyurtbelediyesi",
+        "https://twitter.com/guneyyurtbld"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+90-338-xxx-xxxx",
+        "contactType": "customer service",
+        "areaServed": "TR",
+        "availableLanguage": ["Turkish"]
+      }
+    }
+    </script>
+    
+    <!-- BreadcrumbList Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Ana Sayfa",
+        "item": "https://www.guneyyurt.bel.tr"
+      }]
+    }
+    </script>
+    
+    <!-- WebSite Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Güneyyurt Belediyesi",
+      "url": "https://www.guneyyurt.bel.tr",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://www.guneyyurt.bel.tr/arama?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 
+    <!-- Preconnect for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   </head>
   <body>
+    <noscript>
+      <div style="padding: 40px; text-align: center; font-family: Arial, sans-serif;">
+        <h1>JavaScript Gerekli</h1>
+        <p>Bu web sitesini görüntülemek için tarayıcınızda JavaScript'i etkinleştirmeniz gerekmektedir.</p>
+        <p>Lütfen tarayıcı ayarlarınızdan JavaScript'i açın ve sayfayı yenileyin.</p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

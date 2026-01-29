@@ -16,7 +16,9 @@ const STORAGE_KEYS = {
     DECEASED: 'mock_deceased',
     REPORTS: 'mock_reports',
     STRATEGIC_PLAN: 'mock_strategic_plan',
-    WEATHER_PRAYER: 'mock_weather_prayer'
+    WEATHER_PRAYER: 'mock_weather_prayer',
+    COUNCIL: 'mock_council',
+    COMMITTEE: 'mock_committee'
 };
 
 // Yardımcı fonksiyonlar
@@ -251,7 +253,7 @@ const initializeDefaultData = () => {
     // President
     if (!localStorage.getItem(STORAGE_KEYS.PRESIDENT)) {
         const defaultPresident = {
-            name: 'Mehmet BAŞKAN',
+            name: 'Ahmet ARI',
             bio: 'Belediye Başkanımız 2019 yılından bu yana görevdedir.',
             message: 'Değerli hemşehrilerim, sizlere hizmet etmek bizim için bir onurdur.',
             imageUrl: 'https://picsum.photos/seed/president/400/500'
@@ -374,6 +376,200 @@ const initializeDefaultData = () => {
         ];
         saveToStorage(STORAGE_KEYS.STRATEGIC_PLAN, defaultStrategicPlan);
     }
+
+    // Council Members (Meclis Üyeleri)
+    if (!localStorage.getItem(STORAGE_KEYS.COUNCIL)) {
+        const defaultCouncil = [
+            {
+                id: '1',
+                name: 'John Smith',
+                title: 'Meclis Başkanı',
+                party: 'AK Parti',
+                imageUrl: 'https://i.pravatar.cc/400?img=12',
+                phone: '0312 555 0101',
+                email: 'j.smith@guneyyurt.bel.tr'
+            },
+            {
+                id: '2',
+                name: 'Michael Johnson',
+                title: 'Meclis Başkan Vekili',
+                party: 'AK Parti',
+                imageUrl: 'https://i.pravatar.cc/400?img=13',
+                phone: '0312 555 0102',
+                email: 'm.johnson@guneyyurt.bel.tr'
+            },
+            {
+                id: '3',
+                name: 'Sarah Williams',
+                title: 'Meclis Üyesi',
+                party: 'AK Parti',
+                imageUrl: 'https://i.pravatar.cc/400?img=47',
+                phone: '0312 555 0103',
+                email: 's.williams@guneyyurt.bel.tr'
+            },
+            {
+                id: '4',
+                name: 'David Brown',
+                title: 'Meclis Üyesi',
+                party: 'CHP',
+                imageUrl: 'https://i.pravatar.cc/400?img=14',
+                phone: '0312 555 0104',
+                email: 'd.brown@guneyyurt.bel.tr'
+            },
+            {
+                id: '5',
+                name: 'Emma Davis',
+                title: 'Meclis Üyesi',
+                party: 'AK Parti',
+                imageUrl: 'https://i.pravatar.cc/400?img=48',
+                phone: '0312 555 0105',
+                email: 'e.davis@guneyyurt.bel.tr'
+            },
+            {
+                id: '6',
+                name: 'James Miller',
+                title: 'Meclis Üyesi',
+                party: 'CHP',
+                imageUrl: 'https://i.pravatar.cc/400?img=15',
+                phone: '0312 555 0106',
+                email: 'j.miller@guneyyurt.bel.tr'
+            },
+            {
+                id: '7',
+                name: 'Olivia Wilson',
+                title: 'Meclis Üyesi',
+                party: 'AK Parti',
+                imageUrl: 'https://i.pravatar.cc/400?img=49',
+                phone: '0312 555 0107',
+                email: 'o.wilson@guneyyurt.bel.tr'
+            },
+            {
+                id: '8',
+                name: 'Robert Moore',
+                title: 'Meclis Üyesi',
+                party: 'AK Parti',
+                imageUrl: 'https://i.pravatar.cc/400?img=16',
+                phone: '0312 555 0108',
+                email: 'r.moore@guneyyurt.bel.tr'
+            },
+            {
+                id: '9',
+                name: 'Sophia Taylor',
+                title: 'Meclis Üyesi',
+                party: 'CHP',
+                imageUrl: 'https://i.pravatar.cc/400?img=50',
+                phone: '0312 555 0109',
+                email: 's.taylor@guneyyurt.bel.tr'
+            },
+            {
+                id: '10',
+                name: 'William Anderson',
+                title: 'Meclis Üyesi',
+                party: 'AK Parti',
+                imageUrl: 'https://i.pravatar.cc/400?img=17',
+                phone: '0312 555 0110',
+                email: 'w.anderson@guneyyurt.bel.tr'
+            },
+            {
+                id: '11',
+                name: 'Isabella Thomas',
+                title: 'Meclis Üyesi',
+                party: 'AK Parti',
+                imageUrl: 'https://i.pravatar.cc/400?img=51',
+                phone: '0312 555 0111',
+                email: 'i.thomas@guneyyurt.bel.tr'
+            },
+            {
+                id: '12',
+                name: 'Daniel Jackson',
+                title: 'Meclis Üyesi',
+                party: 'CHP',
+                imageUrl: 'https://i.pravatar.cc/400?img=18',
+                phone: '0312 555 0112',
+                email: 'd.jackson@guneyyurt.bel.tr'
+            },
+            {
+                id: '13',
+                name: 'Mia White',
+                title: 'Meclis Üyesi',
+                party: 'AK Parti',
+                imageUrl: 'https://i.pravatar.cc/400?img=52',
+                phone: '0312 555 0113',
+                email: 'm.white@guneyyurt.bel.tr'
+            },
+            {
+                id: '14',
+                name: 'Christopher Harris',
+                title: 'Meclis Üyesi',
+                party: 'AK Parti',
+                imageUrl: 'https://i.pravatar.cc/400?img=19',
+                phone: '0312 555 0114',
+                email: 'c.harris@guneyyurt.bel.tr'
+            },
+            {
+                id: '15',
+                name: 'Ava Martin',
+                title: 'Meclis Üyesi',
+                party: 'CHP',
+                imageUrl: 'https://i.pravatar.cc/400?img=53',
+                phone: '0312 555 0115',
+                email: 'a.martin@guneyyurt.bel.tr'
+            }
+        ];
+        saveToStorage(STORAGE_KEYS.COUNCIL, defaultCouncil);
+    }
+
+    // Committee Members (Encümen Üyeleri)
+    if (!localStorage.getItem(STORAGE_KEYS.COMMITTEE)) {
+        const defaultCommittee = [
+            {
+                id: '1',
+                name: 'Ahmet ARI',
+                title: 'Belediye Başkanı (Başkan)',
+                department: 'Başkanlık',
+                imageUrl: 'https://i.pravatar.cc/400?img=33',
+                phone: '0312 555 0201',
+                email: 'baskan@guneyyurt.bel.tr'
+            },
+            {
+                id: '2',
+                name: 'John Smith',
+                title: 'Meclis Başkanı (Üye)',
+                department: 'Meclis',
+                imageUrl: 'https://i.pravatar.cc/400?img=12',
+                phone: '0312 555 0101',
+                email: 'j.smith@guneyyurt.bel.tr'
+            },
+            {
+                id: '3',
+                name: 'Michael Johnson',
+                title: 'Meclis Üyesi',
+                department: 'Meclis',
+                imageUrl: 'https://i.pravatar.cc/400?img=13',
+                phone: '0312 555 0102',
+                email: 'm.johnson@guneyyurt.bel.tr'
+            },
+            {
+                id: '4',
+                name: 'David Brown',
+                title: 'Meclis Üyesi',
+                department: 'Meclis',
+                imageUrl: 'https://i.pravatar.cc/400?img=14',
+                phone: '0312 555 0104',
+                email: 'd.brown@guneyyurt.bel.tr'
+            },
+            {
+                id: '5',
+                name: 'James Miller',
+                title: 'Meclis Üyesi',
+                department: 'Meclis',
+                imageUrl: 'https://i.pravatar.cc/400?img=15',
+                phone: '0312 555 0106',
+                email: 'j.miller@guneyyurt.bel.tr'
+            }
+        ];
+        saveToStorage(STORAGE_KEYS.COMMITTEE, defaultCommittee);
+    }
 };
 
 // Mock API sınıfı
@@ -468,6 +664,16 @@ class MockAPI {
         // Strategic Plan
         if (endpoint === '/api/strategicplan') {
             return { data: getFromStorage(STORAGE_KEYS.STRATEGIC_PLAN, []) };
+        }
+        
+        // Council Members
+        if (endpoint === '/api/Council' || endpoint === '/api/council') {
+            return { data: getFromStorage(STORAGE_KEYS.COUNCIL, []) };
+        }
+        
+        // Committee Members
+        if (endpoint === '/api/Committee' || endpoint === '/api/committee') {
+            return { data: getFromStorage(STORAGE_KEYS.COMMITTEE, []) };
         }
         
         return { data: [] };

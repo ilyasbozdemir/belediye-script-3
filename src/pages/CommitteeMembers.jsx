@@ -18,7 +18,7 @@ export default function CommitteeMembers() {
     useEffect(() => {
         const fetchMembers = async () => {
             try {
-                const res = await axios.get('/api/governance/committees');
+                const res = await axios.get('/api/Committee');
                 setMembers(res.data);
             } catch (err) {
                 console.error('Failed to fetch committee members');
