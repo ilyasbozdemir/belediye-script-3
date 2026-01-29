@@ -6,7 +6,6 @@ import NewsList from './pages/NewsList';
 import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
 import NewsManager from './pages/admin/NewsManager';
-import BusinessDirectory from './pages/BusinessDirectory';
 import BusinessManager from './pages/admin/BusinessManager';
 import BusinessCenterManager from './pages/admin/BusinessCenterManager';
 import GovernanceManager from './pages/admin/GovernanceManager';
@@ -110,7 +109,6 @@ function App() {
         <Route path="kurumsal/encumen-kararlari" element={<CommitteeDecisions />} />
         <Route path="hizmetler/rehber" element={<ServicesGuide />} />
         <Route path="hizmetler/basvuru" element={<RequestForm />} />
-        <Route path="kent-rehberi/isletmeler" element={<BusinessDirectory />} />
         <Route path="kurumsal/stratejik-plan" element={<Navigate to="/kurumsal/mevzuat?cat=Stratejik Planlar" replace />} />
         <Route path="kurumsal/is-hani" element={<BusinessCenter />} />
         <Route path="kurumsal/tarihce" element={<TownHistory />} />
