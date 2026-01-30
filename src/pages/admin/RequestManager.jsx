@@ -15,7 +15,8 @@ import {
     CheckIcon,
     ExclamationTriangleIcon,
     InboxIcon,
-    ArrowPathIcon
+    ArrowPathIcon,
+    DocumentTextIcon
 } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -28,6 +29,7 @@ export default function RequestManager() {
     const [categoryFilter, setCategoryFilter] = useState('Tümü');
     const [selectedRequest, setSelectedRequest] = useState(null);
     const [showDetailModal, setShowDetailModal] = useState(false);
+    const [viewMode, setViewMode] = useState('detail'); // 'detail' or 'petition'
     const [responseText, setResponseText] = useState('');
     const [selectedIds, setSelectedIds] = useState([]);
 
@@ -126,6 +128,7 @@ export default function RequestManager() {
     const openDetailModal = (request) => {
         setSelectedRequest(request);
         setShowDetailModal(true);
+        setViewMode('detail');
         setResponseText('');
     };
 
@@ -274,37 +277,6 @@ export default function RequestManager() {
                         </select>
                     </div>
                 </div>
-
-                {/* Bulk Actions */}
-                {selectedIds.length > 0 && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        className="mt-4 pt-4 border-t border-slate-200 flex flex-wrap items-center gap-3"
-                    >
-                        <span className="text-sm font-black text-slate-900">
-                            {selectedIds.length} başvuru seçildi
-                        </span>
-                        <button
-                            onClick={() => bulkUpdateStatus('İnceleniyor')}
-                            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all"
-                        >
-                            İncelemeye Al
-                        </button>
-                        <button
-                            onClick={() => bulkUpdateStatus('Tamamlandı')}
-                            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all"
-                        >
-                            Tamamlandı İşaretle
-                        </button>
-                        <button
-                            onClick={() => setSelectedIds([])}
-                            className="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 rounded-xl text-xs font-black uppercase tracking-widest transition-all"
-                        >
-                            Seçimi Temizle
-                        </button>
-                    </motion.div>
-                )}
             </div>
 
             {/* Requests List */}
@@ -314,19 +286,6 @@ export default function RequestManager() {
                 </div>
             ) : (
                 <div className="space-y-4">
-                    {/* Select All */}
-                    {filteredRequests.length > 0 && (
-                        <div className="flex items-center gap-3 px-4">
-                            <input
-                                type="checkbox"
-                                checked={selectedIds.length === filteredRequests.length && filteredRequests.length > 0}
-                                onChange={toggleSelectAll}
-                                className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-                            />
-                            <span className="text-sm font-bold text-slate-600">Tümünü Seç</span>
-                        </div>
-                    )}
-
                     {filteredRequests.map((req) => (
                         <motion.div
                             key={req.id}
@@ -336,24 +295,14 @@ export default function RequestManager() {
                                 }`}
                         >
                             <div className="flex gap-4">
-                                {/* Checkbox */}
-                                <div className="flex items-start pt-1">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedIds.includes(req.id)}
-                                        onChange={() => toggleSelection(req.id)}
-                                        className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-                                    />
-                                </div>
-
                                 {/* Content */}
                                 <div className="flex-1 min-w-0">
                                     <div className="flex flex-col lg:flex-row gap-6">
                                         {/* Left: User Info & Status */}
                                         <div className="lg:w-1/4 space-y-3">
                                             <span className={`inline-block px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest ${req.status === 'Beklemede' ? 'bg-amber-50 text-amber-600' :
-                                                    req.status === 'İnceleniyor' ? 'bg-blue-50 text-blue-600' :
-                                                        'bg-emerald-50 text-emerald-600'
+                                                req.status === 'İnceleniyor' ? 'bg-blue-50 text-blue-600' :
+                                                    'bg-emerald-50 text-emerald-600'
                                                 }`}>
                                                 {req.status}
                                             </span>
@@ -398,7 +347,7 @@ export default function RequestManager() {
                                                 className="flex-1 lg:flex-none px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2"
                                             >
                                                 <EyeIcon className="h-4 w-4" />
-                                                <span className="hidden lg:inline">Detay</span>
+                                                <span className="hidden lg:inline">Görüntüle</span>
                                             </button>
                                             <button
                                                 onClick={() => updateStatus(req.id, 'İnceleniyor')}
@@ -407,31 +356,12 @@ export default function RequestManager() {
                                             >
                                                 İncele
                                             </button>
-                                            <button
-                                                onClick={() => updateStatus(req.id, 'Tamamlandı')}
-                                                disabled={req.status === 'Tamamlandı'}
-                                                className="flex-1 lg:flex-none px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-xl text-xs font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2"
-                                            >
-                                                <CheckIcon className="h-4 w-4" />
-                                                <span className="hidden lg:inline">Çözüldü</span>
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </motion.div>
                     ))}
-
-                    {filteredRequests.length === 0 && (
-                        <div className="bg-white p-20 rounded-[3rem] text-center border border-slate-100 border-dashed">
-                            <InboxIcon className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-                            <p className="text-slate-400 font-bold uppercase tracking-widest text-sm">
-                                {searchTerm || statusFilter !== 'Tümü' || categoryFilter !== 'Tümü'
-                                    ? 'Filtrelere uygun başvuru bulunamadı'
-                                    : 'Henüz bir başvuru bulunmuyor'}
-                            </p>
-                        </div>
-                    )}
                 </div>
             )}
 
@@ -450,115 +380,149 @@ export default function RequestManager() {
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
                             onClick={(e) => e.stopPropagation()}
-                            className="bg-white rounded-[3rem] shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-hidden"
+                            className="bg-white rounded-[3rem] shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col"
                         >
                             {/* Modal Header */}
-                            <div className="bg-gradient-to-br from-blue-600 to-indigo-700 p-8 relative">
-                                <button
-                                    onClick={closeDetailModal}
-                                    className="absolute top-6 right-6 p-2 bg-white/10 hover:bg-white/20 rounded-2xl transition-all backdrop-blur-sm"
-                                >
-                                    <XMarkIcon className="h-6 w-6 text-white" />
-                                </button>
-                                <div className="flex items-start gap-4">
-                                    <div className="flex-1">
-                                        <span className={`inline-block px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest mb-3 ${selectedRequest.status === 'Beklemede' ? 'bg-amber-400 text-amber-900' :
-                                                selectedRequest.status === 'İnceleniyor' ? 'bg-blue-400 text-blue-900' :
-                                                    'bg-emerald-400 text-emerald-900'
-                                            }`}>
-                                            {selectedRequest.status}
-                                        </span>
-                                        <h2 className="text-2xl font-black text-white italic tracking-tight leading-tight">
-                                            {selectedRequest.subject}
-                                        </h2>
-                                        <p className="text-blue-100 font-medium mt-2">
-                                            Takip Kodu: #{selectedRequest.trackingCode}
-                                        </p>
+                            <div className="bg-slate-900 p-8 flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <div className="flex bg-slate-800 p-1 rounded-2xl">
+                                        <button
+                                            onClick={() => setViewMode('detail')}
+                                            className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'detail' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                                        >
+                                            Detaylı Görünüm
+                                        </button>
+                                        <button
+                                            onClick={() => setViewMode('petition')}
+                                            className={`px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'petition' ? 'bg-orange-600 text-white shadow-lg' : 'text-slate-400 hover:text-white'}`}
+                                        >
+                                            <div className="flex items-center gap-2">
+                                                <DocumentTextIcon className="h-4 w-4" />
+                                                Dilekçe Formatı
+                                            </div>
+                                        </button>
                                     </div>
                                 </div>
+                                <button
+                                    onClick={closeDetailModal}
+                                    className="p-2 bg-slate-800 hover:bg-red-600 text-white rounded-2xl transition-all"
+                                >
+                                    <XMarkIcon className="h-6 w-6" />
+                                </button>
                             </div>
 
-                            {/* Modal Body */}
-                            <div className="p-8 overflow-y-auto max-h-[calc(90vh-200px)]">
-                                {/* User Info */}
-                                <div className="bg-slate-50 rounded-3xl p-6 mb-6">
-                                    <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">Başvuru Sahibi</h3>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
-                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Ad Soyad</p>
-                                            <p className="text-base font-black text-slate-900">{selectedRequest.fullName}</p>
+                            {/* Modal Content */}
+                            <div className="flex-1 overflow-y-auto p-8 bg-slate-50">
+                                {viewMode === 'detail' ? (
+                                    <div className="space-y-6">
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Başvuru Sahibi</p>
+                                                <h4 className="text-xl font-black text-slate-900 italic tracking-tight">{selectedRequest.fullName}</h4>
+                                                <div className="mt-4 space-y-2">
+                                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                                                        <EnvelopeIcon className="h-4 w-4" /> {selectedRequest.email}
+                                                    </p>
+                                                    <p className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                                                        <PhoneIcon className="h-4 w-4" /> {selectedRequest.phone}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Kayıt Bilgileri</p>
+                                                <div className="space-y-3">
+                                                    <div>
+                                                        <p className="text-[9px] font-black text-slate-300 uppercase italic">Takip Kodu</p>
+                                                        <p className="text-sm font-black text-blue-600">#{selectedRequest.trackingCode}</p>
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-[9px] font-black text-slate-300 uppercase italic">Kategori</p>
+                                                        <p className="text-sm font-black text-slate-700">{selectedRequest.category}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Mevcut Durum</p>
+                                                <select
+                                                    value={selectedRequest.status}
+                                                    onChange={(e) => updateStatus(selectedRequest.id, e.target.value)}
+                                                    className="w-full bg-slate-50 border-none rounded-xl font-black text-xs uppercase tracking-widest py-3 text-slate-700"
+                                                >
+                                                    <option value="Beklemede">Beklemede</option>
+                                                    <option value="İnceleniyor">İnceleniyor</option>
+                                                    <option value="Tamamlandı">Tamamlandı</option>
+                                                </select>
+                                                <p className="text-[9px] text-slate-400 mt-3 italic font-medium">Son Güncelleme: {new Date(selectedRequest.createdDate).toLocaleDateString()}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Kategori</p>
-                                            <p className="text-base font-black text-slate-900">{selectedRequest.category}</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">E-posta</p>
-                                            <p className="text-base font-medium text-slate-700">{selectedRequest.email}</p>
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Telefon</p>
-                                            <p className="text-base font-medium text-slate-700">{selectedRequest.phone}</p>
-                                        </div>
-                                        <div className="md:col-span-2">
-                                            <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Başvuru Tarihi</p>
-                                            <p className="text-base font-medium text-slate-700">
-                                                {new Date(selectedRequest.createdDate).toLocaleString('tr-TR', {
-                                                    dateStyle: 'full',
-                                                    timeStyle: 'short'
-                                                })}
+
+                                        <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm">
+                                            <h3 className="text-lg font-black text-slate-900 uppercase italic tracking-tight mb-6 border-b border-slate-50 pb-4">{selectedRequest.subject}</h3>
+                                            <p className="text-slate-600 font-medium leading-relaxed whitespace-pre-wrap">
+                                                {selectedRequest.message}
                                             </p>
                                         </div>
                                     </div>
-                                </div>
+                                ) : (
+                                    <div className="flex justify-center">
+                                        <div
+                                            className="bg-white p-[25mm] shadow-2xl origin-top transition-transform scale-90 sm:scale-100"
+                                            style={{
+                                                width: '210mm',
+                                                minHeight: '297mm',
+                                                fontFamily: 'serif',
+                                                color: '#000',
+                                                lineHeight: '1.8'
+                                            }}
+                                        >
+                                            <div style={{ textAlign: 'center', marginBottom: '20mm' }}>
+                                                <h1 style={{ fontSize: '18pt', fontWeight: 'bold', margin: '0' }}>T.C.</h1>
+                                                <h1 style={{ fontSize: '18pt', fontWeight: 'bold', margin: '0' }}>KARAMAN / ERMENEK</h1>
+                                                <h1 style={{ fontSize: '18pt', fontWeight: 'bold', margin: '0' }}>GÜNEYYURT BELEDİYE BAŞKANLIĞI</h1>
+                                                <h2 style={{ fontSize: '14pt', fontWeight: 'bold', marginTop: '5mm', textDecoration: 'underline' }}>
+                                                    {selectedRequest.category?.includes('Dilekçe') ? selectedRequest.subject : 'İSTEK VE TALEPLER MÜDÜRLÜĞÜNE'}
+                                                </h2>
+                                            </div>
 
-                                {/* Message */}
-                                <div className="mb-6">
-                                    <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3">Mesaj</h3>
-                                    <div className="bg-slate-50 rounded-3xl p-6">
-                                        <p className="text-slate-700 font-medium leading-relaxed whitespace-pre-wrap">
-                                            {selectedRequest.message}
-                                        </p>
+                                            <div style={{ fontSize: '12pt', textAlign: 'justify' }}>
+                                                {selectedRequest.message}
+                                                <br /><br />
+                                                Gereğinin yapılmasını saygılarımla arz ederim.
+                                            </div>
+
+                                            <div style={{ marginTop: '30mm', float: 'right', textAlign: 'center' }}>
+                                                <p style={{ fontWeight: 'bold', marginBottom: '2mm' }}>{new Date(selectedRequest.createdDate).toLocaleDateString('tr-TR')}</p>
+                                                <p style={{ fontWeight: 'bold' }}>{selectedRequest.fullName}</p>
+                                                <p>(İmza)</p>
+                                            </div>
+
+                                            <div style={{ marginTop: '70mm', borderTop: '2px solid #000', paddingTop: '10mm', fontSize: '11pt' }}>
+                                                <p><strong>ADRES:</strong> {selectedRequest.address || 'Kayıtlı Adres Bulunmamaktadır.'}</p>
+                                                <p><strong>E-POSTA:</strong> {selectedRequest.email}</p>
+                                                <p><strong>İLETİŞİM TEL:</strong> {selectedRequest.phone}</p>
+                                                <p><strong>TAKİP NO:</strong> #{selectedRequest.trackingCode}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-
-                                {/* Response Section */}
-                                <div>
-                                    <h3 className="text-xs font-black text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
-                                        <ChatBubbleLeftRightIcon className="h-4 w-4" />
-                                        Yanıt Notu (Opsiyonel)
-                                    </h3>
-                                    <textarea
-                                        value={responseText}
-                                        onChange={(e) => setResponseText(e.target.value)}
-                                        placeholder="Bu başvuru için bir not ekleyebilirsiniz..."
-                                        rows={4}
-                                        className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl font-medium text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
-                                    />
-                                </div>
+                                )}
                             </div>
 
                             {/* Modal Footer */}
-                            <div className="p-8 pt-0 flex flex-wrap gap-3">
+                            <div className="p-8 bg-white border-t border-slate-100 flex justify-end gap-3">
                                 <button
-                                    onClick={() => {
-                                        updateStatus(selectedRequest.id, 'İnceleniyor');
-                                        closeDetailModal();
-                                    }}
-                                    disabled={selectedRequest.status === 'İnceleniyor'}
-                                    className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-2xl font-black uppercase tracking-widest transition-all"
+                                    onClick={() => window.print()}
+                                    className="px-8 py-4 bg-slate-100 text-slate-700 rounded-2xl font-black uppercase tracking-widest hover:bg-slate-200 transition-all flex items-center gap-3"
                                 >
-                                    İncelemeye Al
+                                    <PrinterIcon className="h-5 w-5" /> Yazdır
                                 </button>
                                 <button
                                     onClick={() => {
                                         updateStatus(selectedRequest.id, 'Tamamlandı');
                                         closeDetailModal();
                                     }}
-                                    disabled={selectedRequest.status === 'Tamamlandı'}
-                                    className="flex-1 px-6 py-3 bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white rounded-2xl font-black uppercase tracking-widest transition-all"
+                                    className="px-8 py-4 bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-emerald-700 transition-all shadow-xl shadow-emerald-200 flex items-center gap-3"
                                 >
-                                    Tamamlandı İşaretle
+                                    <CheckIcon className="h-5 w-5" /> Çözüldü İşaretle
                                 </button>
                             </div>
                         </motion.div>
@@ -568,3 +532,4 @@ export default function RequestManager() {
         </div>
     );
 }
+

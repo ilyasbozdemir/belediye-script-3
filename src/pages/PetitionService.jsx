@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Seo from '../components/Seo';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -9,10 +9,12 @@ import {
     InformationCircleIcon,
     UserIcon,
     IdentificationIcon,
-    ChatBubbleBottomCenterTextIcon
+    ChatBubbleBottomCenterTextIcon,
+    EyeIcon
 } from '@heroicons/react/24/outline';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import axios from 'axios';
 
 const templates = [
     {
@@ -56,21 +58,51 @@ export default function PetitionService() {
     });
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
+    const [showPreview, setShowPreview] = useState(false);
     const petitionRef = useRef();
+
+    const getFormattedContent = () => {
+        let content = selectedTemplate.content;
+        content = content.replace(/\[MAHALLE\]/g, formData.address || '..........');
+        content = content.replace(/\[KONU\]/g, formData.details || '..........');
+        content = content.replace(/\[ADA\]/g, '..........');
+        content = content.replace(/\[PARSEL\]/g, '..........');
+        content = content.replace(/\[ADRES\]/g, formData.address || '..........');
+        content = content.replace(/\[ARIZA_TURU\]/g, formData.details || '..........');
+        return content;
+    };
 
     const handleDownloadPDF = async () => {
         setIsGenerating(true);
-        const element = petitionRef.current;
-        const canvas = await html2canvas(element, { scale: 2 });
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`dilekce_${new Date().getTime()}.pdf`);
-        setIsGenerating(false);
-        setIsSubmitted(true);
+        try {
+            // Önce veritabanına kaydet
+            await axios.post('/api/feedback', {
+                fullName: formData.fullName,
+                email: 'dilekce@guneyyurt.bel.tr', // Varsayılan mail
+                phone: formData.phone,
+                subject: selectedTemplate.name,
+                category: 'Online Dilekçe',
+                message: `T.C. No: ${formData.tcNo}\nAdres: ${formData.address}\n\n${getFormattedContent()}\n\n(Bu bir online dilekçe sisteminden otomatik oluşturulmuştur.)`,
+                status: 'Beklemede'
+            });
+
+            // Sonra PDF oluştur
+            const element = petitionRef.current;
+            const canvas = await html2canvas(element, { scale: 2 });
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            const imgProps = pdf.getImageProperties(imgData);
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save(`dilekce_${new Date().getTime()}.pdf`);
+
+            setIsSubmitted(true);
+        } catch (err) {
+            alert('Hata oluştu, lütfen tekrar deneyin.');
+        } finally {
+            setIsGenerating(false);
+        }
     };
 
     return (
@@ -107,8 +139,8 @@ export default function PetitionService() {
                                         key={t.id}
                                         onClick={() => { setSelectedTemplate(t); setIsSubmitted(false); }}
                                         className={`w-full text-left p-6 rounded-2xl transition-all border-2 ${selectedTemplate.id === t.id
-                                                ? 'border-indigo-600 bg-indigo-50/50 shadow-md'
-                                                : 'border-transparent bg-slate-50 hover:bg-slate-100'
+                                            ? 'border-indigo-600 bg-indigo-50/50 shadow-md'
+                                            : 'border-transparent bg-slate-50 hover:bg-slate-100'
                                             }`}
                                     >
                                         <p className={`text-sm font-black uppercase tracking-tight mb-2 ${selectedTemplate.id === t.id ? 'text-indigo-900' : 'text-slate-700'}`}>
@@ -120,33 +152,23 @@ export default function PetitionService() {
                             </div>
                         </div>
 
-                        <div className="bg-slate-900 p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden">
-                            <div className="absolute top-0 right-0 h-32 w-32 bg-indigo-500/10 blur-3xl" />
-                            <h4 className="text-xl font-black mb-6 uppercase italic tracking-tight">Nasıl Çalışır?</h4>
-                            <ul className="space-y-4 text-sm font-bold text-slate-400">
-                                <li className="flex items-start gap-3 italic">
-                                    <div className="h-5 w-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5">1</div>
-                                    Size uygun şablonu soldan seçin.
-                                </li>
-                                <li className="flex items-start gap-3 italic">
-                                    <div className="h-5 w-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5">2</div>
-                                    Bilgilerinizi eksiksiz doldurun.
-                                </li>
-                                <li className="flex items-start gap-3 italic">
-                                    <div className="h-5 w-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5">3</div>
-                                    "Dilekçe Oluştur" butonuyla PDF indirin.
-                                </li>
-                                <li className="flex items-start gap-3 italic">
-                                    <div className="h-5 w-5 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[10px] shrink-0 mt-0.5">4</div>
-                                    Başvurunuz otomatik olarak kaydedilir.
-                                </li>
-                            </ul>
-                        </div>
+                        <button
+                            onClick={() => setShowPreview(!showPreview)}
+                            className="w-full p-6 bg-white border border-slate-100 rounded-[2rem] shadow-sm flex items-center justify-between hover:bg-indigo-50 transition-all group"
+                        >
+                            <div className="flex items-center gap-4">
+                                <div className="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600">
+                                    <EyeIcon className="h-5 w-5" />
+                                </div>
+                                <span className="text-sm font-black text-slate-900 uppercase italic">Canlı Önizleme</span>
+                            </div>
+                            <div className={`h-2 w-2 rounded-full ${showPreview ? 'bg-emerald-500' : 'bg-slate-300'}`}></div>
+                        </button>
                     </div>
 
                     {/* Main Content: Form */}
                     <div className="lg:w-2/3">
-                        <div className="bg-white rounded-[4rem] p-10 lg:p-16 shadow-2xl border border-slate-100">
+                        <div className="bg-white rounded-[4rem] p-10 lg:p-16 shadow-2xl border border-slate-100 relative overflow-hidden">
                             {!isSubmitted ? (
                                 <div className="space-y-12">
                                     <div className="pb-8 border-b border-slate-50">
@@ -193,32 +215,32 @@ export default function PetitionService() {
                                                 value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })}></textarea>
                                         </div>
 
-                                        {/* Hidden Preview for PDF Generation */}
-                                        <div className="hidden">
-                                            <div ref={petitionRef} style={{ width: '210mm', padding: '25mm', fontFamily: 'serif', color: '#000', backgroundColor: '#fff' }}>
+                                        {/* Live Preview / Hidden Ref for PDF */}
+                                        <div className={showPreview ? "block mt-12 bg-slate-50 p-6 sm:p-12 rounded-[2rem] border-2 border-dashed border-slate-200 overflow-x-auto" : "h-0 overflow-hidden"}>
+                                            <div ref={petitionRef} style={{ width: '210mm', minWidth: '210mm', padding: '25mm', fontFamily: 'serif', color: '#000', backgroundColor: '#fff', boxShadow: '0 0 40px rgba(0,0,0,0.1)', margin: 'auto' }}>
                                                 <div style={{ textAlign: 'center', marginBottom: '20mm' }}>
-                                                    <h1 style={{ fontSize: '16pt', fontWeight: 'bold', margin: '0' }}>T.C.</h1>
-                                                    <h1 style={{ fontSize: '16pt', fontWeight: 'bold', margin: '0' }}>KARAMAN / ERMENEK</h1>
-                                                    <h1 style={{ fontSize: '16pt', fontWeight: 'bold', margin: '0' }}>GÜNEYYURT BELEDİYE BAŞKANLIĞI</h1>
-                                                    <h2 style={{ fontSize: '14pt', fontWeight: 'bold', marginTop: '5mm' }}>{selectedTemplate.title}</h2>
+                                                    <h1 style={{ fontSize: '18pt', fontWeight: 'bold', margin: '0' }}>T.C.</h1>
+                                                    <h1 style={{ fontSize: '18pt', fontWeight: 'bold', margin: '0' }}>KARAMAN / ERMENEK</h1>
+                                                    <h1 style={{ fontSize: '18pt', fontWeight: 'bold', margin: '0' }}>GÜNEYYURT BELEDİYE BAŞKANLIĞI</h1>
+                                                    <h2 style={{ fontSize: '14pt', fontWeight: 'bold', marginTop: '5mm', textDecoration: 'underline' }}>{selectedTemplate.title}</h2>
                                                 </div>
 
-                                                <div style={{ fontSize: '12pt', lineHeight: '1.8', textAlign: 'justify' }}>
-                                                    {selectedTemplate.content.replace('[CONU]', formData.details).replace('[ADRES]', formData.address).replace('[ARIZA_TURU]', formData.details)}
+                                                <div style={{ fontSize: '12pt', lineHeight: '2', textAlign: 'justify' }}>
+                                                    {getFormattedContent()}
                                                     <br /><br />
                                                     Gereğinin yapılmasını saygılarımla arz ederim.
                                                 </div>
 
-                                                <div style={{ marginTop: '20mm', float: 'right', textAlign: 'center' }}>
+                                                <div style={{ marginTop: '30mm', float: 'right', textAlign: 'center' }}>
                                                     <p style={{ fontWeight: 'bold', marginBottom: '2mm' }}>{new Date().toLocaleDateString('tr-TR')}</p>
-                                                    <p style={{ fontWeight: 'bold' }}>{formData.fullName}</p>
+                                                    <p style={{ fontWeight: 'bold' }}>{formData.fullName || '................'}</p>
                                                     <p>(İmza)</p>
                                                 </div>
 
-                                                <div style={{ marginTop: '50mm', borderTop: '1px solid #000', paddingTop: '5mm', fontSize: '10pt' }}>
-                                                    <p><strong>Adres:</strong> {formData.address}</p>
-                                                    <p><strong>T.C. No:</strong> {formData.tcNo}</p>
-                                                    <p><strong>Telefon:</strong> {formData.phone}</p>
+                                                <div style={{ marginTop: '70mm', borderTop: '2px solid #000', paddingTop: '10mm', fontSize: '11pt' }}>
+                                                    <p><strong>ADRES:</strong> {formData.address || '................'}</p>
+                                                    <p><strong>T.C. KİMLİK NO:</strong> {formData.tcNo || '................'}</p>
+                                                    <p><strong>İLETİŞİM TEL:</strong> {formData.phone || '................'}</p>
                                                 </div>
                                             </div>
                                         </div>
