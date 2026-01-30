@@ -33,10 +33,10 @@ const navigation = [
       { name: 'Eski Belediye Başkanlarımız', href: '/kurumsal/eski-baskanlar' },
       { name: 'Belediye Projelerimiz', href: '/projeler' },
       { name: 'Belediye İştirakleri', href: '/kurumsal/isletmeler?type=istirak' },
-      { name: 'Encümen Kararları', href: '/kurumsal/encumen-kararlari' },
-      { name: 'Mevzuat & Faaliyetler', href: '/kurumsal/mevzuat' },
-      { name: 'İhale Duyuruları', href: '/kurumsal/ihale-duyurulari' },
-      { name: 'Stratejik Plan', href: '/kurumsal/stratejik-plan' },
+      { name: 'Encümen Kararları', href: '/kurumsal/encumen-kararlari', newTab: true },
+      { name: 'Mevzuat & Faaliyetler', href: '/kurumsal/mevzuat', newTab: true },
+      { name: 'İhale Duyuruları', href: '/kurumsal/ihale-duyurulari', newTab: true },
+      { name: 'Stratejik Plan', href: '/kurumsal/stratejik-plan', newTab: true },
       { name: 'Hizmet Birimleri (Müdürlükler)', href: '/kurumsal/birimler' },
       { name: 'Muhtarlıklar', href: '/kurumsal/muhtarliklar' },
       { name: 'Hizmet Standartları', href: '/kurumsal/hizmet-standartlari' },
@@ -172,7 +172,7 @@ export default function Header() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-2">
                               {item.children.map((child) => (
                                 <div key={child.name} className="relative group/item">
-                                  {child.external ? (
+                                  {child.external || child.newTab ? (
                                     <a
                                       href={child.href}
                                       target="_blank"
