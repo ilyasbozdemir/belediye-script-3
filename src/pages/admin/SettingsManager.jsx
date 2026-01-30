@@ -63,6 +63,8 @@ export default function SettingsManager() {
     const [socialForm, setSocialForm] = useState({ platform: '', url: '' });
     const [slideForm, setSlideForm] = useState({ title: '', subtitle: '', description: '', imageUrl: '', linkUrl: '', buttonText: 'İncele', order: 0 });
     const [serviceForm, setServiceForm] = useState({ title: '', iconName: 'Home', color: 'bg-blue-600', link: '', order: 0 });
+    const [bankAccounts, setBankAccounts] = useState([]);
+    const [bankForm, setBankForm] = useState({ name: '', branch: '', iban: '', type: '' });
 
     useEffect(() => {
         fetchData();
@@ -71,16 +73,18 @@ export default function SettingsManager() {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [l, s, sl, qs] = await Promise.all([
+            const [l, s, sl, qs, b] = await Promise.all([
                 axios.get('/api/sitesettings/links'),
                 axios.get('/api/sitesettings/social'),
                 axios.get('/api/sitesettings/slides'),
-                axios.get('/api/sitesettings/services')
+                axios.get('/api/sitesettings/services'),
+                axios.get('/api/sitesettings/bank-accounts')
             ]);
             setLinks(l.data);
             setSocials(s.data);
             setSlides(sl.data);
             setQServices(qs.data);
+            setBankAccounts(b.data);
         } catch (err) {
             console.error('Fetch error', err);
         } finally {
@@ -140,6 +144,19 @@ export default function SettingsManager() {
         fetchData();
     };
 
+    const handleAddBank = async (e) => {
+        e.preventDefault();
+        await axios.post('/api/sitesettings/bank-accounts', bankForm);
+        setBankForm({ name: '', branch: '', iban: '', type: '' });
+        fetchData();
+    };
+
+    const handleDeleteBank = async (id) => {
+        if (!confirm('Emin misiniz?')) return;
+        await axios.delete(`/api/sitesettings/bank-accounts/${id}`);
+        fetchData();
+    };
+
     return (
         <div className="p-4 sm:p-6 lg:p-12">
             <div className="flex flex-col gap-6 mb-8 lg:mb-16">
@@ -157,7 +174,8 @@ export default function SettingsManager() {
                             { id: 'links', label: 'Yararlı Linkler', icon: LinkIcon },
                             { id: 'social', label: 'Sosyal Medya', icon: ShareIcon },
                             { id: 'slides', label: 'Hero Slides', icon: PhotoIcon },
-                            { id: 'services', label: 'Hızlı Servisler', icon: PuzzlePieceIcon }
+                            { id: 'services', label: 'Hızlı Servisler', icon: PuzzlePieceIcon },
+                            { id: 'bank', label: 'Banka Bilgileri', icon: LucideIcons.CreditCard }
                         ].map(tab => (
                             <button
                                 key={tab.id}
@@ -320,6 +338,16 @@ export default function SettingsManager() {
                                     <PlusIcon className="h-5 w-5" /> Servis Ekle
                                 </button>
                             </form>
+                        {activeTab === 'bank' && (
+                            <form onSubmit={handleAddBank} className="space-y-6">
+                                <input required type="text" placeholder="Banka Adı" className="admin-input w-full" value={bankForm.name} onChange={e => setBankForm({ ...bankForm, name: e.target.value })} />
+                                <input required type="text" placeholder="Şube Bilgisi" className="admin-input w-full" value={bankForm.branch} onChange={e => setBankForm({ ...bankForm, branch: e.target.value })} />
+                                <input required type="text" placeholder="IBAN" className="admin-input w-full" value={bankForm.iban} onChange={e => setBankForm({ ...bankForm, iban: e.target.value })} />
+                                <input required type="text" placeholder="Hesap Türü (Örn: Tahsilat)" className="admin-input w-full" value={bankForm.type} onChange={e => setBankForm({ ...bankForm, type: e.target.value })} />
+                                <button className="w-full py-5 bg-emerald-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-emerald-700 transition-all flex items-center justify-center gap-3">
+                                    <PlusIcon className="h-5 w-5" /> Banka Hesabı Ekle
+                                </button>
+                            </form>
                         )}
                     </div>
                 </div>
@@ -404,6 +432,25 @@ export default function SettingsManager() {
                                         </div>
                                     );
                                 })}
+                            </motion.div>
+                        {activeTab === 'bank' && (
+                            <motion.div key="bank" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+                                {bankAccounts.map(acc => (
+                                    <div key={acc.id} className="bg-white p-6 rounded-3xl border border-slate-100 flex items-center justify-between group">
+                                        <div className="flex items-center gap-4">
+                                            <div className="h-12 w-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center">
+                                                <LucideIcons.Landmark className="h-6 w-6" />
+                                            </div>
+                                            <div>
+                                                <h4 className="font-black text-slate-900 uppercase italic leading-none">{acc.name}</h4>
+                                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">{acc.type} • {acc.iban}</p>
+                                            </div>
+                                        </div>
+                                        <button onClick={() => handleDeleteBank(acc.id)} className="h-10 w-10 bg-red-50 text-red-600 rounded-xl flex items-center justify-center group-hover:bg-red-600 group-hover:text-white transition-all">
+                                            <TrashIcon className="h-4 w-4" />
+                                        </button>
+                                    </div>
+                                ))}
                             </motion.div>
                         )}
                     </AnimatePresence>

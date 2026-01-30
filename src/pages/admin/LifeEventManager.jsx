@@ -29,7 +29,10 @@ export default function LifeEventManager() {
         }
     };
 
-    const [newItem, setNewItem] = useState({ husbandName: '', wifeName: '', name: '', marriageDate: '', deathDate: '', burialPlace: '' });
+    const [newItem, setNewItem] = useState({
+        husbandName: '', wifeName: '', marriageDate: '',
+        name: '', surname: '', fatherName: '', birthDate: '', deathDate: '', burialDate: '', burialPlace: '', mosque: ''
+    });
 
     const handleAdd = async (e) => {
         e.preventDefault();
@@ -40,11 +43,19 @@ export default function LifeEventManager() {
                 marriageDate: newItem.marriageDate
             } : {
                 name: newItem.name,
+                surname: newItem.surname || '',
+                fatherName: newItem.fatherName || '',
+                birthDate: newItem.birthDate || '',
                 deathDate: newItem.deathDate,
-                burialPlace: newItem.burialPlace
+                burialDate: newItem.burialDate || '',
+                burialPlace: newItem.burialPlace,
+                mosque: newItem.mosque || ''
             });
             fetchData();
-            setNewItem({ husbandName: '', wifeName: '', name: '', marriageDate: '', deathDate: '', burialPlace: '' });
+            setNewItem({
+                husbandName: '', wifeName: '', marriageDate: '',
+                name: '', surname: '', fatherName: '', birthDate: '', deathDate: '', burialDate: '', burialPlace: '', mosque: ''
+            });
         } catch (err) {
             alert('Hata oluştu');
         }
@@ -98,12 +109,36 @@ export default function LifeEventManager() {
                         ) : (
                             <>
                                 <div>
-                                    <label className="admin-label">Kişi Adı Soyadı</label>
+                                    <label className="admin-label">Adı</label>
                                     <input type="text" className="admin-input" required value={newItem.name} onChange={e => setNewItem({ ...newItem, name: e.target.value })} />
                                 </div>
                                 <div>
-                                    <label className="admin-label">Ayrılış Tarihi</label>
-                                    <input type="date" className="admin-input" required value={newItem.deathDate} onChange={e => setNewItem({ ...newItem, deathDate: e.target.value })} />
+                                    <label className="admin-label">Soyadı</label>
+                                    <input type="text" className="admin-input" required value={newItem.surname} onChange={e => setNewItem({ ...newItem, surname: e.target.value })} />
+                                </div>
+                                <div>
+                                    <label className="admin-label">Baba Adı</label>
+                                    <input type="text" className="admin-input" value={newItem.fatherName} onChange={e => setNewItem({ ...newItem, fatherName: e.target.value })} />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="admin-label">Doğum Tarihi/Yılı</label>
+                                        <input type="text" placeholder="Örn: 1950" className="admin-input" value={newItem.birthDate} onChange={e => setNewItem({ ...newItem, birthDate: e.target.value })} />
+                                    </div>
+                                    <div>
+                                        <label className="admin-label">Vefat Tarihi</label>
+                                        <input type="date" className="admin-input" required value={newItem.deathDate} onChange={e => setNewItem({ ...newItem, deathDate: e.target.value })} />
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="admin-label">Defin Tarihi</label>
+                                        <input type="date" className="admin-input" value={newItem.burialDate} onChange={e => setNewItem({ ...newItem, burialDate: e.target.value })} />
+                                    </div>
+                                    <div>
+                                        <label className="admin-label">Cenaze Camii</label>
+                                        <input type="text" className="admin-input" value={newItem.mosque} onChange={e => setNewItem({ ...newItem, mosque: e.target.value })} />
+                                    </div>
                                 </div>
                                 <div>
                                     <label className="admin-label">Mezar / Defin Yeri</label>
@@ -139,7 +174,8 @@ export default function LifeEventManager() {
                                                     {activeTab === 'marriages' ? <HeartIcon className="h-5 w-5" /> : <UserGroupIcon className="h-5 w-5" />}
                                                 </div>
                                                 <span className="text-sm font-bold text-slate-900">
-                                                    {activeTab === 'marriages' ? `${item.husbandName} & ${item.wifeName}` : item.name}
+                                                    {activeTab === 'marriages' ? `${item.husbandName} & ${item.wifeName}` : `${item.name} ${item.surname || ''}`}
+                                                    {activeTab === 'deceased' && item.fatherName && <span className="block text-[10px] text-slate-400 font-medium">BABA: {item.fatherName}</span>}
                                                 </span>
                                             </div>
                                         </td>

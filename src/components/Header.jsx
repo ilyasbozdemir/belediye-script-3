@@ -102,7 +102,9 @@ export default function Header() {
 
       <header className={classNames(
         "fixed left-0 right-0 z-50 transition-all duration-500",
-        isScrolled ? "top-0 bg-white/80 backdrop-blur-lg shadow-xl py-2" : "top-10 bg-transparent py-4"
+        isScrolled
+          ? "top-0 bg-white shadow-xl py-2"
+          : "top-10 bg-black/5 md:bg-black/10 backdrop-blur-md py-4 border-b border-white/5"
       )}>
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
@@ -132,8 +134,10 @@ export default function Header() {
             {navigation.map((item) => (
               <Popover key={item.name} className="static">
                 <Popover.Button className={classNames(
-                  "flex items-center gap-x-1.5 px-4 py-2 text-sm font-bold transition-all duration-300 rounded-full hover:bg-black/5 outline-none group",
-                  isScrolled ? "text-slate-700 hover:text-blue-600" : (location.pathname === '/' ? "text-white/90 hover:text-white" : "text-slate-700 hover:text-blue-600")
+                  "flex items-center gap-x-1.5 px-5 py-2.5 text-sm font-black transition-all duration-300 rounded-full outline-none group",
+                  isScrolled
+                    ? "text-slate-900 hover:bg-slate-100"
+                    : "text-white hover:bg-white/10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
                 )}>
                   {item.name}
                   <ChevronDownIcon className="h-4 w-4 opacity-50 group-hover:opacity-100 transition-opacity" aria-hidden="true" />

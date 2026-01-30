@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import Seo from '../components/Seo';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -23,6 +24,7 @@ import {
   PuzzlePieceIcon
 } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
+import SurveySection from '../components/SurveySection';
 
 const iconMap = {
   NewspaperIcon,
@@ -644,6 +646,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Anket Sistemi */}
+      <SurveySection />
 
     </div>
   );

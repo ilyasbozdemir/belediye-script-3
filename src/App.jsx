@@ -56,6 +56,7 @@ import BusinessCenter from './pages/BusinessCenter';
 import MunicipalBusinesses from './pages/MunicipalBusinesses';
 import WeatherPrayer from './pages/WeatherPrayer';
 import PetitionService from './pages/PetitionService';
+import AnnouncementModal from './components/AnnouncementModal';
 
 import {
   UsersIcon,
@@ -77,7 +78,7 @@ function App() {
   console.log('App Rendering...');
   return (
     <Routes>
-      <Route path="/" element={<><ScrollToTop /><RootLayout /></>}>
+      <Route path="/" element={<><ScrollToTop /><AnnouncementModal /><RootLayout /></>}>
         <Route index element={<Home />} />
         <Route path="haberler" element={<NewsList />} />
         <Route path="haber/:id" element={<NewsDetail />} />

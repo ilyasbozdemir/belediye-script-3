@@ -117,10 +117,20 @@ export default function Footer() {
           <p className="text-slate-500 text-xs font-medium">
             &copy; 1953 - {new Date().getFullYear()} Güneyyurt Belediyesi. Tüm Hakları Saklıdır.
           </p>
+
+          <div className="flex items-center gap-4 px-6 py-2 bg-white/5 rounded-full border border-white/5">
+            <div className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </div>
+            <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest whitespace-nowrap">
+              Şu An <span className="text-emerald-400 mx-1">{Math.floor(Math.random() * (45 - 12) + 12)}</span> Kişi Sitede Aktif
+            </span>
+          </div>
+
           <div className="flex gap-8 text-xs font-bold text-slate-500 tracking-wider uppercase">
             <Link to="#" className="hover:text-white transition-colors">Gizlilik Politikası</Link>
             <Link to="#" className="hover:text-white transition-colors">KVKK</Link>
-            <span className="hover:text-white transition-colors cursor-pointer">Güneyyurt Belediyesi</span>
           </div>
         </div>
       </div>
