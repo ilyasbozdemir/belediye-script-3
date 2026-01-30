@@ -7,7 +7,24 @@ import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
   GlobeAltIcon,
-  InformationCircleIcon
+  InformationCircleIcon,
+  BookOpenIcon,
+  MapIcon,
+  BuildingOfficeIcon,
+  PhotoIcon,
+  ChatBubbleLeftRightIcon,
+  UserGroupIcon,
+  CalendarDaysIcon,
+  MegaphoneIcon,
+  NewspaperIcon,
+  CloudIcon,
+  AcademicCapIcon,
+  BuildingLibraryIcon,
+  IdentificationIcon,
+  ShieldCheckIcon,
+  DocumentTextIcon,
+  HeartIcon,
+  PhoneIcon
 } from '@heroicons/react/24/outline';
 
 const navigation = [
@@ -15,56 +32,53 @@ const navigation = [
     name: 'BELDE REHBERİ',
     href: '#',
     children: [
-      { name: 'Belde Tarihçesi', href: '/kurumsal/tarihce' },
-      { name: 'Güneyyurt\'u Tanıyın', href: '/kesfet' },
-      { name: 'Tesisler & Sosyal Alanlar', href: '/kurumsal/isletmeler' },
-      { name: 'Nöbetçi Eczaneler', href: '/hizmetler/eczaneler' },
-      { name: 'Foto Galeri', href: '/galeri' },
+      { name: 'Belde Tarihçesi', href: '/kurumsal/tarihce', icon: BookOpenIcon },
+      { name: 'Güneyyurt\'u Tanıyın', href: '/kesfet', icon: MapIcon },
+      { name: 'Tesisler & Sosyal Alanlar', href: '/kurumsal/isletmeler', icon: BuildingOfficeIcon },
+      { name: 'Nöbetçi Eczaneler', href: '/hizmetler/eczaneler', icon: HeartIcon },
+      { name: 'Foto Galeri', href: '/galeri', icon: PhotoIcon },
     ]
   },
   {
     name: 'KURUMSAL',
     href: '#',
     children: [
-      { name: 'Başkanın Mesajı', href: '/kurumsal/baskan-mesaj' },
-      { name: 'Başkanın Özgeçmişi', href: '/kurumsal/baskan-ozgecmis' },
-      { name: 'Meclis Üyeleri', href: '/kurumsal/meclis' },
-      { name: 'Encümen Üyeleri', href: '/kurumsal/encumen' },
-      { name: 'Eski Belediye Başkanlarımız', href: '/kurumsal/eski-baskanlar' },
-      { name: 'Belediye Projelerimiz', href: '/projeler' },
-      { name: 'Belediye İştirakleri', href: '/kurumsal/isletmeler?type=istirak' },
-      { name: 'Encümen Kararları', href: '/kurumsal/encumen-kararlari', newTab: true },
-      { name: 'Mevzuat & Faaliyetler', href: '/kurumsal/mevzuat', newTab: true },
-      { name: 'İhale Duyuruları', href: '/kurumsal/ihale-duyurulari', newTab: true },
-      { name: 'Stratejik Plan', href: '/kurumsal/stratejik-plan', newTab: true },
-      { name: 'Hizmet Birimleri (Müdürlükler)', href: '/kurumsal/birimler' },
-      { name: 'Muhtarlıklar', href: '/kurumsal/muhtarliklar' },
-      { name: 'Hizmet Standartları', href: '/kurumsal/hizmet-standartlari' },
+      { name: 'Başkanın Mesajı', href: '/kurumsal/baskan-mesaj', icon: ChatBubbleLeftRightIcon },
+      { name: 'Başkanın Özgeçmişi', href: '/kurumsal/baskan-ozgecmis', icon: IdentificationIcon },
+      { name: 'Meclis Üyeleri', href: '/kurumsal/meclis', icon: UserGroupIcon },
+      { name: 'Encümen Üyeleri', href: '/kurumsal/encumen', icon: UserGroupIcon },
+      { name: 'Eski Belediye Başkanlarımız', href: '/kurumsal/eski-baskanlar', icon: BuildingLibraryIcon },
+      { name: 'Belediye Projelerimiz', href: '/projeler', icon: SparklesIcon },
+      { name: 'Belediye İştirakleri', href: '/kurumsal/isletmeler?type=istirak', icon: BuildingOfficeIcon },
+      { name: 'Mevzuat & Faaliyetler', href: '/kurumsal/mevzuat', icon: DocumentTextIcon, newTab: true },
+      { name: 'İhale Duyuruları', href: '/kurumsal/ihale-duyurulari', icon: MegaphoneIcon, newTab: true },
+      { name: 'Hizmet Birimleri', href: '/kurumsal/birimler', icon: BuildingOfficeIcon },
+      { name: 'Muhtarlıklar', href: '/kurumsal/muhtarliklar', icon: MapIcon },
+      { name: 'Hizmet Standartları', href: '/kurumsal/hizmet-standartlari', icon: ShieldCheckIcon },
     ]
   },
   {
     name: 'VATANDAŞ HİZMETLERİ',
     href: '#',
     children: [
-      { name: 'E-Belediye (Hızlı Ödeme)', href: 'https://e-hizmet.guneyyurt.bel.tr/', external: true },
-      { name: 'Online Dilekçe İşlemleri', href: '/hizmetler/dilekce' },
-      { name: 'İstek & Şikayet Formu', href: '/hizmetler/basvuru' },
-      { name: 'Parsel Sorgulama (TKGM)', href: 'https://parselsorgu.tkgm.gov.tr/', external: true },
-      { name: 'Vefat Edenler / Taziye', href: '/hizmetler/vefatlar' },
-      { name: 'Nikah Başvurusu', href: '/hizmetler/evlendirme' },
-      { name: 'Kent Rehberi', href: '/hizmetler/rehber' },
-      { name: 'Alo Moloz Hattı', href: '/hizmetler/basvuru?type=moloz' },
+      { name: 'E-Belediye Sorgulama', href: 'https://e-hizmet.guneyyurt.bel.tr/', icon: GlobeAltIcon, external: true },
+      { name: 'İstek & Şikayet Formu', href: '/hizmetler/basvuru', icon: ChatBubbleLeftRightIcon },
+      { name: 'Parsel Sorgulama (TKGM)', href: 'https://parselsorgu.tkgm.gov.tr/', icon: MapIcon, external: true },
+      { name: 'Vefat Edenler / Taziye', href: '/hizmetler/vefatlar', icon: NewspaperIcon },
+      { name: 'Nikah Başvurusu', href: '/hizmetler/evlendirme', icon: HeartIcon },
+      { name: 'Hizmet Rehberi', href: '/hizmetler/rehber', icon: BookOpenIcon },
+      { name: 'Online Dilekçe İşlemleri', href: '/hizmetler/dilekce', icon: DocumentTextIcon },
     ]
   },
   {
     name: 'MEDYA & HABER',
     href: '#',
     children: [
-      { name: 'Güncel Haberler', href: '/haberler' },
-      { name: 'Resmi Duyurular', href: '/duyurular' },
-      { name: 'Etkinlik Takvimi', href: '/etkinlikler' },
-      { name: 'Basında Güneyyurt', href: '/kurumsal/basinda-biz' },
-      { name: 'Hava Durumu', href: '/hava-durumu' },
+      { name: 'Güncel Haberler', href: '/haberler', icon: NewspaperIcon },
+      { name: 'Resmi Duyurular', href: '/duyurular', icon: MegaphoneIcon },
+      { name: 'Etkinlik Takvimi', href: '/etkinlikler', icon: CalendarDaysIcon },
+      { name: 'Basında Güneyyurt', href: '/kurumsal/basinda-biz', icon: GlobeAltIcon },
+      { name: 'Hava Durumu', href: '/hava-durumu', icon: CloudIcon },
     ]
   },
 ];
@@ -101,10 +115,10 @@ export default function Header() {
       </div>
 
       <header className={classNames(
-        "fixed left-0 right-0 z-50 transition-all duration-500",
+        "fixed left-0 right-0 z-50 transition-all duration-700",
         isScrolled
-          ? "top-0 bg-white shadow-xl py-2"
-          : "top-10 bg-black/5 md:bg-black/10 backdrop-blur-md py-4 border-b border-white/5"
+          ? "top-0 bg-white/95 backdrop-blur-xl shadow-xl py-3 border-b border-slate-200"
+          : "top-0 md:top-10 bg-transparent py-6"
       )}>
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
@@ -112,7 +126,10 @@ export default function Header() {
               <img
                 src={isScrolled ? "/belediye-logo.png" : "/belediye-logo-light.png"}
                 alt="Güneyyurt Belediyesi"
-                className="h-20 w-auto object-contain transition-all duration-500 group-hover:scale-110"
+                className={classNames(
+                  "w-auto object-contain transition-all duration-500 group-hover:scale-105",
+                  isScrolled ? "h-12 md:h-14" : "h-16 md:h-20"
+                )}
               />
             </Link>
           </div>
@@ -169,7 +186,7 @@ export default function Header() {
                           </div>
 
                           <div className="lg:w-3/4">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
                               {item.children.map((child) => (
                                 <div key={child.name} className="relative group/item">
                                   {child.external || child.newTab ? (
@@ -178,23 +195,23 @@ export default function Header() {
                                       target="_blank"
                                       rel="noreferrer"
                                       onClick={() => close()}
-                                      className="flex items-center justify-between group rounded-2xl px-6 py-4 text-sm font-black text-slate-600 hover:bg-blue-600 hover:text-white transition-all duration-300 uppercase tracking-tight italic"
+                                      className="flex items-center gap-4 group rounded-3xl px-6 py-5 text-sm font-black text-slate-600 hover:bg-blue-600 hover:text-white transition-all duration-300 uppercase tracking-tight italic"
                                     >
-                                      {child.name}
-                                      <div className="h-6 w-6 rounded-full bg-slate-100 group-hover:bg-white/20 flex items-center justify-center transition-colors">
-                                        <div className="h-1.5 w-1.5 rounded-full bg-blue-600 group-hover:bg-white" />
+                                      <div className="h-10 w-10 flex-shrink-0 bg-slate-50 group-hover:bg-white/20 rounded-xl flex items-center justify-center transition-colors">
+                                        <child.icon className="h-5 w-5 text-blue-600 group-hover:text-white transition-colors" />
                                       </div>
+                                      {child.name}
                                     </a>
                                   ) : (
                                     <Link
                                       to={child.href}
                                       onClick={() => close()}
-                                      className="flex items-center justify-between group rounded-2xl px-6 py-4 text-sm font-black text-slate-600 hover:bg-blue-600 hover:text-white transition-all duration-300 uppercase tracking-tight italic"
+                                      className="flex items-center gap-4 group rounded-3xl px-6 py-5 text-sm font-black text-slate-600 hover:bg-blue-600 hover:text-white transition-all duration-300 uppercase tracking-tight italic"
                                     >
-                                      {child.name}
-                                      <div className="h-6 w-6 rounded-full bg-slate-100 group-hover:bg-white/20 flex items-center justify-center transition-colors">
-                                        <div className="h-1.5 w-1.5 rounded-full bg-blue-600 group-hover:bg-white" />
+                                      <div className="h-10 w-10 flex-shrink-0 bg-slate-50 group-hover:bg-white/20 rounded-xl flex items-center justify-center transition-colors">
+                                        <child.icon className="h-5 w-5 text-blue-600 group-hover:text-white transition-colors" />
                                       </div>
+                                      {child.name}
                                     </Link>
                                   )}
                                 </div>
@@ -268,14 +285,17 @@ export default function Header() {
                           {item.name}
                           <ChevronDownIcon className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 text-slate-400 transition-transform')} />
                         </Disclosure.Button>
-                        <Disclosure.Panel className="mt-4 space-y-3 pl-2">
+                        <Disclosure.Panel className="mt-4 space-y-2 pl-2">
                           {item.children.map((child) => (
                             <Link
                               key={child.name}
                               to={child.href}
-                              className="block text-base font-black text-slate-500 hover:text-blue-600 uppercase italic tracking-tight"
+                              className="flex items-center gap-4 px-4 py-3 rounded-2xl text-base font-black text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all uppercase italic tracking-tight"
                               onClick={() => setMobileMenuOpen(false)}
                             >
+                              <div className="h-8 w-8 rounded-lg bg-slate-50 flex items-center justify-center">
+                                <child.icon className="h-4 w-4 text-slate-400 group-hover:text-blue-600" />
+                              </div>
                               {child.name}
                             </Link>
                           ))}
