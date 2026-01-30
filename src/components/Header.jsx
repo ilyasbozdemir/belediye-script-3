@@ -47,11 +47,13 @@ const navigation = [
     href: '#',
     children: [
       { name: 'E-Belediye (Hızlı Ödeme)', href: 'https://e-hizmet.guneyyurt.bel.tr/', external: true },
+      { name: 'Online Dilekçe İşlemleri', href: '/hizmetler/dilekce' },
       { name: 'İstek & Şikayet Formu', href: '/hizmetler/basvuru' },
       { name: 'İmar Durumu Sorgulama', href: '/hizmetler/imar' },
       { name: 'Vefat Edenler / Taziye', href: '/hizmetler/vefatlar' },
       { name: 'Nikah Başvurusu', href: '/hizmetler/evlendirme' },
       { name: 'Kent Rehberi', href: '/hizmetler/rehber' },
+      { name: 'Alo Moloz Hattı', href: '/hizmetler/basvuru?type=moloz' },
     ]
   },
   {

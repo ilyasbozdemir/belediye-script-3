@@ -55,6 +55,7 @@ import TendersManager from './pages/admin/TendersManager';
 import BusinessCenter from './pages/BusinessCenter';
 import MunicipalBusinesses from './pages/MunicipalBusinesses';
 import WeatherPrayer from './pages/WeatherPrayer';
+import PetitionService from './pages/PetitionService';
 
 import {
   UsersIcon,
@@ -112,6 +113,7 @@ function App() {
         <Route path="kurumsal/encumen-kararlari" element={<CommitteeDecisions />} />
         <Route path="hizmetler/rehber" element={<ServicesGuide />} />
         <Route path="hizmetler/basvuru" element={<RequestForm />} />
+        <Route path="hizmetler/dilekce" element={<PetitionService />} />
         <Route path="kurumsal/stratejik-plan" element={<Navigate to="/kurumsal/mevzuat?cat=Stratejik Planlar" replace />} />
         <Route path="kurumsal/is-hani" element={<BusinessCenter />} />
         <Route path="kurumsal/tarihce" element={<TownHistory />} />

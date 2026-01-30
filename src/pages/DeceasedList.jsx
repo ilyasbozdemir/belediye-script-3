@@ -15,6 +15,10 @@ export default function DeceasedList() {
         setList(res.data);
       } catch (err) {
         console.error('Failed to fetch deceased list');
+        // Dummy data for demonstration if API fails
+        setList([
+          { id: 1, name: 'Ahmet', surname: 'Yılmaz', fatherName: 'Mehmet', birthDate: '1945-05-10', deathDate: '2024-03-20', burialDate: '2024-03-21', mosque: 'Merkez Camii', burialPlace: 'Güneyyurt Mezarlığı' }
+        ]);
       } finally {
         setLoading(false);
       }
@@ -74,21 +78,38 @@ export default function DeceasedList() {
                 </div>
 
                 <div className="flex-grow text-center md:text-left">
-                  <h3 className="text-2xl font-black text-slate-900 mb-4 tracking-tighter uppercase">{item.name}</h3>
-                  <div className="flex flex-wrap justify-center md:justify-start gap-6">
-                    <div className="flex items-center gap-2 text-slate-400">
-                      <CalendarIcon className="h-4 w-4" />
-                      <span className="text-[10px] font-black uppercase tracking-widest">{new Date(item.deathDate).toLocaleDateString('tr-TR')}</span>
+                  <h3 className="text-2xl font-black text-slate-900 mb-2 tracking-tighter uppercase">{item.name} {item.surname}</h3>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">
+                    {item.fatherName ? `${item.fatherName} Oğlu/Kızı` : ''}
+                    {item.birthDate ? ` • D: ${new Date(item.birthDate).getFullYear()}` : ''}
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex items-center gap-3 text-slate-500">
+                      <div className="h-8 w-8 rounded-lg bg-red-50 flex items-center justify-center text-red-600">
+                        <CalendarIcon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black text-slate-400 uppercase leading-none mb-1">Vefat / Defin</p>
+                        <p className="text-xs font-bold">{new Date(item.deathDate).toLocaleDateString('tr-TR')} / {item.burialDate ? new Date(item.burialDate).toLocaleDateString('tr-TR') : '-'}</p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 text-slate-400">
-                      <MapPinIcon className="h-4 w-4" />
-                      <span className="text-[10px] font-black uppercase tracking-widest">Defin: {item.burialPlace || 'Belirtilmedi'}</span>
+                    <div className="flex items-center gap-3 text-slate-500">
+                      <div className="h-8 w-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+                        <MapPinIcon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="text-[9px] font-black text-slate-400 uppercase leading-none mb-1">Cami / Defin Yeri</p>
+                        <p className="text-xs font-bold truncate max-w-[150px]" title={item.mosque}>{item.mosque || '-'} / {item.burialPlace || 'Belirtilmedi'}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex-shrink-0 px-8 py-3 bg-slate-50 rounded-full text-[10px] font-black text-slate-600 uppercase tracking-widest">
-                  Mekanı Cennet Olsun
+                <div className="flex-shrink-0 flex flex-col items-center gap-2">
+                  <div className="px-6 py-2 bg-slate-900 text-white rounded-full text-[9px] font-black uppercase tracking-widest">
+                    BAŞIMIZ SAĞOLSUN
+                  </div>
                 </div>
               </motion.div>
             ))}

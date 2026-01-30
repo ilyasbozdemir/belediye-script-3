@@ -104,6 +104,55 @@ export default function ProjectDetail() {
                             </div>
                         </div>
 
+                        {/* Before / After Section */}
+                        <div className="space-y-12">
+                            <div className="flex items-center gap-6">
+                                <ClockIcon className="h-12 w-12 text-blue-600" />
+                                <h3 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter">İş Öncesi & Sonrası</h3>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div className="space-y-4">
+                                    <div className="rounded-[3rem] overflow-hidden aspect-video shadow-xl relative group">
+                                        <img src={project.beforeImg || 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=800'} className="w-full h-full object-cover filter grayscale" alt="Öncesi" />
+                                        <div className="absolute top-8 left-8 bg-slate-900/80 backdrop-blur-md px-6 py-2 rounded-full text-[10px] font-black text-white uppercase tracking-widest">ÖNCESİ</div>
+                                    </div>
+                                    <p className="text-center text-xs font-bold text-slate-400 uppercase tracking-widest">Proje Öncesi Mevcut Durum</p>
+                                </div>
+                                <div className="space-y-4">
+                                    <div className="rounded-[4rem] overflow-hidden aspect-video shadow-2xl relative group border-4 border-emerald-500/20">
+                                        <img src={project.imageUrl} className="w-full h-full object-cover" alt="Sonrası" />
+                                        <div className="absolute top-8 left-8 bg-emerald-600/90 backdrop-blur-md px-6 py-2 rounded-full text-[10px] font-black text-white uppercase tracking-widest">SONRASI</div>
+                                    </div>
+                                    <p className="text-center text-xs font-bold text-emerald-600 uppercase tracking-widest">Tamamlanan Proje Görünümü</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Drone / Parsel View Section */}
+                        <div className="bg-slate-900 rounded-[4rem] p-16 lg:p-24 relative overflow-hidden group">
+                            <div className="absolute top-0 right-0 h-40 w-40 bg-blue-500/10 blur-3xl" />
+                            <div className="relative z-10 flex flex-col lg:flex-row gap-12 items-center">
+                                <div className="lg:w-1/2">
+                                    <h3 className="text-3xl font-black text-white uppercase italic tracking-tighter mb-6 leading-tight">Parsel Bazlı <br />Drone İnceleme</h3>
+                                    <p className="text-slate-400 font-medium mb-10 leading-relaxed italic text-lg opacity-80">Projemizi drone görüntüleri ve yapay zeka destekli parsel çizimleriyle detaylıca inceleyebilirsiniz.</p>
+                                    <div className="flex flex-wrap gap-4">
+                                        <div className="px-6 py-3 bg-white/10 rounded-2xl text-[10px] font-black text-white uppercase tracking-widest border border-white/10">360° GÖRÜNÜM</div>
+                                        <div className="px-6 py-3 bg-white/10 rounded-2xl text-[10px] font-black text-white uppercase tracking-widest border border-white/10">PARSEL ÇİZİMİ</div>
+                                    </div>
+                                </div>
+                                <div className="lg:w-1/2 w-full aspect-square bg-slate-800 rounded-[3rem] border border-white/5 shadow-2xl flex items-center justify-center relative group overflow-hidden">
+                                    {/* Drone Video Placeholder */}
+                                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1508614589041-895b9cb94f21?auto=format&fit=crop&q=80&w=800')] opacity-30 group-hover:scale-110 transition-transform duration-1000" />
+                                    <div className="relative z-10 flex flex-col items-center gap-6">
+                                        <div className="h-20 w-20 bg-blue-600 rounded-full flex items-center justify-center text-white animate-pulse shadow-2xl shadow-blue-600/50">
+                                            <RocketLaunchIcon className="h-10 w-10 rotate-45" />
+                                        </div>
+                                        <p className="text-[10px] font-black text-blue-400 uppercase tracking-[0.3em]">Drone İzleme Aktif</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         {project.gallery && (
                             <div>
                                 <div className="flex items-center gap-6 mb-16">

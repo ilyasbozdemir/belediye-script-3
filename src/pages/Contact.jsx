@@ -82,6 +82,47 @@ export default function Contact() {
 
                 </div>
 
+                {/* Card 4: Bank Information */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="mt-8 bg-slate-900 p-12 rounded-[3.5rem] shadow-2xl border border-white/5 relative overflow-hidden group"
+                >
+                    <div className="absolute top-0 right-0 h-40 w-40 bg-blue-500/10 blur-3xl group-hover:bg-blue-500/20 transition-all duration-500" />
+                    <div className="relative z-10">
+                        <div className="flex items-center gap-6 mb-10">
+                            <div className="h-16 w-16 bg-white/10 rounded-2xl flex items-center justify-center text-white">
+                                <BanknotesIcon className="h-8 w-8" />
+                            </div>
+                            <div>
+                                <h3 className="text-2xl font-black text-white uppercase italic tracking-tight">Banka Hesap Bilgilerimiz</h3>
+                                <p className="text-slate-400 text-sm font-bold uppercase tracking-widest opacity-60">Ödemeleriniz İçin Resmi Hesaplar</p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {[
+                                { bank: 'Ziraat Bankası', branch: 'Ermenek Şubesi', iban: 'TR56 0001 0000 0000 0000 0000 01', type: 'Belediye Tahsilat' },
+                                { bank: 'Halkbank', branch: 'Ermenek Şubesi', iban: 'TR12 0001 2000 0000 0000 0000 02', type: 'Emlak & ÇTV' },
+                                { bank: 'Vakıfbank', branch: 'Karaman Şubesi', iban: 'TR98 0001 5000 0000 0000 0000 03', type: 'İller Bankası Payı' }
+                            ].map((acc, i) => (
+                                <div key={i} className="bg-white/5 p-6 rounded-3xl border border-white/10 hover:border-blue-500/50 transition-colors">
+                                    <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">{acc.bank}</p>
+                                    <p className="text-white font-black text-lg mb-4 italic">{acc.type}</p>
+                                    <div className="space-y-2">
+                                        <p className="text-xs text-slate-500 font-bold">{acc.branch}</p>
+                                        <p className="text-xs text-slate-300 font-mono tracking-tighter bg-white/5 p-3 rounded-xl border border-white/5 cursor-pointer hover:bg-white/10 transition-all" onClick={() => { navigator.clipboard.writeText(acc.iban); alert('IBAN Kopyalandı!'); }}>
+                                            {acc.iban}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <p className="mt-8 text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em] text-center italic">Açıklama kısmına T.C. Kimlik No veya Sicil No yazmayı unutmayınız.</p>
+                    </div>
+                </motion.div>
+
                 {/* Form and Map Split */}
                 <div className="mt-20 flex flex-col lg:flex-row gap-8">
                     <div className="lg:w-1/2 bg-white rounded-[4rem] p-12 lg:p-20 shadow-xl shadow-slate-200/50 border border-slate-100">
