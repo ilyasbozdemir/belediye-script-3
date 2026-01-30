@@ -4,22 +4,36 @@ import { XMarkIcon, MegaphoneIcon, ArrowRightIcon } from '@heroicons/react/24/ou
 
 export default function AnnouncementModal() {
     const [isOpen, setIsOpen] = useState(false);
+    const [featured, setFeatured] = useState(null);
 
     useEffect(() => {
-        // Show modal after 3 seconds on first load
-        const timer = setTimeout(() => {
-            const hasSeen = localStorage.getItem('hasSeenAnnouncement');
-            if (!hasSeen) {
-                setIsOpen(true);
+        const fetchFeatured = async () => {
+            try {
+                const res = await axios.get('/api/news');
+                const featuredItem = res.data.find(item => item.isModalFeatured);
+                if (featuredItem) {
+                    setFeatured(featuredItem);
+                    // Show modal after 3 seconds if not seen
+                    const hasSeen = localStorage.getItem(`hasSeenAnnouncement_${featuredItem.id}`);
+                    if (!hasSeen) {
+                        setTimeout(() => setIsOpen(true), 3000);
+                    }
+                }
+            } catch (err) {
+                console.error('Featured announcement error');
             }
-        }, 3000);
-        return () => clearTimeout(timer);
+        };
+        fetchFeatured();
     }, []);
 
     const closeModal = () => {
         setIsOpen(false);
-        localStorage.setItem('hasSeenAnnouncement', 'true');
+        if (featured) {
+            localStorage.setItem(`hasSeenAnnouncement_${featured.id}`, 'true');
+        }
     };
+
+    if (!featured) return null;
 
     return (
         <Transition grow show={isOpen} as={Fragment}>
@@ -52,7 +66,7 @@ export default function AnnouncementModal() {
                                     {/* Banner Image */}
                                     <div className="h-64 relative bg-slate-900">
                                         <img
-                                            src="https://images.unsplash.com/photo-1541810232773-6784534346bb?auto=format&fit=crop&q=80&w=1200"
+                                            src={featured.imageUrl || "https://images.unsplash.com/photo-1541810232773-6784534346bb?auto=format&fit=crop&q=80&w=1200"}
                                             className="w-full h-full object-cover opacity-60"
                                             alt="Announcement"
                                         />
@@ -76,28 +90,26 @@ export default function AnnouncementModal() {
                                     <div className="p-10 pt-16">
                                         <span className="text-[10px] font-black text-blue-600 uppercase tracking-[0.3em] block mb-4">ÖNEMLİ DUYURU</span>
                                         <h3 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter mb-6 leading-tight">
-                                            Belediye <span className="text-blue-600">Yatırım Programı</span> <br />Halk Toplantısı Hakkında
+                                            {featured.title}
                                         </h3>
-                                        <p className="text-slate-500 font-medium leading-relaxed mb-8 opacity-80">
-                                            Güneyyurt'un yarınlarını birlikte planlamak için düzenleyeceğimiz 2026-2029 Stratejik Plan ve Yatırım Programı toplantısına tüm hemşehrilerimiz davetlidir. Görüşleriniz bizim için değerlidir.
+                                        <p className="text-slate-500 font-medium leading-relaxed mb-8 opacity-80 line-clamp-4">
+                                            {featured.summary || featured.content.replace(/<[^>]*>/g, '').slice(0, 200) + '...'}
                                         </p>
 
-                                        <div className="flex flex-col sm:flex-row gap-4 items-center">
-                                            <div className="flex-1 bg-slate-50 border border-slate-100 p-4 rounded-2xl">
-                                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Toplantı Tarihi</p>
-                                                <p className="font-bold text-slate-900 italic">15 Şubat 2026 - 14:30</p>
+                                        {featured.expiryDate && (
+                                            <div className="flex flex-col sm:flex-row gap-4 items-center">
+                                                <div className="flex-1 bg-slate-50 border border-slate-100 p-4 rounded-2xl">
+                                                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Geçerlilik Tarihi</p>
+                                                    <p className="font-bold text-slate-900 italic">{new Date(featured.expiryDate).toLocaleDateString('tr-TR')}</p>
+                                                </div>
                                             </div>
-                                            <div className="flex-1 bg-slate-50 border border-slate-100 p-4 rounded-2xl w-full">
-                                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Yer</p>
-                                                <p className="font-bold text-slate-900 italic">Kültür Merkezi Salonu</p>
-                                            </div>
-                                        </div>
+                                        )}
 
                                         <div className="mt-12 flex items-center justify-between gap-6">
                                             <button onClick={closeModal} className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-slate-900 transition-colors">Kapat</button>
-                                            <button className="btn-premium px-10 py-5 text-xs uppercase tracking-widest group">
+                                            <a href={`/duyuru/${featured.id}`} className="btn-premium px-10 py-5 text-xs uppercase tracking-widest group flex items-center">
                                                 Detaylı Bilgi <ArrowRightIcon className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

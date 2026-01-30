@@ -39,6 +39,7 @@ const adminNavigation = [
       { name: 'Etkinlik Takvimi', href: '/admin/events', icon: CalendarDaysIcon },
       { name: 'İşletme Rehberi', href: '/admin/businesses', icon: FolderIcon },
       { name: 'Medya Yönetimi', href: '/admin/media', icon: PhotoIcon },
+      { name: 'Anket Yönetimi', href: '/admin/surveys', icon: ChartBarSquareIcon },
       { name: 'Slayt & Ayarlar', href: '/admin/settings', icon: Cog6ToothIcon },
       { name: 'Önemli Günler', href: '/admin/special-days', icon: SparklesIcon },
       { name: 'Hava Durumu & Vakitler', href: '/admin/weather-prayer', icon: CloudIcon },
@@ -69,6 +70,7 @@ function classNames(...classes) {
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -158,33 +160,47 @@ export default function AdminLayout() {
       </Transition.Root>
 
       {/* Desktop Sidebar */}
-      <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white border-r border-slate-100 px-8 pb-4 shadow-[20px_0_30px_rgba(0,0,0,0.01)]">
-          <div className="flex h-24 shrink-0 items-center gap-4">
-            <img src="/belediye-logo.png" className="h-14 w-auto object-contain" alt="Logo" />
+      <div className={classNames(
+        "hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col transition-all duration-500 ease-in-out",
+        isCollapsed ? "lg:w-24" : "lg:w-80"
+      )}>
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white border-r border-slate-100 px-8 pb-4 shadow-[20px_0_30px_rgba(0,0,0,0.01)] relative">
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="absolute -right-3 top-10 h-6 w-6 bg-white border border-slate-200 rounded-full flex items-center justify-center shadow-sm z-50 hover:bg-blue-600 hover:text-white transition-all text-slate-400"
+          >
+            {isCollapsed ? <Bars3Icon className="h-3 w-3" /> : <XMarkIcon className="h-3 w-3" />}
+          </button>
+
+          <div className={classNames("flex h-24 shrink-0 items-center justify-center gap-4 transition-all duration-500", isCollapsed ? "px-0" : "px-4")}>
+            <img src="/belediye-logo.png" className={classNames("h-14 w-auto object-contain transition-all duration-500", isCollapsed ? "scale-75" : "scale-100")} alt="Logo" />
           </div>
-          <nav className="flex flex-1 flex-col mt-4">
+          <nav className="flex flex-1 flex-col mt-4 overflow-x-hidden">
             <ul role="list" className="flex flex-1 flex-col gap-y-8">
               {adminNavigation.map((group) => (
                 <li key={group.category}>
-                  <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 ml-4">{group.category}</div>
+                  {!isCollapsed && (
+                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 ml-4 transition-all opacity-100 whitespace-nowrap">{group.category}</div>
+                  )}
                   <ul role="list" className="space-y-1">
                     {group.items.map((item) => (
                       <li key={item.name}>
                         <Link
                           to={item.href}
+                          title={isCollapsed ? item.name : undefined}
                           className={classNames(
                             location.pathname === item.href
                               ? 'bg-blue-600 text-white shadow-xl shadow-blue-500/30'
                               : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50',
-                            'group flex gap-x-3 rounded-2xl p-4 text-sm leading-6 font-bold transition-all duration-200'
+                            'group flex gap-x-3 rounded-2xl p-4 text-sm leading-6 font-bold transition-all duration-200',
+                            isCollapsed ? 'justify-center p-4' : 'px-4'
                           )}
                         >
                           <item.icon className={classNames(
                             location.pathname === item.href ? 'text-white' : 'text-slate-400 group-hover:text-blue-600',
                             'h-6 w-6 shrink-0 transition-colors'
                           )} aria-hidden="true" />
-                          {item.name}
+                          {!isCollapsed && <span className="transition-all opacity-100 whitespace-nowrap">{item.name}</span>}
                         </Link>
                       </li>
                     ))}
@@ -195,50 +211,60 @@ export default function AdminLayout() {
           </nav>
 
           <div className="mt-auto space-y-2 pb-6">
-            <div className="bg-slate-50 rounded-3xl p-6 mb-8 border border-slate-100">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Sistem Durumu</span>
+            {!isCollapsed && (
+              <div className="bg-slate-50 rounded-3xl p-6 mb-8 border border-slate-100 transition-all opacity-100">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">Sistem Durumu</span>
+                </div>
+                <p className="text-[10px] text-slate-500 font-bold leading-relaxed">Aktif • 45ms</p>
               </div>
-              <p className="text-[10px] text-slate-500 font-bold leading-relaxed">Veritabanı bağlantısı aktif. Sunucu yanıt süresi: 45ms</p>
-            </div>
+            )}
 
             <button
               onClick={handleLogout}
-              className="flex w-full gap-x-3 rounded-[1.25rem] p-4 text-sm font-bold leading-6 text-red-500 hover:bg-red-50 transition-all transition-colors"
+              className={classNames(
+                "flex w-full gap-x-3 rounded-[1.25rem] p-4 text-sm font-bold leading-6 text-red-500 hover:bg-red-50 transition-all",
+                isCollapsed ? "justify-center" : ""
+              )}
             >
               <ArrowLeftOnRectangleIcon className="h-6 w-6 shrink-0 transition-colors" aria-hidden="true" />
-              Güvenli Çıkış
+              {!isCollapsed && <span>Güvenli Çıkış</span>}
             </button>
           </div>
         </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="lg:pl-80 flex flex-col min-h-screen">
-        <header className="sticky top-0 z-40 flex h-20 shrink-0 items-center gap-x-4 bg-white/70 backdrop-blur-md px-6 sm:gap-x-6 sm:px-8 lg:px-12">
-          <button
-            type="button"
-            className="-m-2.5 p-2.5 text-slate-700 lg:hidden"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-          </button>
+      <div className={classNames(
+        "transition-all duration-500 ease-in-out flex flex-col min-h-screen",
+        isCollapsed ? "lg:pl-24" : "lg:pl-80"
+      )}>
+        <header className="sticky top-0 z-40 flex h-20 shrink-0 items-center justify-between bg-white/70 backdrop-blur-md px-6 sm:px-8 lg:px-12 border-b border-slate-100/50">
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              className="-m-2.5 p-2.5 text-slate-700 lg:hidden"
+              onClick={() => setSidebarOpen(true)}
+            >
+              <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+            </button>
 
-          <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-            <div className="flex flex-1 items-center">
-              <h2 className="text-lg font-extrabold text-slate-900 tracking-tight uppercase italic">
+            <div className="flex flex-col">
+              <h2 className="text-lg font-extrabold text-slate-900 tracking-tight uppercase italic leading-none">
                 {adminNavigation.flatMap(g => g.items).find(n => n.href === location.pathname)?.name || 'Kontrol Paneli'}
               </h2>
+              <p className="text-[9px] font-black text-blue-600 uppercase tracking-widest mt-1">Yönetim Merkesi</p>
             </div>
-            <div className="flex items-center gap-x-4 lg:gap-x-6">
-              <div className="flex flex-col text-right hidden sm:flex">
-                <span className="text-sm font-black text-slate-900 leading-none">Admin Panel</span>
-                <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mt-1">Yönetici Çevrimiçi</span>
-              </div>
-              <div className="h-10 w-10 rounded-2xl bg-slate-100 flex items-center justify-center border border-slate-200 shadow-sm">
-                <UsersIcon className="h-6 w-6 text-slate-500" />
-              </div>
+          </div>
+
+          <div className="flex items-center gap-x-4 lg:gap-x-8">
+            <div className="flex flex-col text-right hidden lg:flex">
+              <span className="text-sm font-black text-slate-900 leading-none">Yönetici</span>
+              <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mt-1">Sistem Çevrimiçi</span>
+            </div>
+            <div className="h-12 w-12 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100 shadow-inner group hover:bg-blue-50 transition-all cursor-pointer">
+              <UsersIcon className="h-6 w-6 text-slate-400 group-hover:text-blue-600 transition-colors" />
             </div>
           </div>
         </header>

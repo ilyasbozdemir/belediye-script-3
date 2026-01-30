@@ -27,7 +27,8 @@ export default function AnnouncementsManager() {
         imageUrl: '',
         category: 'Duyuru',
         priority: 'normal',
-        expiryDate: ''
+        expiryDate: '',
+        isModalFeatured: false
     });
 
     const fetchAnnouncements = async () => {
@@ -54,7 +55,8 @@ export default function AnnouncementsManager() {
             imageUrl: item.imageUrl || '',
             category: 'Duyuru',
             priority: item.priority || 'normal',
-            expiryDate: item.expiryDate || ''
+            expiryDate: item.expiryDate || '',
+            isModalFeatured: item.isModalFeatured || false
         });
         setShowForm(true);
     };
@@ -218,6 +220,20 @@ export default function AnnouncementsManager() {
                                 </div>
                             </div>
 
+                            {/* Modal Feature Toggle */}
+                            <div className="flex items-center gap-3 p-4 bg-orange-50 rounded-2xl border border-orange-100">
+                                <input
+                                    type="checkbox"
+                                    id="modalToggle"
+                                    checked={formData.isModalFeatured}
+                                    onChange={e => setFormData({ ...formData, isModalFeatured: e.target.checked })}
+                                    className="h-5 w-5 rounded border-orange-300 text-orange-600 focus:ring-orange-500 cursor-pointer"
+                                />
+                                <label htmlFor="modalToggle" className="text-sm font-bold text-orange-900 cursor-pointer">
+                                    Giriş Pop-up'ı Olarak Göster (Anasayfa açılışında gösterilir)
+                                </label>
+                            </div>
+
                             {/* Image URL */}
                             <div>
                                 <label className="block text-sm font-semibold text-slate-700 mb-2">
@@ -328,6 +344,11 @@ export default function AnnouncementsManager() {
                                                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getPriorityBadge(item.priority).color}`}>
                                                             {getPriorityBadge(item.priority).label}
                                                         </span>
+                                                        {item.isModalFeatured && (
+                                                            <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[9px] font-black uppercase tracking-widest">
+                                                                Pop-up Aktif
+                                                            </span>
+                                                        )}
                                                         {isExpired(item.expiryDate) && (
                                                             <span className="px-3 py-1 bg-slate-200 text-slate-600 rounded-full text-xs font-semibold">
                                                                 Süresi Dolmuş

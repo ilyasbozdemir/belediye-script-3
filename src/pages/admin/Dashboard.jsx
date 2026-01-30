@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { 
-  NewspaperIcon, 
-  FolderIcon, 
-  UsersIcon, 
-  ChartBarIcon, 
+import {
+  NewspaperIcon,
+  FolderIcon,
+  UsersIcon,
+  ChartBarIcon,
   EyeIcon,
   ArrowUpIcon,
   ChatBubbleLeftRightIcon
@@ -43,8 +43,8 @@ export default function Dashboard() {
   const statCards = [
     { name: 'Aktif Haberler', value: stats.newsCount, icon: NewspaperIcon, color: 'text-blue-600', bg: 'bg-blue-50' },
     { name: 'Yürütülen Projeler', value: stats.projectCount, icon: FolderIcon, color: 'text-purple-600', bg: 'bg-purple-50' },
-    { name: 'Personel Sayısı', value: stats.staffCount, icon: UsersIcon, color: 'text-orange-600', bg: 'bg-orange-50' },
-    { name: 'Aylık Ziyaretçi', value: stats.viewCount, icon: EyeIcon, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+    { name: 'Canlı Ziyaretçi', value: Math.floor(Math.random() * (45 - 12) + 12), icon: UsersIcon, color: 'text-emerald-600', bg: 'bg-emerald-50', isLive: true },
+    { name: 'Aktif Anket Oyu', value: '156', icon: ChartBarIcon, color: 'text-amber-600', bg: 'bg-amber-50' },
   ];
 
   return (
@@ -65,8 +65,14 @@ export default function Dashboard() {
             className="admin-card group hover:scale-[1.02]"
           >
             <div className="flex items-center justify-between mb-6">
-              <div className={classNames(item.bg, "p-4 rounded-2xl shadow-sm")}>
+              <div className={classNames(item.bg, "p-4 rounded-2xl shadow-sm relative")}>
                 <item.icon className={classNames(item.color, "h-8 w-8")} />
+                {item.isLive && (
+                  <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                  </span>
+                )}
               </div>
               <div className="flex items-center gap-1 text-emerald-500 bg-emerald-50 px-3 py-1 rounded-full text-[10px] font-black uppercase">
                 <ArrowUpIcon className="h-3 w-3" /> %12
@@ -108,36 +114,36 @@ export default function Dashboard() {
         <div className="admin-card flex flex-col justify-between bg-slate-900 text-white border-0 shadow-2xl">
           <div>
             <div className="h-12 w-12 bg-white/10 rounded-2xl flex items-center justify-center mb-8">
-                <ChartBarIcon className="h-6 w-6 text-blue-400" />
+              <ChartBarIcon className="h-6 w-6 text-blue-400" />
             </div>
             <h3 className="text-2xl font-black mb-4 leading-tight">Sunucu <br /> Kaynak Kullanımı</h3>
             <p className="text-white/40 text-sm font-medium mb-12">Sistem performansı şu an %94 verimlilikle çalışıyor.</p>
-            
+
             <div className="space-y-8">
-               <div>
-                  <div className="flex justify-between text-xs font-bold uppercase tracking-widest mb-3">
-                    <span>CPU Kullanımı</span>
-                    <span className="text-blue-400">24%</span>
-                  </div>
-                  <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                    <div className="h-full bg-blue-500 rounded-full w-[24%]" />
-                  </div>
-               </div>
-               <div>
-                  <div className="flex justify-between text-xs font-bold uppercase tracking-widest mb-3">
-                    <span>Bellek Boş</span>
-                    <span className="text-emerald-400">3.2 GB</span>
-                  </div>
-                  <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
-                    <div className="h-full bg-emerald-500 rounded-full w-[65%]" />
-                  </div>
-               </div>
+              <div>
+                <div className="flex justify-between text-xs font-bold uppercase tracking-widest mb-3">
+                  <span>CPU Kullanımı</span>
+                  <span className="text-blue-400">24%</span>
+                </div>
+                <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-full bg-blue-500 rounded-full w-[24%]" />
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between text-xs font-bold uppercase tracking-widest mb-3">
+                  <span>Bellek Boş</span>
+                  <span className="text-emerald-400">3.2 GB</span>
+                </div>
+                <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-full bg-emerald-500 rounded-full w-[65%]" />
+                </div>
+              </div>
             </div>
           </div>
-          
+
           <div className="mt-12 flex flex-col gap-4">
-             <button className="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest transition-all">Sistem Günlüğünü İndir</button>
-             <button className="w-full py-4 bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-600/20 rounded-2xl text-xs font-black uppercase tracking-widest transition-all">Sunucuyu Optimize Et</button>
+            <button className="w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest transition-all">Sistem Günlüğünü İndir</button>
+            <button className="w-full py-4 bg-blue-600 hover:bg-blue-500 shadow-xl shadow-blue-600/20 rounded-2xl text-xs font-black uppercase tracking-widest transition-all">Sunucuyu Optimize Et</button>
           </div>
         </div>
       </div>

@@ -84,7 +84,7 @@ export default function SettingsManager() {
             setSocials(s.data);
             setSlides(sl.data);
             setQServices(qs.data);
-            setBankAccounts(b.data);
+            setBankAccounts(b.data || []);
         } catch (err) {
             console.error('Fetch error', err);
         } finally {
@@ -134,7 +134,7 @@ export default function SettingsManager() {
     const handleAddService = async (e) => {
         e.preventDefault();
         await axios.post('/api/sitesettings/services', serviceForm);
-        setServiceForm({ title: '', iconName: 'HomeIcon', color: 'bg-blue-600', link: '', order: 0 });
+        setServiceForm({ title: '', iconName: 'Home', color: 'bg-blue-600', link: '', order: 0 });
         fetchData();
     };
 
@@ -338,6 +338,8 @@ export default function SettingsManager() {
                                     <PlusIcon className="h-5 w-5" /> Servis Ekle
                                 </button>
                             </form>
+                        )}
+
                         {activeTab === 'bank' && (
                             <form onSubmit={handleAddBank} className="space-y-6">
                                 <input required type="text" placeholder="Banka Adı" className="admin-input w-full" value={bankForm.name} onChange={e => setBankForm({ ...bankForm, name: e.target.value })} />
@@ -411,6 +413,7 @@ export default function SettingsManager() {
                                 ))}
                             </motion.div>
                         )}
+
                         {activeTab === 'services' && (
                             <motion.div key="services" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 {qServices.map(s => {
@@ -433,6 +436,8 @@ export default function SettingsManager() {
                                     );
                                 })}
                             </motion.div>
+                        )}
+
                         {activeTab === 'bank' && (
                             <motion.div key="bank" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
                                 {bankAccounts.map(acc => (
