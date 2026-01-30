@@ -25,10 +25,9 @@ const hizmetLinks = [
 
 export default function Footer() {
   const links = [
-    { title: 'Ermenek Kaymakamlığı', url: 'http://www.ermenek.gov.tr/' },
     { title: 'Karaman Valiliği', url: 'http://www.karaman.gov.tr/' },
+    { title: 'Ermenek Kaymakamlığı', url: 'http://www.ermenek.gov.tr/' },
     { title: 'Ermenek Belediyesi', url: 'https://www.ermenek.bel.tr/' },
-    { title: 'Ermenek Haber', url: 'https://www.ermenekhaber.com/' }
   ];
   const socials = [];
 
