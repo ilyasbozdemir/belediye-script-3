@@ -1,5 +1,6 @@
 import Seo from '../components/Seo';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import {
     BuildingLibraryIcon,
     BanknotesIcon,
@@ -15,10 +16,10 @@ const categories = [
         title: 'Mali Hizmetler',
         icon: BanknotesIcon,
         links: [
-            { name: 'Emlak Vergisi Ödeme', url: 'https://e-hizmet.guneyyurt.bel.tr/emlak' },
-            { name: 'Çevre Temizlik Vergisi', url: 'https://e-hizmet.guneyyurt.bel.tr/ctv' },
-            { name: 'Borç Sorgulama', url: 'https://e-hizmet.guneyyurt.bel.tr/borc' },
-            { name: 'Beyan Bildirimleri', url: 'https://e-hizmet.guneyyurt.bel.tr/beyan' }
+            { name: 'E-Belediye İşlemleri', url: 'https://www.turkiye.gov.tr/guneyyurt-belediyesi' },
+            { name: 'Emlak Vergisi Sorgulama', url: 'https://www.turkiye.gov.tr/guneyyurt-belediyesi' },
+            { name: 'Arsa Rayiç Değerleri', url: 'https://www.turkiye.gov.tr/guneyyurt-belediyesi' },
+            { name: 'Borç Ödeme (E-Devlet)', url: 'https://www.turkiye.gov.tr/guneyyurt-belediyesi' }
         ]
     },
     {
@@ -27,48 +28,48 @@ const categories = [
         links: [
             { name: 'Meclis Kararları', href: '/kurumsal/meclis' },
             { name: 'Encümen Kararları', href: '/kurumsal/encumen-kararlari' },
-            { name: 'İhale Arşivi', href: '/kurumsal/ihale-duyurulari' },
-            { name: 'Evlendirme Yönetmeliği', href: '/hizmetler/evlendirme' }
+            { name: 'İhale Duyuruları', href: '/kurumsal/ihale-duyurulari' },
+            { name: 'Hizmet Standartları', href: '/kurumsal/hizmet-standartlari' }
         ]
     },
     {
         title: 'İdari İşlemler',
         icon: IdentificationIcon,
         links: [
-            { name: 'Ruhsat Başvurusu', href: '/hizmetler/ruhsat' },
-            { name: 'Sicil No Sorgulama', url: 'https://e-hizmet.guneyyurt.bel.tr/sicil' },
-            { name: 'Vezne İşlemleri', href: '/iletisim' },
-            { name: 'İstek Takip', href: '/hizmetler/basvuru' }
+            { name: 'İstek & Şikayet Başvurusu', href: '/hizmetler/basvuru' },
+            { name: 'Sicil No Sorgulama', url: 'https://www.turkiye.gov.tr/guneyyurt-belediyesi' },
+            { name: 'Dilekçe Örnekleri', href: '/hizmetler/dilekce' },
+            { name: 'Birimlerimiz', href: '/kurumsal/birimler' }
         ]
     },
     {
         title: 'Sosyal Destek',
         icon: ShieldCheckIcon,
         links: [
-            { name: 'Sosyal Yardım Başvurusu', href: '/hizmetler/basvuru' },
-            { name: 'Engelli Hizmetleri', href: '/hizmetler/rehber' },
-            { name: 'Kadın ve Aile Hizmetleri', href: '/hizmetler/rehber' },
-            { name: 'Yaşlı Bakım Destek', href: '/hizmetler/rehber' }
+            { name: 'Sosyal Yardım Talebi', href: '/hizmetler/basvuru' },
+            { name: 'Evlendirme İşlemleri', href: '/hizmetler/evlendirme' },
+            { name: 'Vefat ve Cenaze', href: '/hizmetler/vefatlar' },
+            { name: 'Muhtarlıklar', href: '/kurumsal/muhtarliklar' }
         ]
     },
     {
         title: 'Çevre & Kent',
         icon: GlobeAltIcon,
         links: [
-            { name: 'İmar Durumu Sorgulama', href: '/hizmetler/imar' },
+            { name: 'Parsel Sorgulama (TKGM)', url: 'https://parselsorgu.tkgm.gov.tr/' },
+            { name: 'İmar Durumu Bilgisi', href: '/hizmetler/imar' },
             { name: 'Nöbetçi Eczaneler', href: '/hizmetler/eczaneler' },
-            { name: 'Vefat İlanları', href: '/hizmetler/vefatlar' },
-            { name: 'Atık Yönetimi & Geri Dönüşüm', href: '/hizmetler/rehber' }
+            { name: 'Hava Durumu', href: '/hava-durumu' }
         ]
     },
     {
-        title: 'Kültür & Eğitim',
+        title: 'Kültür & Turizm',
         icon: DocumentDuplicateIcon,
         links: [
-            { name: 'Kültür Merkezleri', href: '/kesfet/tesisler' },
-            { name: 'Meslek Edindirme Kursları', href: '/hizmetler/rehber' },
-            { name: 'Kütüphane Hizmetleri', href: '/kesfet/tesisler' },
-            { name: 'Spor Tesisleri', href: '/kesfet/tesisler' }
+            { name: 'Güncel Duyurular', href: '/duyurular' },
+            { name: 'Etkinlik Takvimi', href: '/etkinlikler' },
+            { name: 'Belediye Tesisleri', href: '/kesfet/tesisler' },
+            { name: 'Fotoğraf Galerisi', href: '/galeri' }
         ]
     }
 ];
@@ -109,21 +110,31 @@ export default function ServicesGuide() {
                             </div>
 
                             <div className="grid grid-cols-1 gap-4 flex-grow">
-                                {cat.links.map((link, i) => (
-                                    <a
-                                        key={i}
-                                        href={link.href || link.url}
-                                        target={link.url ? "_blank" : "_self"}
-                                        rel={link.url ? "noreferrer" : ""}
-                                        className="flex items-center justify-between p-6 rounded-3xl bg-slate-50 hover:bg-slate-900 hover:text-white transition-all group/item"
-                                    >
-                                        <span className="font-black text-[11px] uppercase tracking-widest leading-none">{link.name}</span>
-                                        <div className="flex items-center gap-3">
-                                            {link.url && <GlobeAltIcon className="h-4 w-4 text-slate-400 group-hover/item:text-blue-400" />}
-                                            <ArrowRightIcon className="h-5 w-5 opacity-30 group-hover/item:opacity-100 transition-opacity" />
-                                        </div>
-                                    </a>
-                                ))}
+                                {cat.links.map((link, i) => {
+                                    const isExternal = !!link.url;
+                                    const Tag = isExternal ? 'a' : Link;
+                                    const props = isExternal ? {
+                                        href: link.url,
+                                        target: "_blank",
+                                        rel: "noreferrer"
+                                    } : {
+                                        to: link.href
+                                    };
+
+                                    return (
+                                        <Tag
+                                            key={i}
+                                            {...props}
+                                            className="flex items-center justify-between p-6 rounded-3xl bg-slate-50 hover:bg-slate-900 hover:text-white transition-all group/item"
+                                        >
+                                            <span className="font-black text-[11px] uppercase tracking-widest leading-none">{link.name}</span>
+                                            <div className="flex items-center gap-3">
+                                                {isExternal && <GlobeAltIcon className="h-4 w-4 text-slate-400 group-hover/item:text-blue-400" />}
+                                                <ArrowRightIcon className="h-5 w-5 opacity-30 group-hover/item:opacity-100 transition-opacity" />
+                                            </div>
+                                        </Tag>
+                                    );
+                                })}
                             </div>
                         </motion.div>
                     ))}
@@ -137,7 +148,14 @@ export default function ServicesGuide() {
                     <p className="text-blue-100 font-bold max-w-2xl mx-auto mb-12 text-[10px] uppercase tracking-[0.2em] leading-loose opacity-70 border-t border-white/10 pt-10">
                         Aradığınız hizmeti bulamadıysanız veya dijital işlemlerle ilgili sorun yaşıyorsanız 7/24 hizmet veren WhatsApp destek hattımıza ulaşabilirsiniz.
                     </p>
-                    <button className="px-16 py-6 bg-white text-blue-600 rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-2xl hover:scale-105 transition-transform">WhatsApp Destek Hattı</button>
+                    <a
+                        href="https://wa.me/903384912002"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-block px-16 py-6 bg-white text-blue-600 rounded-full text-xs font-black uppercase tracking-[0.2em] shadow-2xl hover:scale-105 transition-transform"
+                    >
+                        WhatsApp Destek Hattı
+                    </a>
                 </div>
             </div>
         </div>
