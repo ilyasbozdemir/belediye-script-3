@@ -7,8 +7,13 @@ export default function GovernanceManager() {
     const { register, handleSubmit, reset } = useForm();
 
     const fetchPresidents = async () => {
-        const res = await axios.get('/api/president');
-        setPresidents(res.data);
+        try {
+            const res = await axios.get('/api/president');
+            setPresidents(Array.isArray(res.data) ? res.data : []);
+        } catch (err) {
+            console.error('Presidents fetch error', err);
+            setPresidents([]);
+        }
     };
 
     useEffect(() => { fetchPresidents(); }, []);
