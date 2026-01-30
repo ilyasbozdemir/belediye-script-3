@@ -47,7 +47,7 @@ export default function AnnouncementDetail() {
         <div className="bg-slate-50 min-h-screen pb-32">
             <Seo
                 title={`${announcement.title} | Duyurular`}
-                description={announcement.content.replace(/<[^>]*>/g, '').substring(0, 160)}
+                description={announcement.content ? announcement.content.replace(/<[^>]*>/g, '').substring(0, 160) : ''}
                 type="article"
                 jsonLd={{
                     "@context": "https://schema.org",
@@ -61,7 +61,7 @@ export default function AnnouncementDetail() {
                 }}
             />
 
-            <div className="bg-slate-900 pt-32 pb-64 relative overflow-hidden">
+            <div className="bg-slate-900 pt-52 lg:pt-64 pb-64 relative overflow-hidden">
                 <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay" />
                 <div className="mx-auto max-w-5xl px-6 relative z-10">
                     <Link to="/duyurular" className="inline-flex items-center gap-2 text-blue-400 font-black uppercase text-[10px] tracking-widest mb-8 hover:text-white transition-colors">
@@ -116,7 +116,7 @@ export default function AnnouncementDetail() {
 
                     <div
                         className="prose prose-2xl prose-slate max-w-none text-slate-600 font-medium leading-loose"
-                        dangerouslySetInnerHTML={{ __html: announcement.content }}
+                        dangerouslySetInnerHTML={{ __html: announcement.content || '' }}
                     />
 
                     <div className="mt-20 pt-16 border-t border-slate-50 flex flex-wrap gap-4">
