@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 import Seo from '../components/Seo';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -13,17 +13,43 @@ import {
     RectangleGroupIcon,
     TagIcon,
     InformationCircleIcon,
-    SparklesIcon
+    SparklesIcon,
+    UserGroupIcon
 } from '@heroicons/react/24/outline';
 
 const assetItems = [
-    // KAMU HİZMET TESİSLERİ (Ayrılmaz Varlıklar)
+    // BELEDİYE İŞTİRAKLERİ (Subsidiaries)
+    {
+        id: 201,
+        name: 'GÜNEYBEL A.Ş.',
+        category: 'Belediye İştiraki',
+        type: 'Yönetim & Hizmet',
+        desc: 'Güneyyurt Belediyesi Personel Limited Şirketi ve iştiraki olan GÜNEYBEL, beldemizdeki sosyal tesislerin işletmeciliğini ve belediye hizmet birimlerinin personel yönetimini şeffaf bir şekilde yürütmektedir.',
+        img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800',
+        stats: { 'Kuruluş': '2019', 'Personel': '45+' },
+        features: ['Şeffaf Yönetim', 'Yerel İstihdam', 'Hizmet Odaklı'],
+        isCommercial: false,
+        isSubsidiary: true
+    },
+    {
+        id: 202,
+        name: 'Güneyyurt Beton & Yapı',
+        category: 'Belediye İştiraki',
+        type: 'Üretim & Sanayi',
+        desc: 'Beldemizin altyapı ve üstyapı ihtiyaçlarını karşılamak üzere kurulan, kilitli parke taşı ve hazır beton üretimi yapan iştirakimizdir.',
+        img: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=800',
+        stats: { 'Kapasite': '500m2 / Gün', 'Sektör': 'İnşaat' },
+        features: ['Yerli Üretim', 'Uygun Fiyat', 'Yüksek Kalite'],
+        isCommercial: false,
+        isSubsidiary: true
+    },
+    // KAMU HİZMET TESİSLERİ
     {
         id: 1,
         name: 'Güneyyurt Kültür Merkezi',
-        category: 'Kamu Hizmet Tesisi',
+        category: 'Kamu Tesisi',
         type: 'Kültür & Sosyal',
-        desc: 'Beldemizin vizyon projelerinden biri olan bu merkez; düğün, nişan, konferans ve her türlü kültürel etkinliğe ev sahipliği yapar. Özelleştirilemez belediye varlığıdır.',
+        desc: 'Beldemizin vizyon projelerinden biri olan bu merkez; düğün, nişan, konferans ve her türlü kültürel etkinliğe ev sahipliği yapar.',
         img: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=800',
         stats: { size: '1200 m²', capacity: '800 Kişi' },
         features: ['Modern Ses Sistemi', 'Geniş Otopark', 'Klima'],
@@ -36,7 +62,7 @@ const assetItems = [
     {
         id: 2,
         name: 'Yarı Olimpik Yüzme Havuzu',
-        category: 'Kamu Hizmet Tesisi',
+        category: 'Kamu Tesisi',
         type: 'Spor & Sağlık',
         desc: 'Tamamlanan projelerimiz kapsamında halkımızın hizmetine sunulan, modern hijyen standartlarına sahip spor tesisimiz.',
         img: 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&q=80&w=800',
@@ -49,79 +75,48 @@ const assetItems = [
         isCommercial: false
     },
     {
-        id: 3,
-        name: 'Belediye Halı Saha Tesisleri',
-        category: 'Kamu Hizmet Tesisi',
-        type: 'Spor & Gençlik',
-        desc: 'Gençlerimizin spor yapabileceği, gece aydınlatmalı ve modern zeminli spor alanı.',
-        img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=800',
-        stats: { size: '30x50m Standart', surface: 'Suni Çim' },
-        features: ['Kafeterya', 'Soyunma Odaları', 'Gece Maçı'],
-        schedule: [
-            { day: 'Haftanın Her Günü', note: '09:00 - 00:00' }
-        ],
-        isCommercial: false
-    },
-    // TİCARİ ALANLAR & İHALE BİRİMLERİ (İş Hanı vb.)
-    {
         id: 101,
-        name: 'Belediye İş Hanı - Köşe Mağaza',
+        name: 'Belediye İş Hanı',
         category: 'Ticari Tahsis',
         type: 'Kiralık / İhale',
-        desc: 'Yeni tamamlanan Belediye İş Hanı projesi içerisinde yer alan, yüksek tabela değerine sahip kiralık ticari alan.',
+        desc: 'Yeni tamamlanan Belediye İş Hanı projesi içerisinde yer alan, esnaflarımıza ihale usulü kiralanan modern dükkanlar.',
         img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800',
-        stats: { size: '120 m²', floor: 'Zemin Kat' },
-        features: ['Çift Cephe', 'Otomatik Kepenk', 'Wc Mevcut'],
+        stats: { size: 'Çeşitli', floor: 'Merkez' },
+        features: ['Modern Mimari', 'Engelli Erişimi', 'Asansör'],
         statusText: 'İhale Sürecinde',
         isCommercial: true,
-        price: 'İhale ile Belirlenecek'
-    },
-    {
-        id: 102,
-        name: 'İş Hanı - 1. Kat Ofis Birimi',
-        category: 'Ticari Tahsis',
-        type: 'Kiralık / İhale',
-        desc: 'İş hanımızın ofis katında yer alan, modern mimariye uygun, profesyonel kullanıma hazır büro alanı.',
-        img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800',
-        stats: { size: '45 m²', floor: '1. Kat' },
-        features: ['Fiber İnternet', 'Mutfak Nişi', 'Asansör'],
-        statusText: 'Kiralamaya Uygun',
-        isCommercial: true,
-        price: '6.500 ₺ / Ay'
-    },
-    {
-        id: 103,
-        name: 'Merkez Park Cafe İşletmesi',
-        category: 'Ticari Tahsis',
-        type: 'Kiralık / İşletme',
-        desc: 'Mülkiyeti belediyemize ait, ihale usulü ile özel girişimciye devredilmeye uygun sosyal tesis alanı.',
-        img: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=800',
-        stats: { size: '200 m²', capacity: '40 Masa' },
-        features: ['Açık Alan', 'Park Manzaralı', 'Hazır Mutfak'],
-        statusText: 'Kiralık / İşletmeci Bekleniyor',
-        isCommercial: true,
-        price: 'Teklif Usulü'
+        price: 'İhale İlnaı Bekleniyor'
     }
 ];
 
 export default function MunicipalBusinesses() {
-    const [filter, setFilter] = useState('ALL');
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const initialFilter = queryParams.get('type') === 'istirak' ? 'ISTIRAK' : 'ALL';
+
+    const [filter, setFilter] = useState(initialFilter);
     const [items, setItems] = useState(assetItems);
 
     useEffect(() => {
-        // Backend entegrasyonu buraya gelecek. Şimdilik mock veriyi kullanıyoruz.
-        // axios.get('/api/business?isMunicipal=true').then(...)
-    }, []);
+        if (queryParams.get('type') === 'istirak') {
+            setFilter('ISTIRAK');
+        }
+    }, [location.search]);
 
     const filteredItems = filter === 'ALL'
         ? items
-        : items.filter(i => filter === 'CAMU' ? !i.isCommercial : i.isCommercial);
+        : items.filter(i => {
+            if (filter === 'ISTIRAK') return i.isSubsidiary;
+            if (filter === 'CAMU') return !i.isCommercial && !i.isSubsidiary;
+            if (filter === 'COMMERCIAL') return i.isCommercial;
+            return true;
+        });
 
     return (
         <div className="bg-slate-50 min-h-screen pb-32">
             <Seo
-                title="Belediye Varlıkları ve İşletmeleri | Güneyyurt Belediyesi"
-                description="Güneyyurt Belediyesi'ne ait tesisler, projeler, İş Hanı dükkanları ve kiralık ticari alanların şeffaf yönetim portalı."
+                title="Belediye Varlıkları ve İştirakleri | Güneyyurt Belediyesi"
+                description="Güneyyurt Belediyesi'ne ait iştirakler, tesisler, projeler ve kiralık ticari alanların şeffaf yönetim portalı."
             />
 
             {/* Header Hero */}
@@ -129,9 +124,9 @@ export default function MunicipalBusinesses() {
                 <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay" />
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10">
                     <BuildingLibraryIcon className="h-16 w-16 text-blue-500 mx-auto mb-8" />
-                    <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic">Belediye Varlıkları & İşletmeler</h1>
+                    <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic">İştirakler & Varlıklar</h1>
                     <p className="mt-8 text-slate-300 font-medium max-w-2xl mx-auto text-lg uppercase tracking-widest opacity-80 leading-relaxed">
-                        Beldemizin öz kaynakları, tamamlanan projelerimiz ve halkımıza sunduğumuz ticari imkanlar.
+                        Beldemizin öz kaynakları, iştirak şirketlerimiz ve halkımıza sunduğumuz sosyal imkanlar.
                     </p>
                     <div className="h-1.5 w-24 bg-blue-600 mx-auto mt-10 rounded-full"></div>
                 </motion.div>
@@ -143,22 +138,23 @@ export default function MunicipalBusinesses() {
                     <div className="flex items-center gap-4 text-slate-500">
                         <InformationCircleIcon className="h-10 w-10 text-blue-600" />
                         <div>
-                            <p className="text-[10px] font-black uppercase tracking-widest leading-none mb-1 text-slate-400">Yönetim Politikası</p>
-                            <p className="text-xs font-bold leading-relaxed">Kültür ve spor tesisleri belediyemizce işletilir, dükkan ve ofisler ihale usulü halka açılır.</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest leading-none mb-1 text-slate-400">Şeffaf Yönetim</p>
+                            <p className="text-xs font-bold leading-relaxed">Belediyemizin tüm iştirakleri ve varlıkları halkımızın ortak değeridir.</p>
                         </div>
                     </div>
 
                     {/* Filters */}
-                    <div className="flex p-1.5 bg-slate-100 rounded-2xl">
+                    <div className="flex p-1.5 bg-slate-100 rounded-2xl overflow-x-auto no-scrollbar">
                         {[
-                            { id: 'ALL', label: 'TÜM VARLIKLAR', icon: RectangleGroupIcon },
+                            { id: 'ALL', label: 'TÜMÜ', icon: RectangleGroupIcon },
+                            { id: 'ISTIRAK', label: 'İŞTİRAKLER', icon: UserGroupIcon },
                             { id: 'CAMU', label: 'KAMU TESİSLERİ', icon: BuildingLibraryIcon },
                             { id: 'COMMERCIAL', label: 'TİCARİ / İHALE', icon: TagIcon }
                         ].map((btn) => (
                             <button
                                 key={btn.id}
                                 onClick={() => setFilter(btn.id)}
-                                className={`flex items-center gap-2 px-6 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all ${filter === btn.id ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'
+                                className={`flex items-center gap-2 px-6 py-3 text-[10px] font-black uppercase tracking-widest rounded-xl transition-all whitespace-nowrap ${filter === btn.id ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-900'
                                     }`}
                             >
                                 <btn.icon className="h-4 w-4" />
@@ -247,8 +243,8 @@ export default function MunicipalBusinesses() {
                                     </div>
 
                                     <button className={`w-full py-5 rounded-2xl flex items-center justify-center gap-3 text-xs font-black uppercase tracking-widest transition-all ${item.isCommercial
-                                            ? 'bg-slate-900 hover:bg-black text-white'
-                                            : 'bg-blue-600 hover:bg-blue-700 text-white'
+                                        ? 'bg-slate-900 hover:bg-black text-white'
+                                        : 'bg-blue-600 hover:bg-blue-700 text-white'
                                         }`}>
                                         {item.isCommercial ? 'İhalede Teklif Ver' : 'Bilgi Al & Rezervasyon'}
                                         <ArrowRightIcon className="h-4 w-4" />

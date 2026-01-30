@@ -13,30 +13,36 @@ import {
 export default function Announcements() {
     const [announcements, setAnnouncements] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [filter, setFilter] = useState('ALL');
 
     const dummyData = [
-        { id: 1, title: 'Beldemizde Yeni Park Alanları Oluşturuluyor', content: 'Gelecek nesillere daha yeşil bir Güneyyurt bırakmak için park ve bahçeler müdürlüğümüz çalışmalarını hızlandırdı.', createdDate: new Date().toISOString(), category: 'Genel' },
-        { id: 2, title: 'İnteraktif Vergi Dairesi Hizmete Girdi', content: 'Vatandaşlarımızın ödemelerini daha kolay yapabilmesi için GİB interaktif vergi dairesi sistemimiz entegre edilmiştir.', createdDate: new Date().toISOString(), category: 'Hizmet' },
-        { id: 3, title: 'Geleneksel Batırık Günü Hazırlıkları', content: 'Yöresel lezzetimiz Batırık festivali için hazırlık toplantısı bu hafta sonu gerçekleştirilecektir.', createdDate: new Date().toISOString(), category: 'Kültür' }
+        { id: 1, title: 'Beldemizde Yeni Park Alanları Oluşturuluyor', content: 'Gelecek nesillere daha yeşil bir Güneyyurt bırakmak için park ve bahçeler müdürlüğümüz çalışmalarını hızlandırdı.', createdDate: new Date().toISOString(), category: 'Duyuru' },
+        { id: 4, title: 'Su Kesintisi Hakkında Bilgilendirme', content: 'Ana isale hattındaki arıza nedeniyle Merkez mahallesinde 4 saat süreli su kesintisi yaşanacaktır.', createdDate: new Date().toISOString(), category: 'Anons' },
+        { id: 2, title: 'İnteraktif Vergi Dairesi Hizmete Girdi', content: 'Vatandaşlarımızın ödemelerini daha kolay yapabilmesi için GİB interaktif vergi dairesi sistemimiz entegre edilmiştir.', createdDate: new Date().toISOString(), category: 'Duyuru' },
+        { id: 5, title: 'Çöp Toplama Saatleri Güncellendi', content: 'Yaz dönemi nedeniyle çöp toplama saatleri akşam 20:00 olarak güncellenmiştir. Halkımıza duyurulur.', createdDate: new Date().toISOString(), category: 'Anons' },
+        { id: 3, title: 'Geleneksel Batırık Günü Hazırlıkları', content: 'Yöresel lezzetimiz Batırık festivali için hazırlık toplantısı bu hafta sonu gerçekleştirilecektir.', createdDate: new Date().toISOString(), category: 'Duyuru' }
     ];
 
     useEffect(() => {
         axios.get('/api/news?category=Duyuru')
             .then(res => {
-                if (res.data.length > 0) setAnnouncements(res.data);
-                else setAnnouncements(dummyData);
+                const combined = res.data.length > 0 ? res.data : dummyData;
+                setAnnouncements(combined);
                 setLoading(false);
             })
             .catch(err => {
-                console.error('Error fetching announcements:', err);
                 setAnnouncements(dummyData);
                 setLoading(false);
             });
     }, []);
 
+    const filtered = filter === 'ALL'
+        ? announcements
+        : announcements.filter(a => a.category === filter);
+
     return (
         <div className="bg-slate-50 min-h-screen pb-32">
-            <Seo title="Duyurular | Güneyyurt Belediyesi" description="Güneyyurt Belediyesi güncel duyurular, kesintiler ve resmi bilgilendirmeler." />
+            <Seo title="Duyurular & Anonslar | Güneyyurt Belediyesi" description="Güneyyurt Belediyesi resmi duyuruları ve zabıta amirliği anonsları." />
 
             {/* Header Section */}
             <div className="bg-amber-500 pt-32 pb-48 text-center px-6 relative overflow-hidden">
@@ -46,13 +52,33 @@ export default function Announcements() {
                     animate={{ opacity: 1, y: 0 }}
                     className="relative z-10"
                 >
-                    <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic">Güncel Duyurular</h1>
+                    <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic">Duyuru & Anonslar</h1>
                     <div className="h-1.5 w-24 bg-white/20 mx-auto mt-8 rounded-full"></div>
-                    <p className="mt-8 text-amber-100 font-bold max-w-2xl mx-auto text-lg uppercase tracking-widest opacity-80">Güneyyurt'tan Haberiniz Olsun. Anlık Bilgilendirme Akışı.</p>
+                    <p className="mt-8 text-amber-100 font-bold max-w-2xl mx-auto text-lg uppercase tracking-widest opacity-80">Belediye Zabıta Amirliği ve Resmi Birimlerden Anlık Bilgilendirmeler.</p>
                 </motion.div>
             </div>
 
             <div className="mx-auto max-w-5xl px-6 lg:px-8 -mt-24 relative z-10">
+                {/* Filter Tabs */}
+                <div className="flex justify-center mb-12">
+                    <div className="bg-white p-2 rounded-3xl shadow-xl border border-slate-100 flex gap-2">
+                        {[
+                            { id: 'ALL', label: 'TÜMÜ' },
+                            { id: 'Duyuru', label: 'KURUMSAL DUYURULAR' },
+                            { id: 'Anons', label: 'ZABITA ANONSLARI' }
+                        ].map((btn) => (
+                            <button
+                                key={btn.id}
+                                onClick={() => setFilter(btn.id)}
+                                className={`px-8 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${filter === btn.id ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/20' : 'text-slate-400 hover:text-slate-900'
+                                    }`}
+                            >
+                                {btn.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
                 {loading ? (
                     <div className="flex flex-col items-center justify-center py-20">
                         <div className="w-12 h-12 border-4 border-amber-600/20 border-t-amber-600 rounded-full animate-spin mb-4"></div>
@@ -60,28 +86,31 @@ export default function Announcements() {
                     </div>
                 ) : (
                     <div className="space-y-6">
-                        {announcements.length === 0 && (
+                        {filtered.length === 0 && (
                             <div className="py-20 text-center bg-white rounded-[3rem] border border-dashed border-slate-200">
-                                <p className="text-slate-400 font-bold uppercase tracking-widest text-xs italic">Henüz aktif bir duyuru bulunmuyor.</p>
+                                <p className="text-slate-400 font-bold uppercase tracking-widest text-xs italic">Seçilen kategoride henüz bir kayıt bulunmuyor.</p>
                             </div>
                         )}
-                        {announcements.map((item, idx) => (
+                        {filtered.map((item, idx) => (
                             <Link key={item.id} to={`/duyuru/${item.id}`}>
                                 <motion.div
                                     initial={{ opacity: 0, x: -30 }}
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: idx * 0.1 }}
-                                    className="bg-white p-10 lg:p-14 rounded-[3rem] shadow-xl shadow-slate-200/40 border border-slate-100 flex flex-col md:flex-row gap-10 group hover:border-amber-500 transition-all duration-500 mb-6 cursor-pointer"
+                                    className={`bg-white p-10 lg:p-14 rounded-[3rem] shadow-xl shadow-slate-200/40 border-2 flex flex-col md:flex-row gap-10 group transition-all duration-500 mb-6 cursor-pointer ${item.category === 'Anons' ? 'border-blue-500/20 bg-blue-50/10' : 'border-slate-50'
+                                        } hover:border-amber-500`}
                                 >
-                                    <div className={`h-24 w-24 rounded-[2rem] flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-500 bg-blue-50 text-blue-600`}>
-                                        <InformationCircleIcon className="h-10 w-10" />
+                                    <div className={`h-24 w-24 rounded-[2rem] flex items-center justify-center shrink-0 shadow-inner group-hover:scale-110 transition-transform duration-500 ${item.category === 'Anons' ? 'bg-blue-500 text-white' : 'bg-blue-50 text-blue-600'
+                                        }`}>
+                                        {item.category === 'Anons' ? <MegaphoneIcon className="h-10 w-10" /> : <InformationCircleIcon className="h-10 w-10" />}
                                     </div>
 
                                     <div className="flex-grow">
                                         <div className="flex flex-wrap items-center gap-4 mb-6">
-                                            <span className="px-5 py-1.5 bg-slate-900 text-white rounded-full text-[10px] font-black uppercase tracking-widest">
-                                                Duyuru
+                                            <span className={`px-5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${item.category === 'Anons' ? 'bg-blue-600 text-white' : 'bg-slate-900 text-white'
+                                                }`}>
+                                                {item.category === 'Anons' ? 'BELEDİYE ANONSU' : 'HIZLI DUYURU'}
                                             </span>
                                             <div className="flex items-center gap-2 text-slate-400">
                                                 <CalendarDaysIcon className="h-4 w-4" />

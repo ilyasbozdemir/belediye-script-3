@@ -63,7 +63,12 @@ export default function CommitteeDecisions() {
                                 <div className="flex items-center gap-8">
                                     <div className="text-center shrink-0">
                                         <p className="text-3xl font-black text-slate-900 group-hover:text-blue-600 transition-colors leading-none">{decision.no.split('/')[1]}</p>
-                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">KAYIT NO</p>
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">KARAR NO</p>
+                                    </div>
+                                    <div className="h-12 w-px bg-slate-100 hidden md:block" />
+                                    <div className="text-center shrink-0 hidden sm:block">
+                                        <p className="text-xl font-black text-slate-600 leading-none">{(1000 + i)}</p>
+                                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">DOSYA NO</p>
                                     </div>
                                     <div className="h-12 w-px bg-slate-100 hidden md:block" />
                                     <div>
@@ -79,9 +84,15 @@ export default function CommitteeDecisions() {
                                         </div>
                                     </div>
                                 </div>
-                                <button className="md:h-14 md:w-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300 group-hover:bg-slate-900 group-hover:text-white transition-all shadow-sm">
+                                <a
+                                    href={`/kararlar/${decision.no.replace('/', '-')}.pdf`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="md:h-14 md:w-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300 group-hover:bg-slate-900 group-hover:text-white transition-all shadow-sm"
+                                    title="Yeni Sekmede Görüntüle"
+                                >
                                     <ArchiveBoxIcon className="h-6 w-6" />
-                                </button>
+                                </a>
                             </motion.div>
                         ))}
                     </div>

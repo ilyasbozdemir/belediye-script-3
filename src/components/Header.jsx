@@ -12,13 +12,13 @@ import {
 
 const navigation = [
   {
-    name: 'GÜNEYYURT',
+    name: 'BELDE REHBERİ',
     href: '#',
     children: [
       { name: 'Belde Tarihçesi', href: '/kurumsal/tarihce' },
-      { name: 'Projelerimiz (Yatırımlar)', href: '/projeler/devam-eden' },
-      { name: 'Tesisler & Taşınmazlar', href: '/kurumsal/isletmeler' },
       { name: 'Güneyyurt\'u Tanıyın', href: '/kesfet' },
+      { name: 'Tesisler & Sosyal Alanlar', href: '/kurumsal/isletmeler' },
+      { name: 'Nöbetçi Eczaneler', href: '/hizmetler/eczaneler' },
       { name: 'Foto Galeri', href: '/galeri' },
     ]
   },
@@ -30,47 +30,39 @@ const navigation = [
       { name: 'Başkanın Özgeçmişi', href: '/kurumsal/baskan-ozgecmis' },
       { name: 'Meclis Üyeleri', href: '/kurumsal/meclis' },
       { name: 'Encümen Üyeleri', href: '/kurumsal/encumen' },
-      { name: 'Hizmet Birimleri', href: '/kurumsal/birimler' },
-      { name: 'Muhtarlıklar', href: '/kurumsal/muhtarliklar' },
       { name: 'Eski Belediye Başkanlarımız', href: '/kurumsal/eski-baskanlar' },
-      { name: 'Mevzuat & Faaliyet Raporları', href: '/kurumsal/mevzuat' },
+      { name: 'Belediye Projelerimiz', href: '/projeler' },
+      { name: 'Belediye İştirakleri', href: '/kurumsal/isletmeler?type=istirak' },
+      { name: 'Encümen Kararları', href: '/kurumsal/encumen-kararlari' },
+      { name: 'Mevzuat & Faaliyetler', href: '/kurumsal/mevzuat' },
       { name: 'İhale Duyuruları', href: '/kurumsal/ihale-duyurulari' },
-    ]
-  },
-  {
-    name: 'HİZMETLER',
-    href: '#',
-    children: [
-      { name: 'E-Belediye İşlemleri', href: 'https://e-hizmet.guneyyurt.bel.tr/', external: true },
-      { name: 'İmar Durumu Sorgulama', href: '/hizmetler/imar' },
-      { name: 'Esnaf / İşletme Rehberi', href: '/kent-rehberi/isletmeler' },
-      { name: 'Nöbetçi Eczaneler', href: '/hizmetler/eczaneler' },
-      { name: 'İstek & Şikayet Formu', href: '/hizmetler/basvuru' },
-      { name: 'Vefat Edenler / Taziye', href: '/hizmetler/vefatlar' },
-      { name: 'Nikah Başvurusu & Bilgi', href: '/hizmetler/evlendirme' },
+      { name: 'Stratejik Plan', href: '/kurumsal/stratejik-plan' },
+      { name: 'Hizmet Birimleri (Müdürlükler)', href: '/kurumsal/birimler' },
+      { name: 'Muhtarlıklar', href: '/kurumsal/muhtarliklar' },
       { name: 'Hizmet Standartları', href: '/kurumsal/hizmet-standartlari' },
     ]
   },
   {
-    name: 'YATIRIM & İHALE',
+    name: 'VATANDAŞ HİZMETLERİ',
     href: '#',
     children: [
-      { name: 'Devam Eden Projeler', href: '/projeler/devam-eden' },
-      { name: 'Biten Projeler', href: '/projeler/biten' },
-      { name: 'Planlanan Projeler', href: '/projeler/planlanan' },
-      { name: 'İhale Duyuruları', href: '/kurumsal/ihale-duyurulari' },
-      { name: 'İmar Planları', href: '/hizmetler/imar' },
+      { name: 'E-Belediye (Hızlı Ödeme)', href: 'https://e-hizmet.guneyyurt.bel.tr/', external: true },
+      { name: 'İstek & Şikayet Formu', href: '/hizmetler/basvuru' },
+      { name: 'İmar Durumu Sorgulama', href: '/hizmetler/imar' },
+      { name: 'Vefat Edenler / Taziye', href: '/hizmetler/vefatlar' },
+      { name: 'Nikah Başvurusu', href: '/hizmetler/evlendirme' },
+      { name: 'Kent Rehberi', href: '/hizmetler/rehber' },
     ]
   },
   {
-    name: 'GÜNCEL',
+    name: 'MEDYA & HABER',
     href: '#',
     children: [
-      { name: 'Haber Kompleksi', href: '/haberler' },
-      { name: 'Güncel Duyurular', href: '/duyurular' },
+      { name: 'Güncel Haberler', href: '/haberler' },
+      { name: 'Resmi Duyurular', href: '/duyurular' },
       { name: 'Etkinlik Takvimi', href: '/etkinlikler' },
       { name: 'Basında Güneyyurt', href: '/kurumsal/basinda-biz' },
-      { name: 'Hava Durumu & Vakitler', href: '/hava-durumu' },
+      { name: 'Hava Durumu', href: '/hava-durumu' },
     ]
   },
 ];
@@ -114,11 +106,10 @@ export default function Header() {
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5 flex items-center gap-4 group">
               <img
-                src="/belediye-logo.png"
+                src={isScrolled ? "/belediye-logo.png" : (location.pathname === '/' ? "/belediye-logo-light.png" : "/belediye-logo.png")}
                 alt="Güneyyurt Belediyesi"
-                className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-110"
+                className="h-20 w-auto object-contain transition-all duration-500 group-hover:scale-110"
               />
-
             </Link>
           </div>
 
@@ -135,7 +126,7 @@ export default function Header() {
             </button>
           </div>
 
-          <div className="hidden lg:flex lg:gap-x-1">
+          <div className="hidden lg:flex lg:gap-x-4">
             {navigation.map((item) => (
               <Popover key={item.name} className="static">
                 <Popover.Button className={classNames(
@@ -214,17 +205,10 @@ export default function Header() {
           </div>
 
           <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center gap-4">
-            <Link
-              to="/login"
-              className={classNames(
-                "text-sm font-bold transition-colors",
-                isScrolled ? "text-slate-600 hover:text-slate-900" : (location.pathname === '/' ? "text-white/80 hover:text-white" : "text-slate-600 hover:text-slate-900")
-              )}
-            >
-              Yönetim
-            </Link>
             <a
               href="https://e-hizmet.guneyyurt.bel.tr/"
+              target="_blank"
+              rel="noreferrer"
               className="btn-premium py-2.5 px-6"
             >
               E-Belediye

@@ -40,7 +40,7 @@ export default function Footer() {
           {/* Logo & About */}
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-4 mb-8">
-              <img src="/belediye-logo.png" alt="Logo" className="h-20 w-auto" />
+              <img src="/belediye-logo-light.png" alt="Logo" className="h-20 w-auto" />
             </Link>
             <p className="text-slate-400 leading-relaxed max-w-xs mb-8">
               Modern, şeffaf ve katılımcı belediyecilik anlayışıyla Güneyyurt'un geleceğini birlikte inşa ediyoruz.

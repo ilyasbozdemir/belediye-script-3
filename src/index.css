@@ -86,6 +86,31 @@ h1, h2, h3, h4 {
   animation: float 6s ease-in-out infinite;
 }
 
+/* Utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 640px) {
+  .rounded-\[4rem\] {
+    border-radius: 2.5rem !important;
+  }
+  .rounded-\[3rem\] {
+    border-radius: 2rem !important;
+  }
+  .p-20 {
+    padding: 2.5rem !important;
+  }
+  .p-16 {
+    padding: 2rem !important;
+  }
+}
+
 /* Transitions */
 .page-transition-enter { opacity: 0; transform: scale(0.98); }
 .page-transition-enter-active { opacity: 1; transform: scale(1); transition: all 400ms ease-out; }
