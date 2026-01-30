@@ -404,7 +404,7 @@ export default function Home() {
               <motion.div
                 key={i}
                 whileHover={{ y: -10 }}
-                className="min-w-[400px] bg-slate-50 rounded-[3rem] p-8 flex gap-8 border border-slate-100/50"
+                className="min-w-[280px] md:min-w-[400px] bg-slate-50 rounded-[3rem] p-8 flex gap-8 border border-slate-100/50"
               >
                 <div className="h-32 w-32 rounded-[2rem] overflow-hidden flex-shrink-0 shadow-lg">
                   <img src={ev.imageUrl || 'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&q=80&w=300'} className="w-full h-full object-cover" alt="" />

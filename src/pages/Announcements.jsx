@@ -66,8 +66,8 @@ export default function Announcements() {
 
             <div className="mx-auto max-w-5xl px-6 lg:px-8 -mt-24 relative z-10">
                 {/* Filter Tabs */}
-                <div className="flex justify-center mb-12">
-                    <div className="bg-white p-2 rounded-3xl shadow-xl border border-slate-100 flex gap-2">
+                <div className="flex justify-start sm:justify-center mb-12 overflow-x-auto no-scrollbar">
+                    <div className="bg-white p-2 rounded-3xl shadow-xl border border-slate-100 flex gap-2 w-max sm:w-auto">
                         {[
                             { id: 'ALL', label: 'TÜMÜ' },
                             { id: 'Duyuru', label: 'KURUMSAL DUYURULAR' },
