@@ -13,7 +13,7 @@ const dummyPharmacies = [
     {
         id: 1,
         name: 'GÜNEYYURT ECZANESİ',
-        address: 'Belediye Cd. No:1/A, Güneyyurt',
+        address: 'Belediye Sk. No:8/A, Güneyyurt',
         phone: '0338 736 80 15',
         until: '08:30 (Yarın Sabah)',
         onDuty: true

@@ -96,7 +96,7 @@ export default function Footer() {
                   <MapPinIcon className="h-5 w-5 text-blue-400" />
                 </div>
                 <p className="text-slate-400 text-sm leading-relaxed">
-                  Belediye Cd. No:1 <br /> Güneyyurt, Ermenek / Karaman
+                  Belediye Sk. No:8 <br /> Güneyyurt, Ermenek / Karaman
                 </p>
               </div>
               <div className="flex gap-4">

@@ -47,7 +47,7 @@ const assetItems = [
     {
         id: 1,
         name: 'Güneyyurt Kültür Merkezi',
-        category: 'Kamu Tesisi',
+        category: 'Belediye Tesisi',
         type: 'Kültür & Sosyal',
         desc: 'Beldemizin vizyon projelerinden biri olan bu merkez; düğün, nişan, konferans ve her türlü kültürel etkinliğe ev sahipliği yapar.',
         img: 'https://images.unsplash.com/photo-1541888946425-d81bb19480c5?auto=format&fit=crop&q=80&w=800',
@@ -62,7 +62,7 @@ const assetItems = [
     {
         id: 2,
         name: 'Yarı Olimpik Yüzme Havuzu',
-        category: 'Kamu Tesisi',
+        category: 'Belediye Tesisi',
         type: 'Spor & Sağlık',
         desc: 'Tamamlanan projelerimiz kapsamında halkımızın hizmetine sunulan, modern hijyen standartlarına sahip spor tesisimiz.',
         img: 'https://images.unsplash.com/photo-1519315901367-f34ff9154487?auto=format&fit=crop&q=80&w=800',
@@ -71,6 +71,21 @@ const assetItems = [
         schedule: [
             { day: 'Kadın Günleri', note: 'Salı, Perşembe, Cst.' },
             { day: 'Erkek Günleri', note: 'Pzt., Çarş., Cuma' }
+        ],
+        isCommercial: false
+    },
+    {
+        id: 3,
+        name: 'Güneyyurt Spor Kompleksi',
+        category: 'Belediye Tesisi',
+        type: 'Spor & Gençlik',
+        desc: 'Gençlerimizin ve spor severlerin hizmetinde olan, halı saha ve basketbol sahalarını bünyesinde barındıran modern spor kompleksi.',
+        img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=800',
+        stats: { size: '3000 m²', facility: 'Halı Saha + Basket' },
+        features: ['Aydınlatmalı Saha', 'Soyunma Odaları', 'Kafeterya'],
+        schedule: [
+            { day: 'Hafta İçi', note: '09:00 - 00:00' },
+            { day: 'Hafta Sonu', note: '08:00 - 01:00' }
         ],
         isCommercial: false
     },
@@ -85,22 +100,25 @@ const assetItems = [
         features: ['Modern Mimari', 'Engelli Erişimi', 'Asansör'],
         statusText: 'İhale Sürecinde',
         isCommercial: true,
-        price: 'İhale İlnaı Bekleniyor'
+        price: 'İhale İlanı Bekleniyor'
     }
 ];
 
 export default function MunicipalBusinesses() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
-    const initialFilter = queryParams.get('type') === 'istirak' ? 'ISTIRAK' : 'ALL';
+    const typeParam = queryParams.get('type');
+    let initialFilter = 'ALL';
+    if (typeParam === 'istirak') initialFilter = 'ISTIRAK';
+    if (typeParam === 'kamu') initialFilter = 'CAMU';
 
     const [filter, setFilter] = useState(initialFilter);
     const [items, setItems] = useState(assetItems);
 
     useEffect(() => {
-        if (queryParams.get('type') === 'istirak') {
-            setFilter('ISTIRAK');
-        }
+        const type = queryParams.get('type');
+        if (type === 'istirak') setFilter('ISTIRAK');
+        else if (type === 'kamu') setFilter('CAMU');
     }, [location.search]);
 
     const filteredItems = filter === 'ALL'
@@ -148,7 +166,7 @@ export default function MunicipalBusinesses() {
                         {[
                             { id: 'ALL', label: 'TÜMÜ', icon: RectangleGroupIcon },
                             { id: 'ISTIRAK', label: 'İŞTİRAKLER', icon: UserGroupIcon },
-                            { id: 'CAMU', label: 'KAMU TESİSLERİ', icon: BuildingLibraryIcon },
+                            { id: 'CAMU', label: 'BELEDİYE TESİSLERİ', icon: BuildingLibraryIcon },
                             { id: 'COMMERCIAL', label: 'TİCARİ / İHALE', icon: TagIcon }
                         ].map((btn) => (
                             <button

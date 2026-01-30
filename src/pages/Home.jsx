@@ -356,18 +356,35 @@ export default function Home() {
 
       {/* Kent Bilgi Sistemi CTA */}
       <section className="pt-32 pb-16 container mx-auto px-6">
-        <div className="bg-slate-900 rounded-[4rem] p-12 lg:p-20 flex flex-col lg:flex-row items-center justify-between gap-12 relative overflow-hidden text-center lg:text-left">
+        <div className="bg-slate-900 rounded-[4rem] p-12 lg:p-20 flex flex-col lg:flex-row items-center justify-between gap-12 relative overflow-hidden text-center lg:text-left shadow-2xl shadow-blue-900/40">
           <div className="absolute top-0 right-0 h-full w-1/3 bg-blue-600/10 skew-x-12 translate-x-20" />
+          <div className="absolute -bottom-24 -left-24 h-64 w-64 bg-emerald-500/10 rounded-full blur-[80px]" />
+
           <div className="flex items-center gap-8 flex-col lg:flex-row relative z-10">
-            <div className="h-24 w-24 bg-white/10 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl blur-bg">
-              <MapIcon className="h-12 w-12" />
+            <div className="h-28 w-28 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl flex-shrink-0">
+              <MapIcon className="h-14 w-14" />
             </div>
             <div>
-              <h2 className="text-4xl font-black text-white tracking-tight uppercase italic mb-4">Kent Bilgi Sistemi</h2>
-              <p className="text-slate-400 font-bold max-w-xl uppercase tracking-widest text-xs opacity-80 leading-loose">Şehrimizin dijital ikizi, imar durumu, nöbetçi eczaneler ve önemli noktalar bir tık uzağınızda.</p>
+              <h2 className="text-4xl lg:text-5xl font-black text-white tracking-tighter uppercase italic mb-6">Kent Bilgi Sistemi</h2>
+              <p className="text-slate-300 font-medium max-w-xl text-lg opacity-90 leading-relaxed mb-8">
+                Güneyyurt'un dijital dünyasına hoş geldiniz! İmar Durumu, Nöbetçi Eczaneler ve Arsa Rayiç Değerleri gibi tüm verilere tek bir harita üzerinden ulaşın.
+              </p>
+              <div className="flex flex-wrap justify-center lg:justify-start gap-3">
+                {['İmar Durumu', 'Nöbetçi Eczaneler', 'Arsa Rayiç', 'POI / Önemli Yerler'].map((tag) => (
+                  <span key={tag} className="px-5 py-2 bg-white/5 border border-white/10 rounded-full text-[9px] font-black text-blue-400 uppercase tracking-widest whitespace-nowrap">
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-          <a href="https://bulutkbs.gov.tr/Rehber/" target="_blank" rel="noreferrer" className="btn-premium px-12 py-5 text-sm uppercase tracking-widest relative z-10">Sisteme Giriş Yap</a>
+          <div className="flex flex-col items-center gap-6 relative z-10 shrink-0">
+            <a href="https://bulutkbs.gov.tr/Rehber/" target="_blank" rel="noreferrer" className="btn-premium px-16 py-6 text-sm uppercase tracking-widest whitespace-nowrap group">
+              Sistemi Başlat
+              <ArrowRightIcon className="h-5 w-5 ml-3 inline-block group-hover:translate-x-2 transition-transform" />
+            </a>
+            <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">BulutKBS™ Altyapısıyla</p>
+          </div>
         </div>
       </section>
 

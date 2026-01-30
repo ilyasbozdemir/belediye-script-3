@@ -36,7 +36,7 @@ export default function Seo({ title, description, type = 'website', date, image,
           "description": description || "Güneyyurt Belediyesi Resmi Web Portalı. Şeffaf yönetim, dijital belediyecilik ve halkın hizmetinde.",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Belediye Cd. No:1",
+            "streetAddress": "Belediye Sk. No:8",
             "addressLocality": "Güneyyurt / Ermenek",
             "addressRegion": "Karaman",
             "postalCode": "70410",

@@ -26,6 +26,7 @@ import {
   HeartIcon,
   PhoneIcon
 } from '@heroicons/react/24/outline';
+import { SparklesIcon } from 'lucide-react';
 
 const navigation = [
   {
@@ -34,9 +35,9 @@ const navigation = [
     children: [
       { name: 'Belde Tarihçesi', href: '/kurumsal/tarihce', icon: BookOpenIcon },
       { name: 'Güneyyurt\'u Tanıyın', href: '/kesfet', icon: MapIcon },
-      { name: 'Tesisler & Sosyal Alanlar', href: '/kurumsal/isletmeler', icon: BuildingOfficeIcon },
-      { name: 'Nöbetçi Eczaneler', href: '/hizmetler/eczaneler', icon: HeartIcon },
       { name: 'Foto Galeri', href: '/galeri', icon: PhotoIcon },
+      { name: 'Nöbetçi Eczaneler', href: '/hizmetler/eczaneler', icon: HeartIcon },
+      { name: 'Hava Durumu', href: '/hava-durumu', icon: CloudIcon },
     ]
   },
   {
@@ -47,14 +48,14 @@ const navigation = [
       { name: 'Başkanın Özgeçmişi', href: '/kurumsal/baskan-ozgecmis', icon: IdentificationIcon },
       { name: 'Meclis Üyeleri', href: '/kurumsal/meclis', icon: UserGroupIcon },
       { name: 'Encümen Üyeleri', href: '/kurumsal/encumen', icon: UserGroupIcon },
-      { name: 'Eski Belediye Başkanlarımız', href: '/kurumsal/eski-baskanlar', icon: BuildingLibraryIcon },
-      { name: 'Belediye Projelerimiz', href: '/projeler', icon: SparklesIcon },
       { name: 'Belediye İştirakleri', href: '/kurumsal/isletmeler?type=istirak', icon: BuildingOfficeIcon },
-      { name: 'Mevzuat & Faaliyetler', href: '/kurumsal/mevzuat', icon: DocumentTextIcon, newTab: true },
-      { name: 'İhale Duyuruları', href: '/kurumsal/ihale-duyurulari', icon: MegaphoneIcon, newTab: true },
+      { name: 'Belediye Tesisleri', href: '/kurumsal/isletmeler?type=kamu', icon: BuildingLibraryIcon },
+      { name: 'Belediye Projelerimiz', href: '/projeler', icon: SparklesIcon },
+      { name: 'Mevzuat & Faaliyetler', href: '/kurumsal/mevzuat', icon: DocumentTextIcon },
+      { name: 'İhale Duyuruları', href: '/kurumsal/ihale-duyurulari', icon: MegaphoneIcon },
       { name: 'Hizmet Birimleri', href: '/kurumsal/birimler', icon: BuildingOfficeIcon },
       { name: 'Muhtarlıklar', href: '/kurumsal/muhtarliklar', icon: MapIcon },
-      { name: 'Hizmet Standartları', href: '/kurumsal/hizmet-standartlari', icon: ShieldCheckIcon },
+      { name: 'Eski Başkanlarımız', href: '/kurumsal/eski-baskanlar', icon: AcademicCapIcon },
     ]
   },
   {
@@ -117,10 +118,10 @@ export default function Header() {
       <header className={classNames(
         "fixed left-0 right-0 z-50 transition-all duration-700",
         isScrolled
-          ? "top-0 bg-white/95 backdrop-blur-xl shadow-xl py-3 border-b border-slate-200"
-          : "top-0 md:top-10 bg-transparent py-6"
+          ? "top-0 bg-white/95 backdrop-blur-xl shadow-2xl py-5 border-b border-slate-200"
+          : "top-0 md:top-10 bg-transparent py-10"
       )}>
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-8" aria-label="Global">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-8 lg:px-12" aria-label="Global">
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5 flex items-center gap-4 group">
               <img
@@ -128,7 +129,7 @@ export default function Header() {
                 alt="Güneyyurt Belediyesi"
                 className={classNames(
                   "w-auto object-contain transition-all duration-500 group-hover:scale-105",
-                  isScrolled ? "h-12 md:h-14" : "h-16 md:h-20"
+                  isScrolled ? "h-14 md:h-16" : "h-20 md:h-24"
                 )}
               />
             </Link>
@@ -138,16 +139,16 @@ export default function Header() {
             <button
               type="button"
               className={classNames(
-                "-m-2.5 inline-flex items-center justify-center rounded-xl p-2.5 transition-colors",
+                "-m-2.5 inline-flex items-center justify-center rounded-xl p-3 transition-colors",
                 isScrolled ? "text-slate-900" : (location.pathname === '/' ? "text-white" : "text-slate-900")
               )}
               onClick={() => setMobileMenuOpen(true)}
             >
-              <Bars3Icon className="h-7 w-7" aria-hidden="true" />
+              <Bars3Icon className="h-8 w-8" aria-hidden="true" />
             </button>
           </div>
 
-          <div className="hidden lg:flex lg:gap-x-4">
+          <div className="hidden lg:flex lg:gap-x-8">
             {navigation.map((item) => (
               <Popover key={item.name} className="static">
                 <Popover.Button className={classNames(

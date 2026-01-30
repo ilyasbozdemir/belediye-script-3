@@ -41,7 +41,7 @@ export default function Contact() {
                         </div>
                         <h3 className="text-xl font-black text-slate-900 mb-4 uppercase tracking-tight">Adresimiz</h3>
                         <p className="text-slate-500 font-bold leading-relaxed">
-                            Belediye Cd. No:1, 70410 <br />
+                            Belediye Sk. No:8, 70410 <br />
                             Güneyyurt, Ermenek / Karaman
                         </p>
                     </motion.div>
