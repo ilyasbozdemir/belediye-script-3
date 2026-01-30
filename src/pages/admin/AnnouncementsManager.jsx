@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
     PlusIcon,
@@ -7,38 +8,29 @@ import {
     XMarkIcon,
     PhotoIcon,
     MegaphoneIcon,
-    ClockIcon
+    ClockIcon,
+    MagnifyingGlassIcon,
+    ChevronRightIcon
 } from '@heroicons/react/24/outline';
-
-const PRIORITY_LEVELS = [
-    { value: 'normal', label: 'Normal', color: 'bg-slate-100 text-slate-700' },
-    { value: 'important', label: 'Önemli', color: 'bg-orange-100 text-orange-700' },
-    { value: 'urgent', label: 'Acil', color: 'bg-red-100 text-red-700' }
-];
 
 export default function AnnouncementsManager() {
     const [announcements, setAnnouncements] = useState([]);
-    const [showForm, setShowForm] = useState(false);
-    const [editingItem, setEditingItem] = useState(null);
-    const [formData, setFormData] = useState({
-        title: '',
-        content: '',
-        summary: '',
-        imageUrl: '',
-        category: 'Duyuru',
-        priority: 'normal',
-        expiryDate: '',
-        isModalFeatured: false
-    });
+    const [loading, setLoading] = useState(true);
+    const [showQuickAdd, setShowQuickAdd] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [newTitle, setNewTitle] = useState('');
+    const navigate = useNavigate();
 
     const fetchAnnouncements = async () => {
+        setLoading(true);
         try {
             const res = await axios.get('/api/news');
-            // Sadece duyurular
             const duyurular = res.data.filter(item => item.category === 'Duyuru');
             setAnnouncements(duyurular);
         } catch (err) {
             console.error(err);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -46,69 +38,19 @@ export default function AnnouncementsManager() {
         fetchAnnouncements();
     }, []);
 
-    const handleEdit = (item) => {
-        setEditingItem(item);
-        setFormData({
-            title: item.title,
-            content: item.content,
-            summary: item.summary || '',
-            imageUrl: item.imageUrl || '',
-            category: 'Duyuru',
-            priority: item.priority || 'normal',
-            expiryDate: item.expiryDate || '',
-            isModalFeatured: item.isModalFeatured || false
-        });
-        setShowForm(true);
-    };
-
-    const handleNew = () => {
-        setEditingItem(null);
-        setFormData({
-            title: '',
-            content: '',
-            summary: '',
-            imageUrl: '',
-            category: 'Duyuru',
-            priority: 'normal',
-            expiryDate: ''
-        });
-        setShowForm(true);
-    };
-
-    const handleCancel = () => {
-        setShowForm(false);
-        setEditingItem(null);
-        setFormData({
-            title: '',
-            content: '',
-            summary: '',
-            imageUrl: '',
-            category: 'Duyuru',
-            priority: 'normal',
-            expiryDate: ''
-        });
-    };
-
-    const handleSubmit = async (e) => {
+    const handleQuickAdd = async (e) => {
         e.preventDefault();
+        if (!newTitle.trim()) return;
         try {
-            if (editingItem) {
-                await axios.put(`/api/news/${editingItem.id}`, {
-                    ...formData,
-                    id: editingItem.id,
-                    createdDate: editingItem.createdDate
-                });
-            } else {
-                await axios.post('/api/news', {
-                    ...formData,
-                    createdDate: new Date().toISOString()
-                });
-            }
-            fetchAnnouncements();
-            handleCancel();
+            const res = await axios.post('/api/news', {
+                title: newTitle,
+                content: '',
+                category: 'Duyuru',
+                createdDate: new Date().toISOString()
+            });
+            navigate(`/admin/manage/news/${res.data.id}`);
         } catch (err) {
-            alert('İşlem başarısız');
-            console.error(err);
+            alert('Hata oluştu');
         }
     };
 
@@ -122,284 +64,139 @@ export default function AnnouncementsManager() {
         }
     };
 
-    const getPriorityBadge = (priority) => {
-        const level = PRIORITY_LEVELS.find(p => p.value === priority) || PRIORITY_LEVELS[0];
-        return level;
-    };
-
-    const isExpired = (expiryDate) => {
-        if (!expiryDate) return false;
-        return new Date(expiryDate) < new Date();
-    };
+    const filtered = announcements.filter(item =>
+        item.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
-        <div className="min-h-screen bg-slate-50">
-            {/* Header - Mobile First */}
-            <div className="bg-white border-b border-slate-200 sticky top-0 z-10">
-                <div className="p-4 sm:p-6">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <div>
-                            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 flex items-center gap-2">
-                                <MegaphoneIcon className="h-6 w-6 sm:h-7 sm:w-7 text-orange-600" />
-                                Duyuru Yönetimi
-                            </h1>
-                            <p className="text-sm text-slate-600 mt-1">Duyuruları ekleyin, düzenleyin veya silin</p>
-                        </div>
-                        {!showForm && (
-                            <button
-                                onClick={handleNew}
-                                className="w-full sm:w-auto px-6 py-3 bg-orange-600 text-white rounded-xl font-semibold hover:bg-orange-700 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-orange-600/30"
-                            >
-                                <PlusIcon className="h-5 w-5" />
-                                Yeni Duyuru
-                            </button>
-                        )}
-                    </div>
+        <div className="space-y-8">
+            <header className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div>
+                    <h1 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter flex items-center gap-4">
+                        <MegaphoneIcon className="h-10 w-10 text-orange-600" /> Duyuru Merkezi
+                    </h1>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-2 ml-1">Resmi Bildiriler • Toplam: {announcements.length}</p>
+                </div>
+                <button
+                    onClick={() => setShowQuickAdd(true)}
+                    className="px-8 py-4 bg-orange-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-orange-700 transition-all shadow-xl shadow-orange-200 flex items-center gap-3"
+                >
+                    <PlusIcon className="h-6 w-6" /> Yeni Duyuru Ekle
+                </button>
+            </header>
+
+            <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex-1 relative group">
+                    <MagnifyingGlassIcon className="h-6 w-6 absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-600 transition-colors" />
+                    <input
+                        type="text"
+                        placeholder="Duyurularda ara..."
+                        className="w-full pl-16 pr-8 py-5 bg-white rounded-2xl border border-slate-100 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all font-bold placeholder:text-slate-300"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+                    />
                 </div>
             </div>
 
-            <div className="p-4 sm:p-6 lg:p-8">
-                {/* Form Section - Full Page */}
-                {showForm ? (
-                    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 sm:p-6 lg:p-8">
-                        <div className="flex items-center justify-between mb-6">
-                            <h2 className="text-lg sm:text-xl font-bold text-slate-900">
-                                {editingItem ? 'Duyuru Düzenle' : 'Yeni Duyuru Ekle'}
-                            </h2>
-                            <button
-                                onClick={handleCancel}
-                                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-                            >
-                                <XMarkIcon className="h-6 w-6 text-slate-600" />
-                            </button>
-                        </div>
-
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Title */}
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Duyuru Başlığı *
-                                </label>
-                                <input
-                                    type="text"
-                                    required
-                                    value={formData.title}
-                                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-base"
-                                    placeholder="Duyuru başlığını girin..."
-                                />
-                            </div>
-
-                            {/* Priority & Expiry Date */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                        Öncelik Seviyesi
-                                    </label>
-                                    <select
-                                        value={formData.priority}
-                                        onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                                        className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-base"
-                                    >
-                                        {PRIORITY_LEVELS.map(level => (
-                                            <option key={level.value} value={level.value}>{level.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                        <ClockIcon className="h-4 w-4 inline mr-1" />
-                                        Son Geçerlilik Tarihi
-                                    </label>
-                                    <input
-                                        type="date"
-                                        value={formData.expiryDate}
-                                        onChange={(e) => setFormData({ ...formData, expiryDate: e.target.value })}
-                                        className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-base"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Modal Feature Toggle */}
-                            <div className="flex items-center gap-3 p-4 bg-orange-50 rounded-2xl border border-orange-100">
-                                <input
-                                    type="checkbox"
-                                    id="modalToggle"
-                                    checked={formData.isModalFeatured}
-                                    onChange={e => setFormData({ ...formData, isModalFeatured: e.target.checked })}
-                                    className="h-5 w-5 rounded border-orange-300 text-orange-600 focus:ring-orange-500 cursor-pointer"
-                                />
-                                <label htmlFor="modalToggle" className="text-sm font-bold text-orange-900 cursor-pointer">
-                                    Giriş Pop-up'ı Olarak Göster (Anasayfa açılışında gösterilir)
-                                </label>
-                            </div>
-
-                            {/* Image URL */}
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    <PhotoIcon className="h-4 w-4 inline mr-1" />
-                                    Görsel URL
-                                </label>
-                                <input
-                                    type="url"
-                                    value={formData.imageUrl}
-                                    onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-base"
-                                    placeholder="https://example.com/image.jpg"
-                                />
-                                {formData.imageUrl && (
-                                    <div className="mt-3">
-                                        <img
-                                            src={formData.imageUrl}
-                                            alt="Preview"
-                                            className="w-full sm:w-64 h-40 object-cover rounded-xl border-2 border-slate-200"
-                                            onError={(e) => e.target.style.display = 'none'}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Summary */}
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Özet (Kısa Açıklama)
-                                </label>
-                                <textarea
-                                    rows={3}
-                                    value={formData.summary}
-                                    onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
-                                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-base resize-none"
-                                    placeholder="Duyurunun kısa özetini yazın..."
-                                />
-                            </div>
-
-                            {/* Content */}
-                            <div>
-                                <label className="block text-sm font-semibold text-slate-700 mb-2">
-                                    Duyuru İçeriği *
-                                </label>
-                                <textarea
-                                    required
-                                    rows={12}
-                                    value={formData.content}
-                                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent text-base resize-none font-mono"
-                                    placeholder="Duyuru içeriğini buraya yazın..."
-                                />
-                                <p className="text-xs text-slate-500 mt-2">HTML etiketleri kullanabilirsiniz (örn: &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt;, &lt;li&gt;)</p>
-                            </div>
-
-                            {/* Actions */}
-                            <div className="flex flex-col-reverse sm:flex-row gap-3 pt-4 border-t border-slate-200">
-                                <button
-                                    type="button"
-                                    onClick={handleCancel}
-                                    className="w-full sm:w-auto px-6 py-3 bg-slate-100 text-slate-700 rounded-xl font-semibold hover:bg-slate-200 transition-colors"
-                                >
-                                    İptal
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="w-full sm:flex-1 px-6 py-3 bg-orange-600 text-white rounded-xl font-semibold hover:bg-orange-700 transition-colors shadow-lg shadow-orange-600/30"
-                                >
-                                    {editingItem ? 'Güncelle' : 'Yayınla'}
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                ) : (
-                    /* Announcements List - Mobile Optimized */
-                    <div className="space-y-4">
-                        {announcements.length === 0 ? (
-                            <div className="bg-white rounded-2xl p-12 text-center border-2 border-dashed border-slate-200">
-                                <MegaphoneIcon className="h-16 w-16 text-slate-300 mx-auto mb-4" />
-                                <p className="text-slate-600 font-semibold">Henüz duyuru eklenmemiş</p>
-                                <p className="text-slate-500 text-sm mt-2">Yeni duyuru eklemek için yukarıdaki butona tıklayın</p>
-                            </div>
-                        ) : (
-                            announcements.map((item) => (
-                                <div
-                                    key={item.id}
-                                    className={`bg-white rounded-2xl shadow-sm border-2 overflow-hidden hover:shadow-md transition-shadow ${isExpired(item.expiryDate) ? 'border-slate-200 opacity-60' : 'border-orange-200'
-                                        }`}
-                                >
-                                    <div className="flex flex-col sm:flex-row gap-4 p-4">
-                                        {/* Image */}
-                                        {item.imageUrl && (
-                                            <div className="w-full sm:w-48 h-40 sm:h-32 flex-shrink-0 rounded-xl overflow-hidden bg-slate-100">
-                                                <img
-                                                    src={item.imageUrl}
-                                                    alt={item.title}
-                                                    className="w-full h-full object-cover"
-                                                    onError={(e) => e.target.parentElement.style.display = 'none'}
-                                                />
-                                            </div>
-                                        )}
-
-                                        {/* Content */}
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-start justify-between gap-3 mb-2">
-                                                <div className="flex-1">
-                                                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getPriorityBadge(item.priority).color}`}>
-                                                            {getPriorityBadge(item.priority).label}
-                                                        </span>
-                                                        {item.isModalFeatured && (
-                                                            <span className="px-3 py-1 bg-blue-600 text-white rounded-full text-[9px] font-black uppercase tracking-widest">
-                                                                Pop-up Aktif
-                                                            </span>
-                                                        )}
-                                                        {isExpired(item.expiryDate) && (
-                                                            <span className="px-3 py-1 bg-slate-200 text-slate-600 rounded-full text-xs font-semibold">
-                                                                Süresi Dolmuş
-                                                            </span>
-                                                        )}
-                                                        <span className="text-xs text-slate-500">
-                                                            {new Date(item.createdDate).toLocaleDateString('tr-TR')}
-                                                        </span>
-                                                        {item.expiryDate && !isExpired(item.expiryDate) && (
-                                                            <span className="text-xs text-orange-600 flex items-center gap-1">
-                                                                <ClockIcon className="h-3 w-3" />
-                                                                {new Date(item.expiryDate).toLocaleDateString('tr-TR')}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                    <h3 className="text-base sm:text-lg font-bold text-slate-900 line-clamp-2 mb-2">
-                                                        {item.title}
-                                                    </h3>
-                                                    {item.summary && (
-                                                        <p className="text-sm text-slate-600 line-clamp-2">
-                                                            {item.summary}
-                                                        </p>
-                                                    )}
-                                                </div>
-                                            </div>
-
-                                            {/* Actions */}
-                                            <div className="flex gap-2 mt-3">
-                                                <button
-                                                    onClick={() => handleEdit(item)}
-                                                    className="flex-1 sm:flex-none px-4 py-2 bg-orange-50 text-orange-600 rounded-lg font-semibold hover:bg-orange-100 transition-colors flex items-center justify-center gap-2 text-sm"
-                                                >
-                                                    <PencilIcon className="h-4 w-4" />
-                                                    Düzenle
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(item.id)}
-                                                    className="flex-1 sm:flex-none px-4 py-2 bg-red-50 text-red-600 rounded-lg font-semibold hover:bg-red-100 transition-colors flex items-center justify-center gap-2 text-sm"
-                                                >
-                                                    <TrashIcon className="h-4 w-4" />
-                                                    Sil
-                                                </button>
-                                            </div>
+            <div className="bg-white rounded-[3rem] border border-slate-100 shadow-sm overflow-hidden">
+                <table className="w-full border-collapse">
+                    <thead>
+                        <tr className="bg-slate-50/50 border-b border-slate-100">
+                            <th className="px-8 py-6 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Duyuru</th>
+                            <th className="px-8 py-6 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] hidden md:table-cell">Öncelik</th>
+                            <th className="px-8 py-6 text-left text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] hidden lg:table-cell">Durum</th>
+                            <th className="px-8 py-6 text-center text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-50">
+                        {filtered.map((item) => (
+                            <tr key={item.id} className="group hover:bg-slate-50/50 transition-colors">
+                                <td className="px-8 py-6">
+                                    <div className="flex items-center gap-4">
+                                        <div className="h-14 w-14 rounded-2xl overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-200">
+                                            {item.imageUrl ? (
+                                                <img src={item.imageUrl} className="w-full h-full object-cover" alt="" />
+                                            ) : (
+                                                <PhotoIcon className="h-6 w-6 text-slate-300 m-auto mt-4" />
+                                            )}
+                                        </div>
+                                        <div>
+                                            <h4 className="font-black text-slate-900 italic tracking-tight group-hover:text-orange-600 transition-colors">{item.title}</h4>
+                                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-1">ID: #{item.id} • {new Date(item.createdDate).toLocaleDateString()}</p>
                                         </div>
                                     </div>
-                                </div>
-                            ))
-                        )}
-                    </div>
-                )}
+                                </td>
+                                <td className="px-8 py-6 hidden md:table-cell">
+                                    <span className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest ${item.priority === 'urgent' ? 'bg-red-50 text-red-600' :
+                                            item.priority === 'important' ? 'bg-orange-50 text-orange-600' :
+                                                'bg-slate-50 text-slate-600'
+                                        }`}>
+                                        {item.priority || 'normal'}
+                                    </span>
+                                </td>
+                                <td className="px-8 py-6 hidden lg:table-cell">
+                                    <div className="flex items-center gap-2">
+                                        {item.isModalFeatured ? (
+                                            <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-[9px] font-black uppercase tracking-widest">Pop-up Aktif</span>
+                                        ) : (
+                                            <span className="text-[9px] font-black text-slate-300 uppercase tracking-widest italic">Standart</span>
+                                        )}
+                                    </div>
+                                </td>
+                                <td className="px-8 py-6">
+                                    <div className="flex items-center justify-center gap-3">
+                                        <button
+                                            onClick={() => navigate(`/admin/manage/news/${item.id}`)}
+                                            className="h-10 w-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:bg-orange-600 hover:text-white transition-all shadow-sm"
+                                        >
+                                            <PencilIcon className="h-4 w-4" />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(item.id)}
+                                            className="h-10 w-10 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:bg-red-600 hover:text-white transition-all shadow-sm"
+                                        >
+                                            <TrashIcon className="h-4 w-4" />
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
+
+            {showQuickAdd && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-900/60 backdrop-blur-sm">
+                    <div className="bg-white w-full max-w-lg rounded-[3rem] shadow-2xl p-10 border border-slate-100">
+                        <div className="flex items-center justify-between mb-8">
+                            <h3 className="text-2xl font-black text-slate-900 uppercase italic tracking-tighter">Yeni Duyuru Girişi</h3>
+                            <button
+                                onClick={() => setShowQuickAdd(false)}
+                                className="h-10 w-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all"
+                            >
+                                <XMarkIcon className="h-5 w-5" />
+                            </button>
+                        </div>
+                        <form onSubmit={handleQuickAdd} className="space-y-6">
+                            <div>
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Duyuru Başlığı</label>
+                                <input
+                                    autoFocus
+                                    required
+                                    placeholder="Örn: Su Kesintisi Hakkında Bilgilendirme"
+                                    className="admin-input w-full py-5 text-lg font-bold"
+                                    value={newTitle}
+                                    onChange={e => setNewTitle(e.target.value)}
+                                />
+                            </div>
+                            <button className="w-full py-5 bg-orange-600 text-white rounded-[1.5rem] font-black uppercase tracking-widest hover:bg-orange-700 transition-all shadow-xl shadow-orange-200">
+                                Kaydet & Detaya Git
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
+
