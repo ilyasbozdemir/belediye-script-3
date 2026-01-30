@@ -79,7 +79,7 @@ export default function ServicesGuide() {
         <div className="bg-slate-50 min-h-screen pb-32">
             <Seo title="Hizmet Rehberi | Güneyyurt Belediyesi" description="Güneyyurt Belediyesi tarafından sunulan tüm dijital ve fiziksel hizmetlerin rehberi." />
 
-            <div className="bg-slate-900 pt-32 pb-48 text-center px-6 relative overflow-hidden">
+            <div className="bg-slate-900 pt-72 lg:pt-80 pb-48 text-center px-6 relative overflow-hidden">
                 <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay" />
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}

@@ -62,6 +62,12 @@ export default function Events() {
         }))
     };
 
+    const formatDate = (dateStr) => {
+        if (!dateStr) return "-";
+        const d = new Date(dateStr);
+        return isNaN(d.getTime()) ? "-" : d.toLocaleDateString('tr-TR');
+    };
+
     return (
         <div className="bg-slate-50 min-h-screen pb-32">
             <Seo
@@ -70,7 +76,7 @@ export default function Events() {
                 jsonLd={jsonLd}
             />
 
-            <div className="bg-slate-900 pt-32 pb-48 text-center px-6 relative overflow-hidden">
+            <div className="bg-slate-900 pt-52 lg:pt-64 pb-48 text-center px-6 relative overflow-hidden">
                 <div className="absolute inset-0 bg-blue-600/10 mix-blend-overlay" />
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -116,7 +122,7 @@ export default function Events() {
                                     <div className="flex items-center gap-2 text-slate-400 mb-4">
                                         <CalendarDaysIcon className="h-4 w-4" />
                                         <span className="text-[10px] font-black uppercase tracking-widest">
-                                            {new Date(ev.startDate).toLocaleDateString('tr-TR')}
+                                            {formatDate(ev.startDate)}
                                         </span>
                                     </div>
                                     <h3 className="text-2xl font-black text-slate-900 mb-6 italic tracking-tight uppercase leading-none group-hover:text-blue-600 transition-colors">

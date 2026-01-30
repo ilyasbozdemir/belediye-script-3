@@ -34,7 +34,7 @@ export default function ProjectList({ statusFilter }) {
       <Seo title={`${statusTitle} | Güneyyurt Belediyesi`} description={`Güneyyurt Belediyesi ${statusTitle} sayfası ve yatırım detayları.`} />
 
       {/* Header Section */}
-      <div className="bg-slate-900 pt-32 pb-48 text-center px-6 relative overflow-hidden">
+      <div className="bg-slate-900 pt-52 lg:pt-64 pb-48 text-center px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -42,7 +42,7 @@ export default function ProjectList({ statusFilter }) {
         >
           <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic">{statusTitle}</h1>
           <div className="h-1.5 w-24 bg-blue-600 mx-auto mt-8 rounded-full"></div>
-          <p className="mt-8 text-slate-400 font-medium max-w-2xl mx-auto text-lg uppercase tracking-widest opacity-80">Güneyyurt'un yarınlarını bugünden inşa ediyoruz.</p>
+          <p className="mt-8 text-slate-400 font-bold max-w-2xl mx-auto text-lg uppercase tracking-widest opacity-80 leading-relaxed">Güneyyurt'un yarınlarını bugünden inşa ediyoruz.</p>
         </motion.div>
       </div>
 

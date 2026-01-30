@@ -26,11 +26,17 @@ export default function DeceasedList() {
     fetchDeceased();
   }, []);
 
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
+    const d = new Date(dateStr);
+    return isNaN(d) ? "-" : d.toLocaleDateString('tr-TR');
+  };
+
   return (
     <div className="bg-slate-50 min-h-screen pb-32">
-      <Seo title="Aramızdan Ayrılanlar | Güneyyurt Belediyesi" description="Güneyyurt Belediyesi vefat ilanları ve defin bilgileri." />
+      <Seo title="Vefat İlanları (Arşiv - Örnek) | Güneyyurt Belediyesi" description="Güneyyurt Belediyesi geçmiş vefat ilanları ve defin bilgileri örneği." />
 
-      <div className="bg-slate-900 pt-40 pb-48 text-center px-6 relative overflow-hidden">
+      <div className="bg-slate-900 pt-48 pb-48 text-center px-6 relative overflow-hidden">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 0.1 }}
@@ -43,7 +49,7 @@ export default function DeceasedList() {
           animate={{ opacity: 1, scale: 1 }}
           className="relative z-10"
         >
-          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase">Aramızdan Ayrılanlar</h1>
+          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase">Vefat İlanları <br /><span className="text-blue-500 text-2xl md:text-3xl">(Örnek Kayıtlar)</span></h1>
           <div className="h-1.5 w-24 bg-slate-600 mx-auto mt-8 rounded-full"></div>
           <p className="mt-8 text-slate-400 font-bold max-w-2xl mx-auto text-lg uppercase tracking-widest leading-loose">Başımız Sağolsun. <br /> "Her nefis ölümü tadacaktır."</p>
         </motion.div>
@@ -81,7 +87,7 @@ export default function DeceasedList() {
                   <h3 className="text-2xl font-black text-slate-900 mb-2 tracking-tighter uppercase">{item.name} {item.surname}</h3>
                   <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4">
                     {item.fatherName ? `${item.fatherName} Oğlu/Kızı` : ''}
-                    {item.birthDate ? ` • D: ${new Date(item.birthDate).getFullYear()}` : ''}
+                    {item.birthDate && !isNaN(new Date(item.birthDate)) ? ` • D: ${new Date(item.birthDate).getFullYear()}` : ''}
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -91,7 +97,7 @@ export default function DeceasedList() {
                       </div>
                       <div>
                         <p className="text-[9px] font-black text-slate-400 uppercase leading-none mb-1">Vefat / Defin</p>
-                        <p className="text-xs font-bold">{new Date(item.deathDate).toLocaleDateString('tr-TR')} / {item.burialDate ? new Date(item.burialDate).toLocaleDateString('tr-TR') : '-'}</p>
+                        <p className="text-xs font-bold">{formatDate(item.deathDate)} / {formatDate(item.burialDate)}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3 text-slate-500">

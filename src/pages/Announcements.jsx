@@ -40,12 +40,18 @@ export default function Announcements() {
         ? announcements
         : announcements.filter(a => a.category === filter);
 
+    const formatDate = (dateStr) => {
+        if (!dateStr) return "-";
+        const d = new Date(dateStr);
+        return isNaN(d.getTime()) ? "-" : d.toLocaleDateString('tr-TR');
+    };
+
     return (
         <div className="bg-slate-50 min-h-screen pb-32">
             <Seo title="Duyurular & Anonslar | Güneyyurt Belediyesi" description="Güneyyurt Belediyesi resmi duyuruları ve zabıta amirliği anonsları." />
 
             {/* Header Section */}
-            <div className="bg-amber-500 pt-32 pb-48 text-center px-6 relative overflow-hidden">
+            <div className="bg-amber-500 pt-52 pb-48 text-center px-6 relative overflow-hidden">
                 <div className="absolute inset-0 bg-slate-900/10" />
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -114,7 +120,7 @@ export default function Announcements() {
                                             </span>
                                             <div className="flex items-center gap-2 text-slate-400">
                                                 <CalendarDaysIcon className="h-4 w-4" />
-                                                <span className="text-[10px] font-black uppercase tracking-widest">{new Date(item.createdDate).toLocaleDateString('tr-TR')}</span>
+                                                <span className="text-[10px] font-black uppercase tracking-widest">{formatDate(item.createdDate)}</span>
                                             </div>
                                         </div>
 

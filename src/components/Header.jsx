@@ -65,8 +65,8 @@ const navigation = [
       { name: 'E-Belediye Sorgulama', href: 'https://e-hizmet.guneyyurt.bel.tr/', icon: GlobeAltIcon, external: true },
       { name: 'İstek & Şikayet Formu', href: '/hizmetler/basvuru', icon: ChatBubbleLeftRightIcon },
       { name: 'Parsel Sorgulama (TKGM)', href: 'https://parselsorgu.tkgm.gov.tr/', icon: MapIcon, external: true },
-      { name: 'Vefat Edenler / Taziye', href: '/hizmetler/vefatlar', icon: NewspaperIcon },
-      { name: 'Nikah Başvurusu', href: '/hizmetler/evlendirme', icon: HeartIcon },
+      { name: 'Vefat İlanları (Örnek)', href: '/hizmetler/vefatlar', icon: NewspaperIcon },
+      { name: 'Nikah İşlemleri (Örnek)', href: '/hizmetler/evlendirme', icon: HeartIcon },
       { name: 'Hizmet Rehberi', href: '/hizmetler/rehber', icon: BookOpenIcon },
       { name: 'Online Dilekçe İşlemleri', href: '/hizmetler/dilekce', icon: DocumentTextIcon },
     ]
@@ -81,6 +81,10 @@ const navigation = [
       { name: 'Basında Güneyyurt', href: '/kurumsal/basinda-biz', icon: GlobeAltIcon },
       { name: 'Hava Durumu', href: '/hava-durumu', icon: CloudIcon },
     ]
+  },
+  {
+    name: 'İLETİŞİM',
+    href: '/iletisim',
   },
 ];
 
@@ -121,7 +125,7 @@ export default function Header() {
           ? "top-0 bg-white/95 backdrop-blur-xl shadow-2xl py-5 border-b border-slate-200"
           : "top-0 md:top-10 bg-transparent py-10"
       )}>
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-8 lg:px-12" aria-label="Global">
+        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5 flex items-center gap-4 group">
               <img
@@ -148,83 +152,98 @@ export default function Header() {
             </button>
           </div>
 
-          <div className="hidden lg:flex lg:gap-x-8">
+          <div className="hidden lg:flex lg:gap-x-4 xl:gap-x-6">
             {navigation.map((item) => (
-              <Popover key={item.name} className="static">
-                <Popover.Button className={classNames(
-                  "flex items-center gap-x-1.5 px-5 py-2.5 text-sm font-black transition-all duration-300 rounded-full outline-none group",
-                  isScrolled
-                    ? "text-slate-900 hover:bg-slate-100"
-                    : "text-white hover:bg-white/10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
-                )}>
-                  {item.name}
-                  <ChevronDownIcon className="h-4 w-4 opacity-50 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
-                </Popover.Button>
+              item.children ? (
+                <Popover key={item.name} className="static">
+                  <Popover.Button className={classNames(
+                    "flex items-center gap-x-1.5 px-5 py-2.5 text-sm font-black transition-all duration-300 rounded-full outline-none group",
+                    isScrolled
+                      ? "text-slate-900 hover:bg-slate-100"
+                      : "text-white hover:bg-white/10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+                  )}>
+                    {item.name}
+                    <ChevronDownIcon className="h-4 w-4 opacity-50 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
+                  </Popover.Button>
 
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-300"
-                  enterFrom="opacity-0 -translate-y-4"
-                  enterTo="opacity-100 translate-y-0"
-                  leave="transition ease-in duration-200"
-                  leaveFrom="opacity-100 translate-y-0"
-                  leaveTo="opacity-0 -translate-y-4"
-                >
-                  <Popover.Panel className="absolute inset-x-0 top-full z-[100] w-full bg-white border-y border-slate-100 shadow-2xl py-12">
-                    {({ close }) => (
-                      <div className="mx-auto max-w-7xl px-8">
-                        <div className="flex flex-col lg:flex-row gap-16">
-                          <div className="lg:w-1/4">
-                            <div className="bg-slate-50 rounded-[2.5rem] p-10">
-                              <h4 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter mb-6">
-                                {item.name}
-                              </h4>
-                              <p className="text-sm font-bold text-slate-500 leading-relaxed italic uppercase tracking-widest opacity-60">
-                                {item.name} menüsü altındaki tüm servislerimize ve bilgilendirici içeriklerimize aşağıdan ulaşabilirsiniz.
-                              </p>
-                              <div className="mt-8 h-1 w-12 bg-blue-600 rounded-full"></div>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-300"
+                    enterFrom="opacity-0 -translate-y-4"
+                    enterTo="opacity-100 translate-y-0"
+                    leave="transition ease-in duration-200"
+                    leaveFrom="opacity-100 translate-y-0"
+                    leaveTo="opacity-0 -translate-y-4"
+                  >
+                    <Popover.Panel className="absolute inset-x-0 top-full z-[100] w-full bg-white border-y border-slate-100 shadow-2xl py-12">
+                      {({ close }) => (
+                        <div className="mx-auto max-w-7xl px-8">
+                          <div className="flex flex-col lg:flex-row gap-16">
+                            <div className="lg:w-1/4">
+                              <div className="bg-slate-50 rounded-[2.5rem] p-10">
+                                <h4 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter mb-6">
+                                  {item.name}
+                                </h4>
+                                <p className="text-sm font-bold text-slate-500 leading-relaxed italic uppercase tracking-widest opacity-60">
+                                  {item.name} menüsü altındaki tüm servislerimize ve bilgilendirici içeriklerimize aşağıdan ulaşabilirsiniz.
+                                </p>
+                                <div className="mt-8 h-1 w-12 bg-blue-600 rounded-full"></div>
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="lg:w-3/4">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
-                              {item.children.map((child) => (
-                                <div key={child.name} className="relative group/item">
-                                  {child.external || child.newTab ? (
-                                    <a
-                                      href={child.href}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      onClick={() => close()}
-                                      className="flex items-center gap-4 group rounded-3xl px-6 py-5 text-sm font-black text-slate-600 hover:bg-blue-600 hover:text-white transition-all duration-300 uppercase tracking-tight italic"
-                                    >
-                                      <div className="h-10 w-10 flex-shrink-0 bg-slate-50 group-hover:bg-white/20 rounded-xl flex items-center justify-center transition-colors">
-                                        <child.icon className="h-5 w-5 text-blue-600 group-hover:text-white transition-colors" />
-                                      </div>
-                                      {child.name}
-                                    </a>
-                                  ) : (
-                                    <Link
-                                      to={child.href}
-                                      onClick={() => close()}
-                                      className="flex items-center gap-4 group rounded-3xl px-6 py-5 text-sm font-black text-slate-600 hover:bg-blue-600 hover:text-white transition-all duration-300 uppercase tracking-tight italic"
-                                    >
-                                      <div className="h-10 w-10 flex-shrink-0 bg-slate-50 group-hover:bg-white/20 rounded-xl flex items-center justify-center transition-colors">
-                                        <child.icon className="h-5 w-5 text-blue-600 group-hover:text-white transition-colors" />
-                                      </div>
-                                      {child.name}
-                                    </Link>
-                                  )}
-                                </div>
-                              ))}
+                            <div className="lg:w-3/4">
+                              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
+                                {item.children.map((child) => (
+                                  <div key={child.name} className="relative group/item">
+                                    {child.external || child.newTab ? (
+                                      <a
+                                        href={child.href}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        onClick={() => close()}
+                                        className="flex items-center gap-4 group rounded-3xl px-6 py-5 text-sm font-black text-slate-600 hover:bg-blue-600 hover:text-white transition-all duration-300 uppercase tracking-tight italic"
+                                      >
+                                        <div className="h-10 w-10 flex-shrink-0 bg-slate-50 group-hover:bg-white/20 rounded-xl flex items-center justify-center transition-colors">
+                                          <child.icon className="h-5 w-5 text-blue-600 group-hover:text-white transition-colors" />
+                                        </div>
+                                        {child.name}
+                                      </a>
+                                    ) : (
+                                      <Link
+                                        to={child.href}
+                                        onClick={() => close()}
+                                        className="flex items-center gap-4 group rounded-3xl px-6 py-5 text-sm font-black text-slate-600 hover:bg-blue-600 hover:text-white transition-all duration-300 uppercase tracking-tight italic"
+                                      >
+                                        <div className="h-10 w-10 flex-shrink-0 bg-slate-50 group-hover:bg-white/20 rounded-xl flex items-center justify-center transition-colors">
+                                          <child.icon className="h-5 w-5 text-blue-600 group-hover:text-white transition-colors" />
+                                        </div>
+                                        {child.name}
+                                      </Link>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </Popover.Panel>
-                </Transition>
-              </Popover>
+                      )}
+                    </Popover.Panel>
+                  </Transition>
+                </Popover>
+              ) : (
+                <Link
+                  key={item.name}
+                  to={item.href}
+                  className={classNames(
+                    "flex items-center px-5 py-2.5 text-sm font-black transition-all duration-300 rounded-full outline-none group",
+                    isScrolled
+                      ? "text-slate-900 hover:bg-slate-100"
+                      : "text-white hover:bg-white/10 drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+                  )}
+                >
+                  {item.name}
+                </Link>
+              )
             ))}
           </div>
 
@@ -279,39 +298,43 @@ export default function Header() {
 
               <div className="space-y-6">
                 {navigation.map((item) => (
-                  <Disclosure as="div" key={item.name} className="border-b border-slate-50 pb-4">
-                    {({ open }) => (
-                      <>
-                        <Disclosure.Button className="flex w-full items-center justify-between text-lg font-bold text-slate-900 uppercase">
-                          {item.name}
-                          <ChevronDownIcon className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 text-slate-400 transition-transform')} />
-                        </Disclosure.Button>
-                        <Disclosure.Panel className="mt-4 space-y-2 pl-2">
-                          {item.children.map((child) => (
-                            <Link
-                              key={child.name}
-                              to={child.href}
-                              className="flex items-center gap-4 px-4 py-3 rounded-2xl text-base font-black text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all uppercase italic tracking-tight"
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              <div className="h-8 w-8 rounded-lg bg-slate-50 flex items-center justify-center">
-                                <child.icon className="h-4 w-4 text-slate-400 group-hover:text-blue-600" />
-                              </div>
-                              {child.name}
-                            </Link>
-                          ))}
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
+                  item.children ? (
+                    <Disclosure as="div" key={item.name} className="border-b border-slate-50 pb-4">
+                      {({ open }) => (
+                        <>
+                          <Disclosure.Button className="flex w-full items-center justify-between text-lg font-bold text-slate-900 uppercase">
+                            {item.name}
+                            <ChevronDownIcon className={classNames(open ? 'rotate-180' : '', 'h-5 w-5 text-slate-400 transition-transform')} />
+                          </Disclosure.Button>
+                          <Disclosure.Panel className="mt-4 space-y-2 pl-2">
+                            {item.children.map((child) => (
+                              <Link
+                                key={child.name}
+                                to={child.href}
+                                className="flex items-center gap-4 px-4 py-3 rounded-2xl text-base font-black text-slate-500 hover:text-blue-600 hover:bg-blue-50 transition-all uppercase italic tracking-tight"
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                <div className="h-8 w-8 rounded-lg bg-slate-50 flex items-center justify-center">
+                                  <child.icon className="h-4 w-4 text-slate-400 group-hover:text-blue-600" />
+                                </div>
+                                {child.name}
+                              </Link>
+                            ))}
+                          </Disclosure.Panel>
+                        </>
+                      )}
+                    </Disclosure>
+                  ) : (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className="block text-lg font-bold text-slate-900 border-b border-slate-50 pb-4 uppercase"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  )
                 ))}
-                <Link
-                  to="/iletisim"
-                  className="block text-lg font-bold text-slate-900 border-b border-slate-50 pb-4 uppercase"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  İletişim
-                </Link>
                 <div className="pt-8 text-center text-[8px] font-black text-amber-600 uppercase tracking-widest leading-loose">
                   SİTE ŞU AN DEMO MODUNDADIR.
                 </div>

@@ -12,7 +12,7 @@ export default function TownHistory() {
         <div className="bg-slate-50 min-h-screen pb-32">
             <Seo title="Beldemizin Tarihçesi | Güneyyurt Belediyesi" description="Güneyyurt'un antik dönemden günümüze uzanan tarihi, kültürel mirası ve kuruluşu." />
 
-            <div className="bg-slate-900 pt-32 pb-48 text-center px-6 relative overflow-hidden">
+            <div className="bg-slate-900 pt-52 lg:pt-64 pb-48 text-center px-6 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-20">
                     <img src="https://images.unsplash.com/photo-1541810232773-6784534346bb?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover" alt="History BG" />
                 </div>

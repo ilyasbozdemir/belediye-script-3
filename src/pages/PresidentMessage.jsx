@@ -7,7 +7,7 @@ export default function PresidentMessage() {
         <div className="bg-white min-h-screen pb-32">
             <Seo title="Başkanın Mesajı | Güneyyurt Belediyesi" description="Güneyyurt Belediye Başkanı'nın halkımıza mesajı." />
 
-            <div className="bg-slate-900 pt-48 pb-64 text-center px-6 relative overflow-hidden">
+            <div className="bg-slate-900 pt-64 lg:pt-72 pb-64 text-center px-6 relative overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <img
                         src="https://images.unsplash.com/photo-1541810232773-6784534346bb?auto=format&fit=crop&q=80&w=2000"

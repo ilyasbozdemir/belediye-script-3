@@ -17,11 +17,17 @@ const decisions = [
 ];
 
 export default function CommitteeDecisions() {
+    const formatDate = (dateStr) => {
+        if (!dateStr) return "-";
+        const d = new Date(dateStr);
+        return isNaN(d.getTime()) ? "-" : d.toLocaleDateString('tr-TR');
+    };
+
     return (
         <div className="bg-slate-50 min-h-screen pb-32">
             <Seo title="Encümen Kararları | Güneyyurt Belediyesi" description="Güneyyurt Belediyesi haftalık encümen toplantı kararları ve arşiv kayıtları." />
 
-            <div className="bg-blue-600 pt-32 pb-48 text-center px-6 relative overflow-hidden">
+            <div className="bg-blue-600 pt-52 lg:pt-64 pb-48 text-center px-6 relative overflow-hidden">
                 <div className="absolute inset-0 bg-slate-900/10" />
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -80,7 +86,7 @@ export default function CommitteeDecisions() {
                                         </h3>
                                         <div className="flex items-center gap-4 text-slate-400">
                                             <CalendarDaysIcon className="h-4 w-4" />
-                                            <span className="text-[10px] font-black uppercase tracking-widest">{new Date(decision.date).toLocaleDateString('tr-TR')}</span>
+                                            <span className="text-[10px] font-black uppercase tracking-widest">{formatDate(decision.date)}</span>
                                         </div>
                                     </div>
                                 </div>

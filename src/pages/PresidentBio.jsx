@@ -13,7 +13,7 @@ export default function PresidentBio() {
       <Seo title="Başkanın Özgeçmişi | Güneyyurt Belediyesi" description="Güneyyurt Belediye Başkanı Sayın Ahmet Arı'nın özgeçmişi." />
 
       {/* Hero Section */}
-      <div className="bg-slate-900 pt-32 pb-48 text-center px-6 relative overflow-hidden">
+      <div className="bg-slate-900 pt-52 lg:pt-64 pb-48 text-center px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-blue-600/10 mix-blend-overlay" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}

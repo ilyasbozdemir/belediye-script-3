@@ -69,14 +69,16 @@ export default function Units() {
         <div className="bg-white min-h-screen pb-32">
             <Seo title="Hizmet Birimleri | Güneyyurt Belediyesi" description="Belediyemizin idari ve teknik birimleri hakkında bilgiler." />
 
-            <div className="bg-slate-50 pt-32 pb-24 text-center px-6 border-b border-slate-100">
+            <div className="bg-slate-900 pt-52 lg:pt-64 pb-32 text-center px-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-blue-600/10 mix-blend-overlay" />
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
+                    className="relative z-10"
                 >
-                    <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight uppercase">Hizmet Birimleri</h1>
+                    <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic">Hizmet Birimleri</h1>
                     <div className="h-1.5 w-24 bg-blue-600 mx-auto mt-8 rounded-full"></div>
-                    <p className="mt-8 text-slate-500 font-medium max-w-2xl mx-auto text-lg">Güneyyurt Belediyesi olarak profesyonel birimlerimizle halkımıza en iyi hizmeti sunmak için durmaksızın çalışıyoruz.</p>
+                    <p className="mt-8 text-slate-400 font-bold max-w-2xl mx-auto text-lg uppercase tracking-widest opacity-80 leading-relaxed">Güneyyurt Belediyesi profesyonel birimleriyle <br /> halkımıza en iyi hizmeti sunar.</p>
                 </motion.div>
             </div>
 

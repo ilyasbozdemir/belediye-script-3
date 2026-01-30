@@ -22,11 +22,17 @@ export default function Marriages() {
     fetchMarriages();
   }, []);
 
+  const formatDate = (dateStr) => {
+    if (!dateStr) return "-";
+    const d = new Date(dateStr);
+    return isNaN(d) ? "-" : d.toLocaleDateString('tr-TR');
+  };
+
   return (
     <div className="bg-white min-h-screen pb-32">
-      <Seo title="Mutluluğa 'Evet' Diyenler | Güneyyurt Belediyesi" description="Güneyyurt Belediyesi'nde dünya evine giren çiftlerimiz." />
+      <Seo title="Mutluluğa 'Evet' Diyenler (Arşiv - Örnek) | Güneyyurt Belediyesi" description="Güneyyurt Belediyesi'nde dünya evine giren çiftlerimiz (Örnek Kayıtlar)." />
 
-      <div className="bg-pink-500 pt-40 pb-32 text-center px-6 relative overflow-hidden">
+      <div className="bg-pink-500 pt-52 pb-32 text-center px-6 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-10">
           <SparklesIcon className="w-full h-full animate-pulse" />
         </div>
@@ -35,7 +41,7 @@ export default function Marriages() {
           animate={{ opacity: 1, scale: 1 }}
           className="relative z-10"
         >
-          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase">Mutluluğa 'Evet' Diyenler</h1>
+          <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase">Mutluluğa 'Evet' Diyenler <br /><span className="text-pink-200 text-2xl md:text-3xl">(Örnek Kayıtlar)</span></h1>
           <p className="mt-8 text-pink-100 font-bold max-w-2xl mx-auto text-lg uppercase tracking-widest opacity-80">Belediyemizde yeni bir hayata adım atan çiftlerimizi tebrik ediyoruz.</p>
         </motion.div>
       </div>
@@ -72,7 +78,7 @@ export default function Marriages() {
                 <div className="p-10 text-center">
                   <h3 className="text-2xl font-black text-slate-900 mb-2 leading-tight uppercase tracking-tighter">{m.husbandName} & {m.wifeName}</h3>
                   <div className="h-1 w-12 bg-pink-100 mx-auto mb-6 rounded-full group-hover:w-24 group-hover:bg-pink-500 transition-all duration-500" />
-                  <p className="text-pink-500 font-black text-[10px] uppercase tracking-[0.3em]">{new Date(m.marriageDate).toLocaleDateString('tr-TR')}</p>
+                  <p className="text-pink-500 font-black text-[10px] uppercase tracking-[0.3em]">{formatDate(m.marriageDate)}</p>
                 </div>
               </motion.div>
             ))}
