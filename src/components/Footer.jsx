@@ -9,9 +9,9 @@ import {
 const kurumsalLinks = [
   { name: 'Başkanın Özgeçmişi', href: '/kurumsal/baskan-ozgecmis' },
   { name: 'Meclis Üyeleri', href: '/kurumsal/meclis' },
+  { name: 'Meclis Kararları', href: '/kurumsal/meclis' },
   { name: 'Encümen Kararları', href: '/kurumsal/encumen-kararlari' },
   { name: 'Faaliyet Raporları', href: '/kurumsal/faaliyet-raporlari' },
-  { name: 'Stratejik Plan', href: '/kurumsal/stratejik-plan' },
   { name: 'Hizmet Birimleri', href: '/kurumsal/birimler' },
 ];
 
@@ -19,66 +19,68 @@ const hizmetLinks = [
   { name: 'Hizmet Rehberi', href: '/hizmetler/rehber' },
   { name: 'Hizmet Masası', href: '/hizmetler/basvuru' },
   { name: 'E-Belediye', href: 'https://e-hizmet.guneyyurt.bel.tr/', external: true },
-  { name: 'Kent Bilgi Sistemi', href: 'https://bulutkbs.gov.tr/Rehber/', external: true },
   { name: 'İmar Durumu', href: '/hizmetler/imar' },
+  { name: 'Nikah Başvurusu', href: '/hizmetler/evlendirme' },
 ];
 
 export default function Footer() {
   const links = [
+    { title: 'T.C. Cumhurbaşkanlığı', url: 'https://www.tccb.gov.tr/' },
+    { title: 'E-Devlet Kapısı', url: 'https://www.turkiye.gov.tr/' },
     { title: 'Karaman Valiliği', url: 'http://www.karaman.gov.tr/' },
     { title: 'Ermenek Kaymakamlığı', url: 'http://www.ermenek.gov.tr/' },
-    { title: 'Ermenek Belediyesi', url: 'https://www.ermenek.bel.tr/' },
+    { title: 'CİMER Başvuru', url: 'https://www.cimer.gov.tr/' },
+    { title: 'TKGM Parsel Sorgulama', url: 'https://parselsorgu.tkgm.gov.tr/' },
+    { title: 'T.C. Resmi Gazete', url: 'https://www.resmigazete.gov.tr/' }
   ];
   const socials = [];
 
   return (
     <footer className="bg-slate-900 border-t border-white/5 pt-24 pb-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8 mb-20">
 
           {/* Logo & About */}
           <div className="lg:col-span-1">
             <Link to="/" className="flex items-center gap-4 mb-8">
               <img src="/belediye-logo-light.png" alt="Logo" className="h-20 w-auto" />
             </Link>
-            <p className="text-slate-400 leading-relaxed max-w-xs mb-8">
+            <p className="text-slate-400 text-xs leading-[2] max-w-xs mb-8 italic opacity-70">
               Modern, şeffaf ve katılımcı belediyecilik anlayışıyla Güneyyurt'un geleceğini birlikte inşa ediyoruz.
             </p>
             <div className="flex gap-4">
-              {socials.length > 0 ? socials.map(s => (
-                <a key={s.id} href={s.url} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all">
-                  <span className="text-[10px] font-black uppercase">{s.platform.slice(0, 2)}</span>
-                </a>
-              )) : (
-                <>
-                  <a href="https://facebook.com/guneyyurtbelediyesi" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all font-black text-[10px]">FB</a>
-                  <a href="https://instagram.com/guneyyurtbelediyesi" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-pink-600 hover:text-white transition-all font-black text-[10px]">IG</a>
-                </>
-              )}
+              <a href="https://facebook.com/guneyyurtbelediyesi" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all font-black text-[10px]">FB</a>
+              <a href="https://instagram.com/guneyyurtbelediyesi" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-slate-400 hover:bg-pink-600 hover:text-white transition-all font-black text-[10px]">IG</a>
             </div>
           </div>
 
-          {/* Useful Links */}
+          {/* Quick Links - Hizmetler */}
           <div>
-            <h3 className="text-white font-extrabold mb-8 text-lg">Yararlı Linkler</h3>
+            <h3 className="text-white font-black mb-8 text-sm uppercase tracking-widest italic">Hizmetler</h3>
             <ul className="space-y-4">
-              {links.map((item, idx) => (
-                <li key={idx}>
-                  <a href={item.url} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-white hover:translate-x-1 transition-all inline-block font-medium">
-                    {item.title}
-                  </a>
+              {hizmetLinks.map((item) => (
+                <li key={item.name}>
+                  {item.external ? (
+                    <a href={item.href} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-white hover:translate-x-1 transition-all inline-block text-[11px] font-bold uppercase tracking-tight">
+                      {item.name}
+                    </a>
+                  ) : (
+                    <Link to={item.href} className="text-slate-400 hover:text-white hover:translate-x-1 transition-all inline-block text-[11px] font-bold uppercase tracking-tight">
+                      {item.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Links - Kurumsal */}
           <div>
-            <h3 className="text-white font-extrabold mb-8 text-lg">Kurumsal</h3>
+            <h3 className="text-white font-black mb-8 text-sm uppercase tracking-widest italic">Kurumsal</h3>
             <ul className="space-y-4">
               {kurumsalLinks.map((item) => (
                 <li key={item.name}>
-                  <Link to={item.href} className="text-slate-400 hover:text-white hover:translate-x-1 transition-all inline-block font-medium">
+                  <Link to={item.href} className="text-slate-400 hover:text-white hover:translate-x-1 transition-all inline-block text-[11px] font-bold uppercase tracking-tight">
                     {item.name}
                   </Link>
                 </li>
@@ -86,15 +88,29 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Useful Links */}
+          <div>
+            <h3 className="text-white font-black mb-8 text-sm uppercase tracking-widest italic">Yararlı Linkler</h3>
+            <ul className="space-y-4">
+              {links.map((item, idx) => (
+                <li key={idx}>
+                  <a href={item.url} target="_blank" rel="noreferrer" className="text-slate-400 hover:text-white hover:translate-x-1 transition-all inline-block text-[11px] font-bold uppercase tracking-tight">
+                    {item.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Contact */}
           <div>
-            <h3 className="text-white font-extrabold mb-8 text-lg">İletişim</h3>
-            <div className="space-y-6">
+            <h3 className="text-white font-black mb-8 text-sm uppercase tracking-widest italic">İletişim</h3>
+            <div className="space-y-8">
               <div className="flex gap-4">
                 <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
                   <MapPinIcon className="h-5 w-5 text-blue-400" />
                 </div>
-                <p className="text-slate-400 text-sm leading-relaxed">
+                <p className="text-slate-400 text-[11px] font-bold leading-relaxed uppercase tracking-tight">
                   Belediye Sk. No:8 <br /> Güneyyurt, Ermenek / Karaman
                 </p>
               </div>
@@ -102,10 +118,12 @@ export default function Footer() {
                 <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
                   <PhoneIcon className="h-5 w-5 text-blue-400" />
                 </div>
-                <p className="text-slate-400 text-sm leading-relaxed">
-                  +90 338 736 80 04 <br />
-                  <span className="opacity-50">Belediye Santral</span>
-                </p>
+                <div>
+                  <p className="text-white text-xs font-black tracking-widest">
+                    +90 338 736 80 04
+                  </p>
+                  <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest mt-1">Belediye Santral</p>
+                </div>
               </div>
             </div>
           </div>

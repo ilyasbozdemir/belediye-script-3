@@ -138,7 +138,7 @@ export default function MunicipalBusinesses() {
             />
 
             {/* Header Hero */}
-            <div className="bg-slate-900 pt-32 pb-64 px-6 relative overflow-hidden text-center">
+            <div className="bg-slate-900 pt-48 lg:pt-64 pb-64 px-6 relative overflow-hidden text-center">
                 <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay" />
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10">
                     <BuildingLibraryIcon className="h-16 w-16 text-blue-500 mx-auto mb-8" />
@@ -182,6 +182,22 @@ export default function MunicipalBusinesses() {
                     </div>
                 </div>
 
+                {/* Dynamic Section Title */}
+                <div className="mb-12 flex items-center justify-between">
+                    <div>
+                        <h2 className="text-2xl font-black text-slate-900 uppercase italic tracking-tighter">
+                            {filter === 'ALL' && 'Tüm Varlıklar & İştirakler'}
+                            {filter === 'ISTIRAK' && 'Belediye İştirakleri (Şirketler)'}
+                            {filter === 'CAMU' && 'Belediye Bağlı Tesisler'}
+                            {filter === 'COMMERCIAL' && 'Ticari Alanlar & İhaleler'}
+                        </h2>
+                        <div className="h-1 w-12 bg-blue-600 mt-2 rounded-full"></div>
+                    </div>
+                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-slate-100 px-4 py-2 rounded-full">
+                        {filteredItems.length} Kayıt Bulundu
+                    </span>
+                </div>
+
                 {/* Items Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
                     <AnimatePresence mode="popLayout">
@@ -196,14 +212,19 @@ export default function MunicipalBusinesses() {
                             >
                                 <div className="h-72 relative overflow-hidden">
                                     <img src={item.img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={item.name} />
-                                    <div className={`absolute top-8 right-8 px-6 py-2 rounded-full backdrop-blur-md text-[10px] font-black uppercase tracking-[0.2em] shadow-lg ${item.isCommercial ? 'bg-amber-500/90 text-white' : 'bg-blue-600/90 text-white'
+                                    <div className={`absolute top-8 right-8 px-6 py-2 rounded-full backdrop-blur-md text-[10px] font-black uppercase tracking-[0.2em] shadow-lg ${item.isSubsidiary
+                                        ? 'bg-indigo-600 text-white'
+                                        : item.isCommercial
+                                            ? 'bg-amber-500 text-white'
+                                            : 'bg-emerald-600 text-white'
                                         }`}>
                                         {item.category}
                                     </div>
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                                     <div className="absolute bottom-8 left-8 right-8 text-white">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <span className="text-[10px] font-black uppercase tracking-widest text-blue-400">{item.type}</span>
+                                            <span className={`text-[10px] font-black uppercase tracking-widest ${item.isSubsidiary ? 'text-indigo-400' : 'text-blue-400'
+                                                }`}>{item.type}</span>
                                         </div>
                                         <h3 className="text-3xl font-black uppercase italic tracking-tighter leading-none">{item.name}</h3>
                                     </div>

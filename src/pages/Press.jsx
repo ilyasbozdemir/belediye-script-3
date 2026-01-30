@@ -25,7 +25,7 @@ export default function Press() {
         <div className="bg-white min-h-screen pb-32">
             <Seo title="Basında Biz | Güneyyurt Belediyesi" description="Güneyyurt Belediyesi hakkında ulusal ve yerel medyada çıkan haberler." />
 
-            <div className="bg-slate-50 pt-32 pb-48 text-center px-6 border-b border-slate-100 relative overflow-hidden">
+            <div className="bg-slate-50 pt-48 lg:pt-64 pb-48 text-center px-6 border-b border-slate-100 relative overflow-hidden">
                 <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-blue-600/5 rounded-full blur-3xl" />
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
