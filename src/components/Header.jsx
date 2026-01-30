@@ -119,11 +119,19 @@ export default function Header() {
         </div>
       </div>
 
+      {/* Header Separation Shadow Gradient */}
+      <div className="fixed top-0 left-0 right-0 h-40 bg-gradient-to-b from-slate-950/40 to-transparent z-[45] pointer-events-none" />
+
       <header className={classNames(
         "fixed left-0 right-0 z-50 transition-all duration-700",
         isScrolled
           ? "top-0 bg-white/95 backdrop-blur-xl shadow-2xl py-5 border-b border-slate-200"
-          : "top-0 md:top-10 bg-transparent py-10"
+          : classNames(
+            "top-0 md:top-10 py-10",
+            location.pathname === '/'
+              ? "bg-transparent"
+              : "bg-slate-900/10 backdrop-blur-md border-b border-white/5"
+          )
       )}>
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
@@ -133,7 +141,7 @@ export default function Header() {
                 alt="Güneyyurt Belediyesi"
                 className={classNames(
                   "w-auto object-contain transition-all duration-500 group-hover:scale-105",
-                  isScrolled ? "h-14 md:h-16" : "h-20 md:h-24"
+                  isScrolled ? "h-14 md:h-16" : "h-24 md:h-28"
                 )}
               />
             </Link>

@@ -22,14 +22,15 @@ export default function FormerPresidents() {
         <div className="bg-slate-50 min-h-screen pb-32">
             <Seo title="Eski Belediye Başkanlarımız | Güneyyurt Belediyesi" description="Güneyyurt'a geçmişte hizmet vermiş belediye başkanlarımız." />
 
-            <div className="bg-slate-900 pt-32 pb-48 text-center px-6">
+            <div className="bg-slate-900 pt-64 lg:pt-72 pb-48 text-center px-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay" />
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
                 >
-                    <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase">Eski Başkanlarımız</h1>
+                    <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic">{/* Changed to italic to match other premium pages */} Eski Başkanlarımız</h1>
                     <div className="h-1.5 w-24 bg-blue-600 mx-auto mt-8 rounded-full"></div>
-                    <p className="mt-8 text-slate-400 font-medium max-w-2xl mx-auto text-lg">Güneyyurt'a emek vermiş, şehrimizin gelişimine katkı sağlamış değerli başkanlarımız.</p>
+                    <p className="mt-8 text-slate-400 font-bold max-w-2xl mx-auto text-lg uppercase tracking-widest opacity-80 leading-relaxed">Güneyyurt'a emek vermiş, şehrimizin gelişimine katkı sağlamış değerli başkanlarımız.</p>
                 </motion.div>
             </div>
 

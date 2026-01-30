@@ -34,7 +34,7 @@ export default function CommitteeMembers() {
             <Seo title="Belediye Encümeni | Güneyyurt Belediyesi" description="Güneyyurt Belediyesi Encümen Üyeleri ve karar alma organlarımız." />
 
             {/* Hero Header */}
-            <div className="bg-slate-900 pt-32 pb-48 text-center px-6 relative overflow-hidden">
+            <div className="bg-slate-900 pt-52 lg:pt-64 pb-48 text-center px-6 relative overflow-hidden">
                 <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-slate-50 to-transparent" />
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
