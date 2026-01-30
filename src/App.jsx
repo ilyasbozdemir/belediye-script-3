@@ -58,6 +58,7 @@ import WeatherPrayer from './pages/WeatherPrayer';
 import PetitionService from './pages/PetitionService';
 import AnnouncementModal from './components/AnnouncementModal';
 import ItemDetailManager from './pages/admin/ItemDetailManager';
+import TenderDetail from './pages/TenderDetail';
 
 import {
   UsersIcon,
@@ -105,6 +106,7 @@ function App() {
         <Route path="duyuru/:id" element={<AnnouncementDetail />} />
         <Route path="kurumsal/hizmet-standartlari" element={<ServiceStandards />} />
         <Route path="kurumsal/ihale-duyurulari" element={<Tenders />} />
+        <Route path="ihale/:id" element={<TenderDetail />} />
         <Route path="kurumsal/bilgilendirici-makaleler" element={<Articles />} />
         <Route path="kurumsal/basinda-biz" element={<Press />} />
         <Route path="kurumsal/mevzuat" element={<Legislation />} />

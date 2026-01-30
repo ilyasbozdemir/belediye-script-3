@@ -119,8 +119,8 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Header Separation Shadow Gradient */}
-      <div className="fixed top-0 left-0 right-0 h-40 bg-gradient-to-b from-slate-950/40 to-transparent z-[45] pointer-events-none" />
+      {/* Header Separation Shadow Gradient - Smoother transition */}
+      <div className="fixed top-0 left-0 right-0 h-64 bg-gradient-to-b from-slate-950/60 via-slate-950/5 to-transparent z-[45] pointer-events-none" />
 
       <header className={classNames(
         "fixed left-0 right-0 z-50 transition-all duration-700",
@@ -343,8 +343,10 @@ export default function Header() {
                     </Link>
                   )
                 ))}
-                <div className="pt-8 text-center text-[8px] font-black text-amber-600 uppercase tracking-widest leading-loose">
-                  SİTE ŞU AN DEMO MODUNDADIR.
+                <div className="bg-amber-500 pt-64 lg:pt-80 pb-48 text-center px-6 relative overflow-hidden">
+                  <p className="text-[8px] font-black text-amber-600 uppercase tracking-widest leading-loose">
+                    SİTE ŞU AN DEMO MODUNDADIR.
+                  </p>
                 </div>
                 <div className="pt-4">
                   <a href="https://e-hizmet.guneyyurt.bel.tr/" className="btn-premium w-full text-center py-4">

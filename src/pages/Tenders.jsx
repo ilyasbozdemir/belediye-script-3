@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import Seo from '../components/Seo';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -147,24 +148,22 @@ export default function Tenders() {
 
                                         {/* Right Side: Actions */}
                                         <div className="lg:w-80 bg-slate-50 border-t lg:border-t-0 lg:border-l border-slate-100 p-8 flex flex-col justify-center gap-4">
+                                            <Link
+                                                to={`/ihale/${tender.id}`}
+                                                className="w-full h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-blue-600/20 transition-all font-premium active:scale-95"
+                                            >
+                                                <InformationCircleIcon className="h-5 w-5" /> İHALE DETAYI
+                                            </Link>
                                             <a
                                                 href={`https://ekap.kik.gov.tr/`}
                                                 target="_blank"
                                                 rel="noreferrer"
-                                                className="w-full h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-blue-600/20 transition-all font-premium active:scale-95"
+                                                className="w-full h-12 bg-white border border-slate-200 hover:border-blue-500 text-slate-600 rounded-xl flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] transition-all"
                                             >
-                                                <ClipboardDocumentCheckIcon className="h-5 w-5" /> EKAP Görüntüle
+                                                EKAP Görüntüle
                                             </a>
-                                            <a
-                                                href={`https://www.ilan.gov.tr/`}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="w-full h-16 bg-slate-900 hover:bg-black text-white rounded-2xl flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] transition-all active:scale-95"
-                                            >
-                                                <GlobeAltIcon className="h-5 w-5" /> ilan.gov.tr
-                                            </a>
-                                            <button className="w-full h-16 bg-white border-2 border-slate-200 hover:border-blue-500 hover:text-blue-600 text-slate-600 rounded-2xl flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] transition-all active:scale-95">
-                                                <ArrowDownTrayIcon className="h-5 w-5" /> Teknik Şartname
+                                            <button className="w-full h-12 bg-white border border-slate-200 hover:border-blue-500 text-slate-600 rounded-xl flex items-center justify-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] transition-all">
+                                                Teknik Şartname
                                             </button>
                                         </div>
                                     </div>
