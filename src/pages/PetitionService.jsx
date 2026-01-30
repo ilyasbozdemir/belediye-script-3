@@ -19,31 +19,59 @@ import axios from 'axios';
 const templates = [
     {
         id: 'genel',
-        name: 'Genel Dilekçe',
-        description: 'Her türlü istek ve şikayetiniz için kullanabileceğiniz standart dilekçe örneği.',
-        title: 'GÜNEYYURT BELEDİYE BAŞKANLIĞINA',
-        content: 'Beldemiz [MAHALLE] mahallesinde ikamet etmekteyim. [KONU] hakkında gereğinin yapılmasını arz ederim.'
+        name: 'Genel İstek ve Şikayet',
+        description: 'Her türlü görüş, öneri ve talebiniz için kullanabileceğiniz standart başvuru formu.',
+        title: 'YAZI İŞLERİ MÜDÜRLÜĞÜNE',
+        content: 'Beldemiz [ADRES] mevkiinde ikamet etmekteyim. [DETAY] konusu ile ilgili yaşadığım mağduriyetin giderilmesi ve gerekli incelemelerin yapılmasını arz ederim.'
     },
     {
         id: 'imar',
         name: 'İmar Durum Belgesi Talebi',
-        description: 'Taşınmazınızın imar durumunu öğrenmek için başvuruda bulunabilirsiniz.',
+        description: 'Taşınmazınızın yapılaşma koşullarını öğrenmek için resmi başvuru.',
         title: 'İMAR VE ŞEHİRCİLİK MÜDÜRLÜĞÜNE',
-        content: '[ADA] Ada, [PARSEL] Parselde bulunan taşınmazımın güncel imar durum belgesinin tarafıma verilmesini arz ederim.'
+        content: 'Mülkiyeti tarafıma ait olan [ADRES] adresindeki, Tapu Sicil Müdürlüğü kayıtlarında [DETAY] Ada/Parsel numarasında kayıtlı taşınmazımın güncel imar durum belgesinin düzenlenerek tarafıma verilmesini arz ederim.'
+    },
+    {
+        id: 'yol-ariza',
+        name: 'Yol ve Parke Onarım Talebi',
+        description: 'Bozulan yollar, çöken kaldırımlar veya eksik parke taşları için bildirim.',
+        title: 'FEN İŞLERİ MÜDÜRLÜĞÜNE',
+        content: 'Beldemiz [ADRES] bölgesinde bulunan [DETAY] üzerinde meydana gelen bozulmalar (çukur, çökme vb.) yaya ve araç trafiğini tehlikeye düşürmektedir. Söz konusu bölgenin ivedilikle onarılmasını arz ederim.'
+    },
+    {
+        id: 'temizlik',
+        name: 'Çevre ve Temizlik Hizmeti',
+        description: 'Çöp toplama, konteyner talebi veya çevre kirliliği bildirimleri.',
+        title: 'TEMİZLİK İŞLERİ MÜDÜRLÜĞÜNE',
+        content: '[ADRES] adresinde bulunan [DETAY] hususu ile ilgili çevre temizliğinin yapılması ve gerekli hijyen şartlarının sağlanmasını arz ederim.'
     },
     {
         id: 'sosyal',
-        name: 'Sosyal Yardım Başvurusu',
-        description: 'Belediyemizin sunduğu sosyal yardımlardan faydalanmak için başvuru dilekçesi.',
+        name: 'Sosyal Yardım ve Gıda Talebi',
+        description: 'Belediyemizin sosyal yardım projelerinden faydalanma başvurusu.',
         title: 'KÜLTÜR VE SOSYAL İŞLER MÜDÜRLÜĞÜNE',
-        content: 'Geçimimi sağlamakta zorluk çekmekteyim. Belediyeniz tarafından sağlanan sosyal yardımlardan faydalanmak istiyorum. Durumumun incelenerek gereğinin yapılmasını arz ederim.'
+        content: '[ADRES] adresinde ikamet etmekteyim. Geçimimi sağlamakta güçlük çekmem nedeniyle belediyeniz tarafından ihtiyaç sahiplerine sunulan [DETAY] yardımından faydalanmak istiyorum. Gereğini bilgilerinize arz ederim.'
     },
     {
-        id: 'altyapi',
-        name: 'Altyapı Arıza Bildirimi',
-        description: 'Yol, su, kanalizasyon gibi altyapı sorunlarının giderilmesi için talep dilekçesi.',
-        title: 'FEN İŞLERİ MÜDÜRLÜĞÜNE',
-        content: 'Beldemiz [ADRES] bölgesinde meydana gelen [ARIZA_TURU] sorununun ivedilikle giderilmesini arz ederim.'
+        id: 'is-basvuru',
+        name: 'İş ve Staj Başvurusu',
+        description: 'Belediye bünyesinde görev almak veya staj yapmak için genel başvuru.',
+        title: 'İNSAN KAYNAKLARI VE EĞİTİM MÜDÜRLÜĞÜNE',
+        content: 'Belediyeniz bünyesinde uygun görülecek pozisyonlarda görev almak istiyorum. Ekte sunduğum bilgiler ışığında [DETAY] konusundaki yetkinliklerimin değerlendirilmesini arz ederim.'
+    },
+    {
+        id: 'durak',
+        name: 'Ulaşım ve Durak Talebi',
+        description: 'Toplu taşıma güzergahı veya yeni durak noktası belirlenmesi talebi.',
+        title: 'ZABITA AMİRLİĞİ VE ULAŞIM BİRİMİNE',
+        content: 'Beldemiz [ADRES] mevkiinde toplu taşıma araçlarından yararlanmakta güçlük çekmekteyiz. Belirlenen [DETAY] noktasına yeni bir durak kabini konulmasını veya güzergah değişikliğini arz ederim.'
+    },
+    {
+        id: 'park-bakim',
+        name: 'Park ve Oyun Alanı Bakımı',
+        description: 'Çocuk parklarındaki oyuncakların onarımı veya park bakımı talebi.',
+        title: 'PARK VE BAHÇELER MÜDÜRLÜĞÜNE',
+        content: '[ADRES] mevkiinde bulunan çocuk oyun parkındaki [DETAY] araçlarının arızalı/tehlikeli olması sebebiyle bakım ve onarımının yapılmasını arz ederim.'
     }
 ];
 
@@ -58,48 +86,49 @@ export default function PetitionService() {
     });
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
-    const [showPreview, setShowPreview] = useState(false);
+    const [showPreview, setShowPreview] = useState(true); // Default to true for better feedback
     const petitionRef = useRef();
 
     const getFormattedContent = () => {
         let content = selectedTemplate.content;
-        content = content.replace(/\[MAHALLE\]/g, formData.address || '..........');
-        content = content.replace(/\[KONU\]/g, formData.details || '..........');
-        content = content.replace(/\[ADA\]/g, '..........');
-        content = content.replace(/\[PARSEL\]/g, '..........');
-        content = content.replace(/\[ADRES\]/g, formData.address || '..........');
-        content = content.replace(/\[ARIZA_TURU\]/g, formData.details || '..........');
+        content = content.replace(/\[ADRES\]/g, formData.address ? formData.address.toUpperCase() : '........................................');
+        content = content.replace(/\[DETAY\]/g, formData.details ? formData.details.toUpperCase() : '........................................');
         return content;
     };
 
     const handleDownloadPDF = async () => {
         setIsGenerating(true);
         try {
-            // Önce veritabanına kaydet
+            // Save to DB via feedback API
             await axios.post('/api/feedback', {
                 fullName: formData.fullName,
-                email: 'dilekce@guneyyurt.bel.tr', // Varsayılan mail
+                email: 'dilekce@guneyyurt.bel.tr',
                 phone: formData.phone,
                 subject: selectedTemplate.name,
                 category: 'Online Dilekçe',
-                message: `T.C. No: ${formData.tcNo}\nAdres: ${formData.address}\n\n${getFormattedContent()}\n\n(Bu bir online dilekçe sisteminden otomatik oluşturulmuştur.)`,
+                message: `T.C. No: ${formData.tcNo}\nAdres: ${formData.address}\nKonu: ${formData.details}\n\n${getFormattedContent()}`,
                 status: 'Beklemede'
             });
 
-            // Sonra PDF oluştur
             const element = petitionRef.current;
-            const canvas = await html2canvas(element, { scale: 2 });
-            const imgData = canvas.toDataURL('image/png');
+            const canvas = await html2canvas(element, {
+                scale: 3, // Higher scale for text clarity
+                useCORS: true,
+                logging: false,
+                backgroundColor: '#ffffff'
+            });
+            const imgData = canvas.toDataURL('image/jpeg', 1.0);
             const pdf = new jsPDF('p', 'mm', 'a4');
-            const imgProps = pdf.getImageProperties(imgData);
             const pdfWidth = pdf.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-            pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            pdf.save(`dilekce_${new Date().getTime()}.pdf`);
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+
+            pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, pdfHeight);
+            pdf.save(`${selectedTemplate.id}_dilekce_${formData.fullName.replace(/\s+/g, '_')}.pdf`);
 
             setIsSubmitted(true);
         } catch (err) {
-            alert('Hata oluştu, lütfen tekrar deneyin.');
+            console.error(err);
+            alert('İşlem sırasında bir hata oluştu. Lütfen tekrar deneyin.');
         } finally {
             setIsGenerating(false);
         }
@@ -107,16 +136,17 @@ export default function PetitionService() {
 
     return (
         <div className="bg-slate-50 min-h-screen pb-32">
-            <Seo title="Online Dilekçe İşlemleri | Güneyyurt Belediyesi" description="Hazır dilekçe taslakları ile başvurunuzu anında oluşturun ve PDF olarak indirin." />
+            <Seo title="Online Dilekçe Masası | Güneyyurt Belediyesi" description="Belediyemizin dijital hizmetleri kapsamında hazır taslaklarla dilekçenizi anında oluşturun." />
 
             {/* Header Hero */}
-            <div className="bg-indigo-900 pt-32 pb-48 text-center px-6 relative overflow-hidden">
-                <div className="absolute inset-0 bg-blue-600/5 mix-blend-overlay" />
+            <div className="bg-indigo-900 pt-52 lg:pt-64 pb-48 text-center px-6 relative overflow-hidden">
+                <div className="absolute inset-0 bg-blue-600/10 mix-blend-overlay" />
+                <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-[120px] -mr-48 -mt-48" />
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10">
                     <div className="h-20 w-20 bg-white/10 rounded-[2.5rem] flex items-center justify-center text-white mx-auto mb-8 border border-white/20">
                         <DocumentTextIcon className="h-10 w-10" />
                     </div>
-                    <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic">Online Dilekçe Masası</h1>
+                    <h1 className="text-4xl md:text-6xl font-black text-white tracking-tight uppercase italic">Dilekçe Masası</h1>
                     <div className="h-1.5 w-24 bg-indigo-500 mx-auto mt-8 rounded-full"></div>
                     <p className="mt-8 text-indigo-100 font-bold max-w-2xl mx-auto text-lg uppercase tracking-widest opacity-80 leading-relaxed">
                         Vakit Kaybetmeden, Hazır Taslaklarla Başvurunuzu Oluşturun.
@@ -125,136 +155,183 @@ export default function PetitionService() {
             </div>
 
             <div className="mx-auto max-w-7xl px-6 -mt-24 relative z-20">
-                <div className="flex flex-col lg:flex-row gap-8">
+                <div className="flex flex-col xl:flex-row gap-12">
 
                     {/* Sidebar: Templates */}
-                    <div className="lg:w-1/3 space-y-6">
-                        <div className="bg-white p-8 rounded-[3rem] shadow-xl border border-slate-100">
+                    <div className="xl:w-1/3 space-y-6">
+                        <div className="bg-white p-8 rounded-[3rem] shadow-xl border border-slate-100 sticky top-32">
                             <h3 className="text-xs font-black text-slate-400 uppercase tracking-[0.2em] mb-8 flex items-center gap-2">
-                                <InformationCircleIcon className="h-5 w-5 text-indigo-600" /> Dilekçe Türünü Seçin
+                                <InformationCircleIcon className="h-5 w-5 text-indigo-600" /> Başvuru Konusu Seçiniz
                             </h3>
-                            <div className="space-y-4">
+                            <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 no-scrollbar">
                                 {templates.map((t) => (
                                     <button
                                         key={t.id}
                                         onClick={() => { setSelectedTemplate(t); setIsSubmitted(false); }}
-                                        className={`w-full text-left p-6 rounded-2xl transition-all border-2 ${selectedTemplate.id === t.id
-                                            ? 'border-indigo-600 bg-indigo-50/50 shadow-md'
+                                        className={`w-full text-left p-6 rounded-2xl transition-all border-2 flex flex-col gap-2 ${selectedTemplate.id === t.id
+                                            ? 'border-indigo-600 bg-indigo-50/50 shadow-md ring-4 ring-indigo-600/5'
                                             : 'border-transparent bg-slate-50 hover:bg-slate-100'
                                             }`}
                                     >
-                                        <p className={`text-sm font-black uppercase tracking-tight mb-2 ${selectedTemplate.id === t.id ? 'text-indigo-900' : 'text-slate-700'}`}>
+                                        <p className={`text-sm font-black uppercase tracking-tight ${selectedTemplate.id === t.id ? 'text-indigo-900' : 'text-slate-700'}`}>
                                             {t.name}
                                         </p>
-                                        <p className="text-xs text-slate-500 font-bold leading-relaxed">{t.description}</p>
+                                        <p className="text-[10px] text-slate-500 font-bold leading-relaxed uppercase opacity-70">{t.description}</p>
                                     </button>
                                 ))}
                             </div>
-                        </div>
 
-                        <button
-                            onClick={() => setShowPreview(!showPreview)}
-                            className="w-full p-6 bg-white border border-slate-100 rounded-[2rem] shadow-sm flex items-center justify-between hover:bg-indigo-50 transition-all group"
-                        >
-                            <div className="flex items-center gap-4">
-                                <div className="h-10 w-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600">
-                                    <EyeIcon className="h-5 w-5" />
+                            <div className="mt-8 pt-6 border-t border-slate-50">
+                                <div className="flex items-center gap-4 p-4 bg-amber-50 rounded-2xl border border-amber-100 italic text-[10px] font-bold text-amber-800">
+                                    <InformationCircleIcon className="h-5 w-5 shrink-0" />
+                                    Lütfen tüm alanları eksiksiz ve doğru beyanlarla doldurunuz.
                                 </div>
-                                <span className="text-sm font-black text-slate-900 uppercase italic">Canlı Önizleme</span>
                             </div>
-                            <div className={`h-2 w-2 rounded-full ${showPreview ? 'bg-emerald-500' : 'bg-slate-300'}`}></div>
-                        </button>
+                        </div>
                     </div>
 
-                    {/* Main Content: Form */}
-                    <div className="lg:w-2/3">
+                    {/* Main Content: Form & Preview */}
+                    <div className="xl:w-2/3 space-y-8">
                         <div className="bg-white rounded-[4rem] p-10 lg:p-16 shadow-2xl border border-slate-100 relative overflow-hidden">
                             {!isSubmitted ? (
                                 <div className="space-y-12">
-                                    <div className="pb-8 border-b border-slate-50">
-                                        <h2 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter mb-4">Dilekçe Bilgileri</h2>
-                                        <p className="text-sm text-slate-500 font-bold italic uppercase tracking-widest opacity-60">Lütfen aşağıdaki alanları dilekçenizde yer alacak şekilde doldurunuz.</p>
+                                    <div className="pb-8 border-b border-slate-50 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                                        <div>
+                                            <h2 className="text-3xl font-black text-slate-900 uppercase italic tracking-tighter">Dilekçe Formu</h2>
+                                            <p className="text-sm text-slate-500 font-bold italic uppercase tracking-widest opacity-60 mt-2">Kimlik ve başvuru bilgilerinizi giriniz.</p>
+                                        </div>
+                                        <div className="flex items-center gap-3 px-6 py-2 bg-indigo-50 rounded-full text-indigo-600 font-black text-[10px] uppercase tracking-widest border border-indigo-100">
+                                            <DocumentTextIcon className="h-4 w-4" /> {selectedTemplate.name}
+                                        </div>
                                     </div>
 
-                                    <form className="space-y-8" onSubmit={(e) => { e.preventDefault(); handleDownloadPDF(); }}>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <form className="grid grid-cols-1 md:grid-cols-2 gap-8" onSubmit={(e) => { e.preventDefault(); handleDownloadPDF(); }}>
+                                        <div className="space-y-8">
                                             <div>
                                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-3 block flex items-center gap-2">
                                                     <UserIcon className="h-4 w-4 text-indigo-600" /> Adınız Soyadınız
                                                 </label>
-                                                <input required type="text" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-600/10 font-bold" placeholder="Ahmet Yılmaz"
-                                                    value={formData.fullName} onChange={e => setFormData({ ...formData, fullName: e.target.value })} />
+                                                <input required type="text" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-600/20 font-bold placeholder:opacity-30" placeholder="Örn: Ahmet YILMAZ"
+                                                    value={formData.fullName} onChange={e => setFormData({ ...formData, fullName: e.target.value.toUpperCase() })} />
                                             </div>
                                             <div>
                                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-3 block flex items-center gap-2">
                                                     <IdentificationIcon className="h-4 w-4 text-indigo-600" /> T.C. Kimlik No
                                                 </label>
-                                                <input required type="text" maxLength="11" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-600/10 font-bold" placeholder="11 haneli"
+                                                <input required type="text" maxLength="11" pattern="\d{11}" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-600/20 font-bold placeholder:opacity-30" placeholder="11 Haneli T.C. No"
                                                     value={formData.tcNo} onChange={e => setFormData({ ...formData, tcNo: e.target.value })} />
-                                            </div>
-                                        </div>
-
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                            <div>
-                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-3 block">Telefon No</label>
-                                                <input required type="tel" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-600/10 font-bold" placeholder="05XX XXX XX XX"
-                                                    value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
                                             </div>
                                             <div>
                                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-3 block flex items-center gap-2">
-                                                    <ChatBubbleBottomCenterTextIcon className="h-4 w-4 text-indigo-600" /> Talep Detayı
+                                                    <PhoneIcon className="h-4 w-4 text-indigo-600" /> İletişim Telefonu
                                                 </label>
-                                                <input required type="text" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-600/10 font-bold" placeholder="Konuyu kısaca özetleyin"
-                                                    value={formData.details} onChange={e => setFormData({ ...formData, details: e.target.value })} />
+                                                <input required type="tel" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-600/20 font-bold placeholder:opacity-30" placeholder="05XX XXX XX XX"
+                                                    value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} />
                                             </div>
                                         </div>
 
-                                        <div>
-                                            <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-3 block">İşlem Yapılacak Adres / Mevki</label>
-                                            <textarea required rows="3" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-600/10 font-bold resize-none" placeholder="Mahalle, cadde, sokak ve kapı no belirtiniz..."
-                                                value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })}></textarea>
-                                        </div>
-
-                                        {/* Live Preview / Hidden Ref for PDF */}
-                                        <div className={showPreview ? "block mt-12 bg-slate-50 p-6 sm:p-12 rounded-[2rem] border-2 border-dashed border-slate-200 overflow-x-auto" : "h-0 overflow-hidden"}>
-                                            <div ref={petitionRef} style={{ width: '210mm', minWidth: '210mm', padding: '25mm', fontFamily: 'serif', color: '#000', backgroundColor: '#fff', boxShadow: '0 0 40px rgba(0,0,0,0.1)', margin: 'auto' }}>
-                                                <div style={{ textAlign: 'center', marginBottom: '20mm' }}>
-                                                    <h1 style={{ fontSize: '18pt', fontWeight: 'bold', margin: '0' }}>T.C.</h1>
-                                                    <h1 style={{ fontSize: '18pt', fontWeight: 'bold', margin: '0' }}>KARAMAN / ERMENEK</h1>
-                                                    <h1 style={{ fontSize: '18pt', fontWeight: 'bold', margin: '0' }}>GÜNEYYURT BELEDİYE BAŞKANLIĞI</h1>
-                                                    <h2 style={{ fontSize: '14pt', fontWeight: 'bold', marginTop: '5mm', textDecoration: 'underline' }}>{selectedTemplate.title}</h2>
-                                                </div>
-
-                                                <div style={{ fontSize: '12pt', lineHeight: '2', textAlign: 'justify' }}>
-                                                    {getFormattedContent()}
-                                                    <br /><br />
-                                                    Gereğinin yapılmasını saygılarımla arz ederim.
-                                                </div>
-
-                                                <div style={{ marginTop: '30mm', float: 'right', textAlign: 'center' }}>
-                                                    <p style={{ fontWeight: 'bold', marginBottom: '2mm' }}>{new Date().toLocaleDateString('tr-TR')}</p>
-                                                    <p style={{ fontWeight: 'bold' }}>{formData.fullName || '................'}</p>
-                                                    <p>(İmza)</p>
-                                                </div>
-
-                                                <div style={{ marginTop: '70mm', borderTop: '2px solid #000', paddingTop: '10mm', fontSize: '11pt' }}>
-                                                    <p><strong>ADRES:</strong> {formData.address || '................'}</p>
-                                                    <p><strong>T.C. KİMLİK NO:</strong> {formData.tcNo || '................'}</p>
-                                                    <p><strong>İLETİŞİM TEL:</strong> {formData.phone || '................'}</p>
-                                                </div>
+                                        <div className="space-y-8">
+                                            <div>
+                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-3 block flex items-center gap-2">
+                                                    <ChatBubbleBottomCenterTextIcon className="h-4 w-4 text-indigo-600" /> Konu / Detay
+                                                </label>
+                                                <input required type="text" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-600/20 font-bold placeholder:opacity-30" placeholder="Mahalle Adı / Arıza Türü / Talep"
+                                                    value={formData.details} onChange={e => setFormData({ ...formData, details: e.target.value.toUpperCase() })} />
+                                            </div>
+                                            <div>
+                                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-3 block">Adres Bilgisi (İlgili Mevki)</label>
+                                                <textarea required rows="4" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-indigo-600/20 font-bold placeholder:opacity-30 resize-none" placeholder="Mahalle, Sokak ve Bina No..."
+                                                    value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value.toUpperCase() })}></textarea>
                                             </div>
                                         </div>
 
-                                        <div className="pt-8">
-                                            <button type="submit" disabled={isGenerating} className="w-full py-6 bg-indigo-900 hover:bg-black text-white rounded-3xl font-black uppercase tracking-[0.2em] shadow-2xl shadow-indigo-900/40 transition-all flex items-center justify-center gap-4 group">
+                                        <div className="md:col-span-2 pt-8">
+                                            <button type="submit" disabled={isGenerating} className="w-full py-6 bg-indigo-900 hover:bg-black text-white rounded-[2rem] font-black uppercase tracking-[0.2em] shadow-2xl shadow-indigo-900/40 transition-all flex items-center justify-center gap-4 group">
                                                 {isGenerating ? (
                                                     <div className="h-6 w-6 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
                                                 ) : (
-                                                    <>DİLEKÇEYİ OLUŞTUR VE İNDİR <ArrowDownTrayIcon className="h-6 w-6 group-hover:translate-y-1 transition-transform" /></>
+                                                    <>BAŞVURUYU TAMAMLA VE PDF İNDİR <ArrowDownTrayIcon className="h-6 w-6 group-hover:translate-y-1 transition-transform" /></>
                                                 )}
                                             </button>
                                         </div>
                                     </form>
+
+                                    {/* Premium Paper Preview Section */}
+                                    <div className="pt-20 border-t border-slate-50">
+                                        <div className="flex items-center justify-between mb-12">
+                                            <div className="flex items-center gap-4">
+                                                <div className="h-12 w-12 bg-amber-100 rounded-2xl flex items-center justify-center text-amber-600 shadow-xl shadow-amber-600/10">
+                                                    <EyeIcon className="h-6 w-6" />
+                                                </div>
+                                                <h3 className="text-2xl font-black text-slate-900 uppercase italic">Canlı Önizleme</h3>
+                                            </div>
+                                            <div className="px-5 py-2 bg-slate-100 rounded-full text-[9px] font-black text-slate-400 uppercase tracking-widest">Resmi Belge Taslağı</div>
+                                        </div>
+
+                                        <div className="bg-slate-50 p-6 sm:p-16 rounded-[4rem] border-2 border-dashed border-slate-200 flex justify-center">
+                                            <div className="overflow-x-auto w-full no-scrollbar flex justify-center">
+                                                {/* Actual PDF Container */}
+                                                <div ref={petitionRef} style={{
+                                                    width: '210mm',
+                                                    height: '297mm', // Fixed A4 Aspect
+                                                    padding: '30mm 25mm 25mm 30mm',
+                                                    fontFamily: 'Times New Roman, serif',
+                                                    color: '#000',
+                                                    backgroundColor: '#fff',
+                                                    boxShadow: '0 40px 100px -20px rgba(0,0,0,0.15)',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    fontSize: '12pt',
+                                                    lineHeight: '1.5'
+                                                }}>
+                                                    {/* Header */}
+                                                    <div style={{ textAlign: 'center', marginBottom: '15mm' }}>
+                                                        <h1 style={{ fontSize: '14pt', fontWeight: 'bold', margin: '0', letterSpacing: '2px' }}>T.C.</h1>
+                                                        <h1 style={{ fontSize: '14pt', fontWeight: 'bold', margin: '0', letterSpacing: '1px' }}>KARAMAN VİLAYETİ</h1>
+                                                        <h1 style={{ fontSize: '14pt', fontWeight: 'bold', margin: '0' }}>GÜNEYYURT BELEDİYE BAŞKANLIĞINA</h1>
+                                                        <h2 style={{ fontSize: '12pt', fontWeight: 'bold', marginTop: '8mm', textDecoration: 'underline' }}>({selectedTemplate.title})</h2>
+                                                    </div>
+
+                                                    {/* Date */}
+                                                    <div style={{ textAlign: 'right', marginBottom: '10mm', fontWeight: 'bold' }}>
+                                                        {new Date().toLocaleDateString('tr-TR')}
+                                                    </div>
+
+                                                    {/* Content Body */}
+                                                    <div style={{ textAlign: 'justify', flexGrow: '1', whiteSpace: 'pre-wrap' }}>
+                                                        {getFormattedContent()}
+                                                        <br /><br />
+                                                        Gereğinin yapılmasını saygılarımla arz ederim.
+                                                    </div>
+
+                                                    {/* Signature Area */}
+                                                    <div style={{ width: '60mm', marginLeft: 'auto', textAlign: 'center', marginTop: '20mm' }}>
+                                                        <div style={{ fontWeight: 'bold', textDecoration: 'underline', marginBottom: '2mm' }}>Ad Soyad / İmza</div>
+                                                        <div style={{ fontWeight: 'bold', fontSize: '13pt' }}>{formData.fullName || '........................................'}</div>
+                                                    </div>
+
+                                                    {/* Contact Info Footer */}
+                                                    <div style={{ marginTop: '20mm', borderTop: '0.5mm solid #000', paddingTop: '5mm', fontSize: '10pt' }}>
+                                                        <div style={{ display: 'grid', gridTemplateColumns: '40mm 1fr', gap: '5mm' }}>
+                                                            <strong>T.C. KİMLİK NO</strong><span>: {formData.tcNo || '........................................'}</span>
+                                                            <strong>İLETİŞİM TEL</strong><span>: {formData.phone || '........................................'}</span>
+                                                            <strong>TEBLİGAT ADRESİ</strong><span>: {formData.address || '........................................'}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-8">
+                                        <button type="submit" disabled={isGenerating} className="w-full py-6 bg-indigo-900 hover:bg-black text-white rounded-3xl font-black uppercase tracking-[0.2em] shadow-2xl shadow-indigo-900/40 transition-all flex items-center justify-center gap-4 group">
+                                            {isGenerating ? (
+                                                <div className="h-6 w-6 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
+                                            ) : (
+                                                <>DİLEKÇEYİ OLUŞTUR VE İNDİR <ArrowDownTrayIcon className="h-6 w-6 group-hover:translate-y-1 transition-transform" /></>
+                                            )}
+                                        </button>
+                                    </div>
                                 </div>
                             ) : (
                                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-12">
@@ -277,9 +354,9 @@ export default function PetitionService() {
                             )}
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     );
 }
+
