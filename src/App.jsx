@@ -75,6 +75,7 @@ import WeatherPrayerManager from './pages/admin/WeatherPrayerManager';
 import MediaManager from './pages/admin/MediaManager';
 import AnnouncementsManager from './pages/admin/AnnouncementsManager';
 import SurveyManager from './pages/admin/SurveyManager';
+import Profile from './pages/admin/Profile';
 
 function App() {
   console.log('App Rendering...');
@@ -148,6 +149,7 @@ function App() {
         <Route path="weather-prayer" element={<WeatherPrayerManager />} />
         <Route path="media" element={<MediaManager />} />
         <Route path="surveys" element={<SurveyManager />} />
+        <Route path="profile" element={<Profile />} />
         <Route path="manage/:type/:id" element={<ItemDetailManager />} />
         <Route path="*" element={<div className="p-8 text-slate-400">Bu modül yakında eklenecek.</div>} />
       </Route>

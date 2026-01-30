@@ -1,19 +1,32 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import {
     CalendarDaysIcon,
     PlusIcon,
     TrashIcon,
     MapPinIcon,
     ClockIcon,
-    PhotoIcon
+    PhotoIcon,
+    ArrowRightIcon,
+    SparklesIcon
 } from '@heroicons/react/24/outline';
 
 export default function EventManager() {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [form, setForm] = useState({ title: '', description: '', location: '', startDate: '', type: 'Cultural', imageUrl: '' });
+    const [saving, setSaving] = useState(false);
+    const [form, setForm] = useState({
+        title: '',
+        description: '',
+        location: '',
+        startDate: '',
+        type: 'Cultural',
+        imageUrl: '',
+        category: 'Etkinlik',
+        summary: ''
+    });
 
     useEffect(() => {
         fetchEvents();
@@ -23,7 +36,7 @@ export default function EventManager() {
         setLoading(true);
         try {
             const res = await axios.get('/api/events');
-            setEvents(res.data);
+            setEvents(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
             console.error(err);
         } finally {
@@ -33,40 +46,64 @@ export default function EventManager() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setSaving(true);
         try {
-            await axios.post('/api/events', form);
-            setForm({ title: '', description: '', location: '', startDate: '', type: 'Cultural', imageUrl: '' });
+            await axios.post('/api/events', {
+                ...form,
+                createdDate: new Date().toISOString()
+            });
+            setForm({
+                title: '',
+                description: '',
+                location: '',
+                startDate: '',
+                type: 'Cultural',
+                imageUrl: '',
+                category: 'Etkinlik',
+                summary: ''
+            });
             fetchEvents();
         } catch (err) {
             alert('Hata oluştu');
+        } finally {
+            setSaving(false);
         }
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (id, e) => {
+        e.preventDefault();
+        e.stopPropagation();
         if (!confirm('Emin misiniz?')) return;
-        await axios.delete(`/api/events/${id}`);
-        fetchEvents();
+        try {
+            await axios.delete(`/api/events/${id}`);
+            fetchEvents();
+        } catch (err) {
+            alert('Silme hatası');
+        }
     };
 
     return (
-        <div className="p-8 lg:p-12">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
+        <div className="space-y-12 pb-20">
+            <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic mb-4 flex items-center gap-4">
-                        <CalendarDaysIcon className="h-10 w-10 text-blue-600" /> Etkinlik Yönetimi
+                    <h1 className="text-4xl font-black text-slate-900 uppercase italic tracking-tighter leading-none flex items-center gap-4">
+                        <CalendarDaysIcon className="h-10 w-10 text-blue-600" /> Etkinlik Takvimi
                     </h1>
-                    <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">Kültürel ve sosyal etkinliklerin takvimi.</p>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mt-3 ml-1">Kültürel ve Sosyal Etkinlik Yönetimi</p>
                 </div>
-            </div>
+            </header>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div className="lg:col-span-1">
-                    <div className="bg-white p-10 rounded-[4rem] shadow-2xl border border-slate-50 sticky top-12">
-                        <h2 className="text-2xl font-black mb-10 uppercase italic tracking-tighter">Yeni Etkinlik</h2>
-                        <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-12">
+                {/* Quick Add Form */}
+                <div className="xl:col-span-1">
+                    <div className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm sticky top-8">
+                        <h2 className="text-sm font-black text-slate-900 uppercase italic tracking-tight border-b border-slate-50 pb-4 mb-6 flex items-center gap-2">
+                            <SparklesIcon className="h-4 w-4 text-amber-500" /> Hızlı Etkinlik Ekle
+                        </h2>
+                        <form onSubmit={handleSubmit} className="space-y-5">
                             <div>
                                 <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Etkinlik Adı</label>
-                                <input required type="text" className="admin-input w-full" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
+                                <input required className="admin-input w-full" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} placeholder="Örn: Konser" />
                             </div>
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
@@ -78,56 +115,84 @@ export default function EventManager() {
                                     <select className="admin-input w-full" value={form.type} onChange={e => setForm({ ...form, type: e.target.value })}>
                                         <option value="Cultural">Kültürel</option>
                                         <option value="Sports">Spor</option>
-                                        <option value="Official">Resmi / Protokol</option>
-                                        <option value="Social">Sosyal Sorumluluk</option>
+                                        <option value="Official">Protokol</option>
+                                        <option value="Social">Sosyal</option>
                                     </select>
                                 </div>
                             </div>
                             <div>
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Konum / Yer</label>
-                                <input required type="text" className="admin-input w-full" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} />
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Konum</label>
+                                <input required className="admin-input w-full" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="Yer belirtin" />
                             </div>
-                            <div>
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Görsel URL</label>
-                                <input type="text" className="admin-input w-full" value={form.imageUrl} onChange={e => setForm({ ...form, imageUrl: e.target.value })} />
-                            </div>
-                            <div>
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Açıklama</label>
-                                <textarea rows="4" className="admin-input w-full" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })}></textarea>
-                            </div>
-                            <button className="w-full py-6 bg-blue-600 text-white rounded-3xl font-black uppercase tracking-widest shadow-xl shadow-blue-600/20 hover:scale-[1.02] transition-all flex items-center justify-center gap-4">
-                                Kaydet <PlusIcon className="h-6 w-6" />
+                            <button
+                                disabled={saving}
+                                className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 flex items-center justify-center gap-3 disabled:opacity-50"
+                            >
+                                {saving ? 'Kaydediliyor...' : <><PlusIcon className="h-5 w-5" /> Etkinliği Yayınla</>}
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <div className="lg:col-span-2 space-y-6">
-                    {events.map((ev, i) => (
-                        <div key={ev.id} className="bg-white p-8 rounded-[3rem] border border-slate-100 flex items-center gap-8 group hover:shadow-xl transition-all duration-500">
-                            <div className="h-24 w-24 bg-slate-50 rounded-[2rem] overflow-hidden flex-shrink-0 shadow-inner">
-                                {ev.imageUrl ? (
-                                    <img src={ev.imageUrl} className="w-full h-full object-cover" />
-                                ) : (
-                                    <div className="h-full w-full flex items-center justify-center text-slate-200"><PhotoIcon className="h-10 w-10" /></div>
-                                )}
-                            </div>
-                            <div className="flex-grow">
-                                <div className="flex items-center gap-3 mb-2">
-                                    <span className="text-[9px] font-black uppercase px-3 py-1 bg-blue-50 text-blue-600 rounded-lg">{ev.type}</span>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{new Date(ev.startDate).toLocaleDateString('tr-TR')}</span>
-                                </div>
-                                <h3 className="text-2xl font-black text-slate-900 uppercase italic tracking-tight">{ev.title}</h3>
-                                <p className="text-sm text-slate-500 font-medium truncate max-w-md">{ev.description}</p>
-                            </div>
-                            <button onClick={() => handleDelete(ev.id)} className="h-14 w-14 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-red-600 hover:text-white">
-                                <TrashIcon className="h-6 w-6" />
-                            </button>
-                        </div>
-                    ))}
-                    {events.length === 0 && (
-                        <div className="p-32 text-center bg-slate-50 rounded-[4rem] border-2 border-dashed border-slate-200">
-                            <p className="text-slate-400 font-black uppercase tracking-widest text-xs italic">Kayıt Bulunmuyor</p>
+                {/* Events list */}
+                <div className="xl:col-span-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <AnimatePresence>
+                            {events.map((ev, i) => (
+                                <motion.div
+                                    key={ev.id}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: i * 0.05 }}
+                                >
+                                    <Link
+                                        to={`/admin/manage/events/${ev.id}`}
+                                        className="bg-white p-6 rounded-[2.5rem] border border-slate-100 flex flex-col gap-6 group hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500 relative overflow-hidden h-full"
+                                    >
+                                        <div className="h-48 w-full bg-slate-50 rounded-[1.5rem] overflow-hidden relative">
+                                            {ev.imageUrl ? (
+                                                <img src={ev.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="" />
+                                            ) : (
+                                                <div className="h-full w-full flex items-center justify-center text-slate-200">
+                                                    <PhotoIcon className="h-12 w-12" />
+                                                </div>
+                                            )}
+                                            <div className="absolute top-4 left-4 flex gap-2">
+                                                <span className="px-3 py-1 bg-white/90 backdrop-blur shadow-sm rounded-lg text-[9px] font-black uppercase text-blue-600">{ev.type}</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex-grow space-y-3">
+                                            <div className="flex items-center gap-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                                <CalendarDaysIcon className="h-3 w-3" /> {new Date(ev.startDate).toLocaleDateString('tr-TR')}
+                                                <span className="mx-2 opacity-20">|</span>
+                                                <MapPinIcon className="h-3 w-3" /> {ev.location}
+                                            </div>
+                                            <h3 className="text-xl font-black text-slate-900 uppercase italic tracking-tight group-hover:text-blue-600 transition-colors line-clamp-1">{ev.title}</h3>
+                                            <p className="text-sm text-slate-500 font-medium line-clamp-2 leading-relaxed">{ev.description}</p>
+                                        </div>
+
+                                        <div className="flex items-center justify-between pt-4 border-t border-slate-50">
+                                            <div className="flex items-center gap-2 text-blue-600 font-black uppercase text-[10px] tracking-widest">
+                                                Düzenle <ArrowRightIcon className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                                            </div>
+                                            <button
+                                                onClick={(e) => handleDelete(ev.id, e)}
+                                                className="h-10 w-10 bg-red-50 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
+                                            >
+                                                <TrashIcon className="h-5 w-5" />
+                                            </button>
+                                        </div>
+                                    </Link>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
+                    </div>
+
+                    {events.length === 0 && !loading && (
+                        <div className="py-24 text-center bg-white rounded-[4rem] border border-slate-100 shadow-sm flex flex-col items-center">
+                            <CalendarDaysIcon className="h-16 w-16 text-slate-100 mb-6" />
+                            <p className="text-slate-400 font-black uppercase tracking-widest text-xs italic">Etkinlik bulunmuyor</p>
                         </div>
                     )}
                 </div>

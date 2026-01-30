@@ -1,19 +1,26 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import {
     BriefcaseIcon,
     PlusIcon,
     TrashIcon,
     PhotoIcon,
-    StarIcon
+    StarIcon,
+    BuildingOfficeIcon,
+    ArrowRightIcon,
+    MapPinIcon,
+    PhoneIcon,
+    LinkIcon
 } from '@heroicons/react/24/outline';
 
-const categories = ['Restoran & Kafe', 'Market & Gıda', 'Hizmet', 'Teknoloji', 'Giyim & Tekstil', 'Diğer'];
+const categories = ['Sosyal Tesis', 'Gıda & Market', 'Teknoloji', 'Ulaşım', 'Turizm', 'Hizmet', 'Diğer'];
 
 export default function BusinessManager() {
     const [businesses, setBusinesses] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
     const [form, setForm] = useState({
         name: '',
         category: 'Hizmet',
@@ -23,8 +30,8 @@ export default function BusinessManager() {
         website: '',
         logoUrl: '',
         workingHours: '',
-        isFeatured: false,
-        isMunicipal: false,
+        isFeatured: true, // Default to featured for municipal ones
+        isMunicipal: true,
         municipalCategory: 'Belediye İşletmesi',
         tags: ''
     });
@@ -37,7 +44,7 @@ export default function BusinessManager() {
         setLoading(true);
         try {
             const res = await axios.get('/api/business');
-            setBusinesses(res.data);
+            setBusinesses(Array.isArray(res.data) ? res.data : []);
         } catch (err) {
             console.error('Fetch error', err);
         } finally {
@@ -47,8 +54,12 @@ export default function BusinessManager() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setSaving(true);
         try {
-            await axios.post('/api/business', form);
+            await axios.post('/api/business', {
+                ...form,
+                createdDate: new Date().toISOString()
+            });
             setForm({
                 name: '',
                 category: 'Hizmet',
@@ -58,105 +69,140 @@ export default function BusinessManager() {
                 website: '',
                 logoUrl: '',
                 workingHours: '',
-                isFeatured: false,
-                isMunicipal: false,
+                isFeatured: true,
+                isMunicipal: true,
                 municipalCategory: 'Belediye İşletmesi',
                 tags: ''
             });
             fetchData();
         } catch (err) {
             alert('Hata oluştu');
+        } finally {
+            setSaving(false);
         }
     };
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (id, e) => {
+        e.preventDefault();
+        e.stopPropagation();
         if (!confirm('Emin misiniz?')) return;
-        await axios.delete(`/api/business/${id}`);
-        fetchData();
+        try {
+            await axios.delete(`/api/business/${id}`);
+            fetchData();
+        } catch (err) {
+            alert('Silme hatası');
+        }
     };
 
     return (
-        <div className="p-8 lg:p-12">
-            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
+        <div className="space-y-12 pb-20">
+            <header className="flex flex-col md:flex-row md:items-end justify-between gap-6">
                 <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic mb-4 flex items-center gap-4">
-                        <BriefcaseIcon className="h-10 w-10 text-blue-600" /> İşletme Yönetimi
+                    <h1 className="text-4xl font-black text-slate-900 uppercase italic tracking-tighter leading-none flex items-center gap-4">
+                        <BuildingOfficeIcon className="h-10 w-10 text-blue-600" /> Belediye İştirakleri
                     </h1>
-                    <p className="text-slate-500 font-bold uppercase tracking-widest text-[10px]">Kent rehberi ve Belediye İşletmeleri yönetimi.</p>
+                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mt-3 ml-1">İşletme ve İştirak Yönetim Paneli</p>
                 </div>
-            </div>
+            </header>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div className="lg:col-span-1">
-                    <div className="bg-white p-10 rounded-[3rem] shadow-2xl border border-slate-50 sticky top-12">
-                        <h2 className="text-xl font-black mb-8 uppercase italic tracking-tight">Yeni İşletme Ekle</h2>
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <input required type="text" placeholder="İşletme Adı" className="admin-input w-full" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} />
-
-                            <select className="admin-input w-full" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })}>
-                                {categories.map(c => <option key={c} value={c}>{c}</option>)}
-                            </select>
-
-                            <textarea required placeholder="Kısa Tanıtım" className="admin-input w-full min-h-[100px]" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
-
-                            <input required type="text" placeholder="Adres" className="admin-input w-full" value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} />
-
-                            <div className="grid grid-cols-2 gap-4">
-                                <input required type="text" placeholder="Telefon" className="admin-input" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} />
-                                <input type="text" placeholder="Çalışma Saatleri" className="admin-input" value={form.workingHours} onChange={e => setForm({ ...form, workingHours: e.target.value })} />
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-12">
+                {/* Form Section */}
+                <div className="xl:col-span-1">
+                    <div className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-sm sticky top-8">
+                        <h2 className="text-sm font-black text-slate-900 uppercase italic tracking-tight border-b border-slate-50 pb-4 mb-6">Yeni İştirak Ekle</h2>
+                        <form onSubmit={handleSubmit} className="space-y-5">
+                            <div>
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">İştirak Adı</label>
+                                <input required className="admin-input w-full" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="İşletme adı..." />
                             </div>
 
-                            <input type="url" placeholder="Görsel URL (Logo/Kapak)" className="admin-input w-full" value={form.logoUrl} onChange={e => setForm({ ...form, logoUrl: e.target.value })} />
-
-                            <input type="text" placeholder="Etiketler (Virgülle ayırın)" className="admin-input w-full" value={form.tags} onChange={e => setForm({ ...form, tags: e.target.value })} />
-
-                            <div className="space-y-4 pt-4 border-t border-slate-50">
-                                <label className="flex items-center gap-4 p-4 bg-slate-50 rounded-2xl cursor-pointer">
-                                    <input type="checkbox" className="h-6 w-6 rounded-lg text-blue-600" checked={form.isFeatured} onChange={e => setForm({ ...form, isFeatured: e.target.checked })} />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-slate-600">Öne Çıkarılan</span>
-                                </label>
-
-                                <label className="flex items-center gap-4 p-4 bg-blue-50 rounded-2xl cursor-pointer border border-blue-100">
-                                    <input type="checkbox" className="h-6 w-6 rounded-lg text-blue-600" checked={form.isMunicipal} onChange={e => setForm({ ...form, isMunicipal: e.target.checked })} />
-                                    <span className="text-[10px] font-black uppercase tracking-widest text-blue-800">Belediye İşletmesi/Mülkü</span>
-                                </label>
-
-                                {form.isMunicipal && (
-                                    <select className="admin-input w-full" value={form.municipalCategory} onChange={e => setForm({ ...form, municipalCategory: e.target.value })}>
-                                        <option value="Belediye İşletmesi">Doğrudan Belediye İşletmesi</option>
-                                        <option value="İhale / Kiralık">İhale ile Kiraya Verilen</option>
-                                    </select>
-                                )}
+                            <div>
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Sektör / Kategori</label>
+                                <select className="admin-input w-full" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })}>
+                                    {categories.map(c => <option key={c} value={c}>{c}</option>)}
+                                </select>
                             </div>
 
-                            <button className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-blue-700 transition-all flex items-center justify-center gap-3">
-                                <PlusIcon className="h-5 w-5" /> İşletmeyi Kaydet
+                            <div>
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Kısa Açıklama</label>
+                                <textarea required className="admin-input w-full min-h-[100px]" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="İşletme hakkında kısa bilgi..." />
+                            </div>
+
+                            <div>
+                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-2 block">Kapak Görseli URL</label>
+                                <input className="admin-input w-full" value={form.logoUrl} onChange={e => setForm({ ...form, logoUrl: e.target.value })} placeholder="https://..." />
+                            </div>
+
+                            <button
+                                disabled={saving}
+                                className="w-full py-5 bg-blue-600 text-white rounded-2xl font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-100 flex items-center justify-center gap-3 disabled:opacity-50"
+                            >
+                                {saving ? 'Kaydediliyor...' : <><PlusIcon className="h-5 w-5" /> İştiraki Ekle</>}
                             </button>
                         </form>
                     </div>
                 </div>
 
-                <div className="lg:col-span-2 space-y-6">
-                    {loading ? (
-                        <p className="text-center py-20 font-black text-slate-400">Yükleniyor...</p>
-                    ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {businesses.map((b) => (
-                                <div key={b.id} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm relative group">
-                                    <div className="h-32 w-full bg-slate-50 rounded-2xl mb-6 overflow-hidden">
-                                        <img src={b.logoUrl || 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400'} className="w-full h-full object-cover" alt="" />
-                                    </div>
-                                    <h3 className="text-lg font-black text-slate-900 uppercase italic mb-2">{b.name}</h3>
-                                    <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest mb-4">{b.category}</p>
+                {/* List Section */}
+                <div className="xl:col-span-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <AnimatePresence>
+                            {businesses.map((b, i) => (
+                                <motion.div
+                                    key={b.id}
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: i * 0.05 }}
+                                >
+                                    <Link
+                                        to={`/admin/manage/businesses/${b.id}`}
+                                        className="bg-white p-6 rounded-[2.5rem] border border-slate-100 flex flex-col gap-6 group hover:shadow-xl transition-all duration-500 relative overflow-hidden h-full"
+                                    >
+                                        <div className="h-48 w-full bg-slate-50 rounded-[1.5rem] overflow-hidden relative">
+                                            {b.logoUrl ? (
+                                                <img src={b.logoUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="" />
+                                            ) : (
+                                                <div className="h-full w-full flex items-center justify-center text-slate-200">
+                                                    <BriefcaseIcon className="h-12 w-12" />
+                                                </div>
+                                            )}
+                                            <div className="absolute top-4 left-4">
+                                                <span className="px-3 py-1 bg-white/90 backdrop-blur shadow-sm rounded-lg text-[9px] font-black uppercase text-blue-600">{b.category}</span>
+                                            </div>
+                                        </div>
 
-                                    <div className="flex justify-between items-center mt-6 pt-6 border-t border-slate-50">
-                                        {b.isFeatured && <StarIcon className="h-5 w-5 text-amber-400 fill-amber-400" />}
-                                        <button onClick={() => handleDelete(b.id)} className="text-red-600 hover:bg-red-50 p-3 rounded-xl transition-all">
-                                            <TrashIcon className="h-5 w-5" />
-                                        </button>
-                                    </div>
-                                </div>
+                                        <div className="flex-grow">
+                                            <h3 className="text-xl font-black text-slate-900 uppercase italic tracking-tight group-hover:text-blue-600 transition-colors mb-2">{b.name}</h3>
+                                            <p className="text-sm text-slate-500 font-medium line-clamp-2 leading-relaxed mb-4">{b.description}</p>
+
+                                            <div className="flex flex-wrap gap-4 text-[10px] font-black text-slate-400 uppercase tracking-widest mt-auto border-t border-slate-50 pt-4">
+                                                <div className="flex items-center gap-2">
+                                                    <MapPinIcon className="h-3 w-3" /> {b.address || 'Adres Belirtilmemiş'}
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-blue-600 font-black uppercase text-[10px] tracking-widest flex items-center gap-2">
+                                                Detayları Düzenle <ArrowRightIcon className="h-3 w-3" />
+                                            </span>
+                                            <button
+                                                onClick={(e) => handleDelete(b.id, e)}
+                                                className="h-10 w-10 bg-red-50 text-red-500 rounded-xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
+                                            >
+                                                <TrashIcon className="h-5 w-5" />
+                                            </button>
+                                        </div>
+                                    </Link>
+                                </motion.div>
                             ))}
+                        </AnimatePresence>
+                    </div>
+
+                    {businesses.length === 0 && !loading && (
+                        <div className="py-24 text-center bg-white rounded-[4rem] border border-slate-100 shadow-sm flex flex-col items-center">
+                            <BuildingOfficeIcon className="h-16 w-16 text-slate-100 mb-6" />
+                            <p className="text-slate-400 font-black uppercase tracking-widest text-xs italic">İştirak bulunmuyor</p>
                         </div>
                     )}
                 </div>

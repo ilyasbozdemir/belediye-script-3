@@ -18,7 +18,9 @@ import {
   StarIcon,
   SparklesIcon,
   CloudIcon,
-  PhotoIcon
+  PhotoIcon,
+  ChatBubbleLeftRightIcon,
+  BuildingOfficeIcon
 } from '@heroicons/react/24/outline';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -28,7 +30,7 @@ const adminNavigation = [
     category: 'GENEL BAKIŞ',
     items: [
       { name: 'Kontrol Paneli', href: '/admin', icon: HomeIcon },
-      { name: 'İstek & Şikayetler', href: '/admin/requests', icon: MegaphoneIcon },
+      { name: 'İstek & Şikayetler', href: '/admin/requests', icon: ChatBubbleLeftRightIcon },
     ]
   },
   {
@@ -37,7 +39,7 @@ const adminNavigation = [
       { name: 'Haber & Duyuru', href: '/admin/news', icon: NewspaperIcon },
       { name: 'Duyurular', href: '/admin/announcements', icon: MegaphoneIcon },
       { name: 'Etkinlik Takvimi', href: '/admin/events', icon: CalendarDaysIcon },
-      { name: 'İşletme Rehberi', href: '/admin/businesses', icon: FolderIcon },
+      { name: 'Belediye İştirakleri', href: '/admin/businesses', icon: BuildingOfficeIcon },
       { name: 'Medya Yönetimi', href: '/admin/media', icon: PhotoIcon },
       { name: 'Anket Yönetimi', href: '/admin/surveys', icon: ChartBarSquareIcon },
       { name: 'Slayt & Ayarlar', href: '/admin/settings', icon: Cog6ToothIcon },
@@ -267,9 +269,9 @@ export default function AdminLayout() {
               <span className="text-sm font-black text-slate-900 leading-none">Yönetici</span>
               <span className="text-[10px] font-bold text-emerald-500 uppercase tracking-widest mt-1">Sistem Çevrimiçi</span>
             </div>
-            <div className="h-12 w-12 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100 shadow-inner group hover:bg-blue-50 transition-all cursor-pointer">
+            <Link to="/admin/profile" className="h-12 w-12 rounded-2xl bg-slate-50 flex items-center justify-center border border-slate-100 shadow-inner group hover:bg-blue-50 transition-all cursor-pointer">
               <UsersIcon className="h-6 w-6 text-slate-400 group-hover:text-blue-600 transition-colors" />
-            </div>
+            </Link>
           </div>
         </header>
 
