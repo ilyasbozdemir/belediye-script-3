@@ -57,6 +57,7 @@ import MunicipalBusinesses from './pages/MunicipalBusinesses';
 import WeatherPrayer from './pages/WeatherPrayer';
 import PetitionService from './pages/PetitionService';
 import AnnouncementModal from './components/AnnouncementModal';
+import ItemDetailManager from './pages/admin/ItemDetailManager';
 
 import {
   UsersIcon,
@@ -147,7 +148,7 @@ function App() {
         <Route path="weather-prayer" element={<WeatherPrayerManager />} />
         <Route path="media" element={<MediaManager />} />
         <Route path="surveys" element={<SurveyManager />} />
-        <Route path="manage/:type/:id" element={<div className="p-8">Yükleniyor...</div>} />
+        <Route path="manage/:type/:id" element={<ItemDetailManager />} />
         <Route path="*" element={<div className="p-8 text-slate-400">Bu modül yakında eklenecek.</div>} />
       </Route>
     </Routes>

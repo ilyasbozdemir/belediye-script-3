@@ -110,7 +110,7 @@ export default function Header() {
           <div className="flex lg:flex-1">
             <Link to="/" className="-m-1.5 p-1.5 flex items-center gap-4 group">
               <img
-                src={isScrolled ? "/belediye-logo.png" : (location.pathname === '/' ? "/belediye-logo-light.png" : "/belediye-logo.png")}
+                src={isScrolled ? "/belediye-logo.png" : "/belediye-logo-light.png"}
                 alt="Güneyyurt Belediyesi"
                 className="h-20 w-auto object-contain transition-all duration-500 group-hover:scale-110"
               />
