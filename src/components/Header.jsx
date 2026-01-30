@@ -49,7 +49,7 @@ const navigation = [
       { name: 'E-Belediye (Hızlı Ödeme)', href: 'https://e-hizmet.guneyyurt.bel.tr/', external: true },
       { name: 'Online Dilekçe İşlemleri', href: '/hizmetler/dilekce' },
       { name: 'İstek & Şikayet Formu', href: '/hizmetler/basvuru' },
-      { name: 'İmar Durumu Sorgulama', href: '/hizmetler/imar' },
+      { name: 'Parsel Sorgulama (TKGM)', href: 'https://parselsorgu.tkgm.gov.tr/', external: true },
       { name: 'Vefat Edenler / Taziye', href: '/hizmetler/vefatlar' },
       { name: 'Nikah Başvurusu', href: '/hizmetler/evlendirme' },
       { name: 'Kent Rehberi', href: '/hizmetler/rehber' },

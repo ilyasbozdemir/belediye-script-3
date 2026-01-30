@@ -173,7 +173,11 @@ export default function AdminLayout() {
           </button>
 
           <div className={classNames("flex h-24 shrink-0 items-center justify-center gap-4 transition-all duration-500", isCollapsed ? "px-0" : "px-4")}>
-            <img src="/belediye-logo.png" className={classNames("h-14 w-auto object-contain transition-all duration-500", isCollapsed ? "scale-75" : "scale-100")} alt="Logo" />
+            <img
+              src={isCollapsed ? "/belediye-logo-yazisiz.png" : "/belediye-logo.png"}
+              className={classNames("h-14 w-auto object-contain transition-all duration-500", isCollapsed ? "scale-90" : "scale-100")}
+              alt="Logo"
+            />
           </div>
           <nav className="flex flex-1 flex-col mt-4 overflow-x-hidden">
             <ul role="list" className="flex flex-1 flex-col gap-y-8">

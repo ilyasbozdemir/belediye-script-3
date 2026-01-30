@@ -41,45 +41,30 @@ export default function Zoning() {
                                 <MagnifyingGlassIcon className="h-8 w-8" />
                             </div>
                             <div>
-                                <h2 className="text-3xl font-black text-slate-900 tracking-tighter uppercase italic">Parsel Sorgulama</h2>
-                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">E-Devlet Entegrasyonlu Veriler</p>
+                                <h2 className="text-3xl font-black text-slate-900 tracking-tighter uppercase italic line-clamp-2">TKGM Parsel Sorgulama</h2>
+                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Tapu ve Kadastro Genel Müdürlüğü Resmi Sistemi</p>
                             </div>
                         </div>
 
-                        <form className="space-y-10">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                                <div>
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-3 block">Ada No</label>
-                                    <input type="text" placeholder="Örn: 124" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600/10 font-black text-slate-900 placeholder-slate-300" />
-                                </div>
-                                <div>
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-3 block">Parsel No</label>
-                                    <input type="text" placeholder="Örn: 12" className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600/10 font-black text-slate-900 placeholder-slate-300" />
-                                </div>
-                            </div>
-                            <div>
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1 mb-3 block">Mahalle / Mevkii</label>
-                                <select className="w-full px-8 py-5 bg-slate-50 border-none rounded-2xl focus:ring-2 focus:ring-blue-600/10 font-black text-slate-900 appearance-none">
-                                    <option>Seçiniz</option>
-                                    <option>Orta Mahallesi</option>
-                                    <option>Oda Mahallesi</option>
-                                    <option>Pınargözü Mahallesi</option>
-                                    <option>Yenimahalle</option>
-                                    <option>Kışlacık Mahallesi</option>
-                                    <option>Aralık Mahallesi</option>
-                                    <option>Cami Mahallesi</option>
-                                    <option>Habib Mahallesi</option>
-                                </select>
-                            </div>
-                            <button type="submit" className="btn-premium w-full py-6 flex items-center justify-center gap-4 group">
-                                Sorgulamayı Başlat <ArrowIcon className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
-                            </button>
-                        </form>
+                        <div className="space-y-10">
+                            <p className="text-slate-600 font-bold leading-relaxed italic">
+                                Beldemize ait tüm ada ve parsel bilgilerine, mülkiyet sınırlarına ve coğrafi konumlara Tapu ve Kadastro Genel Müdürlüğü'nün (TKGM) resmi parsel sorgulama uygulaması üzerinden en güncel haliyle ulaşabilirsiniz.
+                            </p>
+
+                            <a
+                                href="https://parselsorgu.tkgm.gov.tr/"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="btn-premium w-full py-6 flex items-center justify-center gap-4 group"
+                            >
+                                TKGM UYGULAMASINA GİT <ArrowIcon className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
+                            </a>
+                        </div>
 
                         <div className="mt-16 p-8 bg-blue-50/50 rounded-4xl border border-blue-100/50 flex items-start gap-6">
                             <ExclamationTriangleIcon className="h-8 w-8 text-blue-600 shrink-0" />
                             <p className="text-sm font-bold text-blue-900/70 leading-relaxed italic">
-                                Not: Bu sistem bilgilendirme amaçlıdır. Resmi işlemlerde belediyemiz İmar ve Şehircilik Müdürlüğü'nden onaylı "İmar Durum Belgesi" alınması zorunludur.
+                                Not: Bu uygulama sizi TKGM'ye ait resmi web sitesine yönlendirecektir. İmar durumu ile ilgili kesin belgeler için belediyemiz İmar ve Şehircilik Müdürlüğü'ne başvurunuz.
                             </p>
                         </div>
                     </motion.div>
@@ -93,9 +78,9 @@ export default function Zoning() {
                         >
                             <div className="absolute top-0 right-0 h-32 w-32 bg-blue-600/20 blur-3xl rounded-full" />
                             <MapIcon className="h-12 w-12 text-blue-400 mb-8" />
-                            <h3 className="text-2xl font-black mb-4 uppercase tracking-tight">Coğrafi Bilgi Sistemi</h3>
-                            <p className="text-slate-400 font-medium mb-8 leading-relaxed">Şehrimizin interaktif haritası üzerinden katmanları inceleyerek detaylı analiz yapabilirsiniz.</p>
-                            <a href="https://parselsorgu.tkgm.gov.tr/" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 text-[10px] font-black text-blue-400 uppercase tracking-widest hover:text-white transition-colors">Haritayı Aç <ArrowIcon className="h-4 w-4" /></a>
+                            <h3 className="text-xl font-black mb-4 uppercase tracking-tight">E-Devlet Entegrasyonu</h3>
+                            <p className="text-slate-400 font-medium mb-8 leading-relaxed text-sm">Tapu ve Kadastro verilerine E-Devlet kapısı üzerinden de güvenli bir şekilde erişim sağlayabilirsiniz.</p>
+                            <a href="https://www.turkiye.gov.tr/tapu-ve-kadastro-genel-mudurlugu" target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 text-[10px] font-black text-blue-400 uppercase tracking-widest hover:text-white transition-colors">E-Devlet Girişi <ArrowIcon className="h-4 w-4" /></a>
                         </motion.div>
 
                         <motion.div

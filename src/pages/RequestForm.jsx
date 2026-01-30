@@ -180,8 +180,8 @@ export default function RequestForm() {
                                                 <div className="flex justify-between items-center">
                                                     <span className="text-[10px] font-black uppercase text-slate-500">Durum</span>
                                                     <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase ${queryResult.status === 'Beklemede' ? 'bg-amber-500 text-white' :
-                                                            queryResult.status === 'İnceleniyor' ? 'bg-blue-500 text-white' :
-                                                                'bg-emerald-500 text-white'
+                                                        queryResult.status === 'İnceleniyor' ? 'bg-blue-500 text-white' :
+                                                            'bg-emerald-500 text-white'
                                                         }`}>{queryResult.status}</span>
                                                 </div>
                                                 <div className="flex justify-between items-center">
@@ -208,10 +208,6 @@ export default function RequestForm() {
                                 <li className="flex gap-4 text-sm font-medium text-slate-500">
                                     <div className="h-2 w-2 rounded-full bg-emerald-500 mt-2 shrink-0" />
                                     Genellikle 24-48 saat içerisinde değerlendirme yapılır.
-                                </li>
-                                <li className="flex gap-4 text-sm font-medium text-slate-500">
-                                    <div className="h-2 w-2 rounded-full bg-emerald-500 mt-2 shrink-0" />
-                                    Acil durumlar için lütfen 153 Beyaz Masa hattını arayınız.
                                 </li>
                             </ul>
                         </div>
