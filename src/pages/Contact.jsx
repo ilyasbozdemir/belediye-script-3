@@ -5,7 +5,8 @@ import {
     PhoneIcon,
     MapPinIcon,
     ClockIcon,
-    ChatBubbleLeftRightIcon
+    ChatBubbleLeftRightIcon,
+    BanknotesIcon
 } from '@heroicons/react/24/outline';
 
 export default function Contact() {

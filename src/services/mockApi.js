@@ -843,112 +843,144 @@ class MockAPI {
     // Generic CRUD operations
     async get(endpoint) {
         await delay();
-        
-        // News
-        if (endpoint === '/api/news') {
-            return { data: getFromStorage(STORAGE_KEYS.NEWS, []) };
-        }
-        
-        // Projects
-        if (endpoint.startsWith('/api/projects')) {
-            const allProjects = getFromStorage(STORAGE_KEYS.PROJECTS, []);
-            
-            // Check for status filter in query params
-            const url = new URL(endpoint, 'http://localhost');
-            const statusFilter = url.searchParams.get('status');
-            
-            if (statusFilter) {
-                const filtered = allProjects.filter(p => p.status === statusFilter);
-                return { data: filtered };
+        const url = new URL(endpoint, 'http://localhost');
+        const pathname = url.pathname;
+        const searchParams = url.searchParams;
+
+        // News & Announcements
+        if (pathname.startsWith('/api/news')) {
+            const allNews = getFromStorage(STORAGE_KEYS.NEWS, []);
+            const id = pathname.split('/').pop();
+
+            // Individual news detail
+            if (id && id !== 'news') {
+                const item = allNews.find(i => i.id === id);
+                if (item) return { data: item };
             }
-            
+
+            // List with category filter
+            const category = searchParams.get('category');
+            if (category) {
+                return { data: allNews.filter(n => n.category === category) };
+            }
+            return { data: allNews };
+        }
+
+        // Projects
+        if (pathname.startsWith('/api/projects')) {
+            const allProjects = getFromStorage(STORAGE_KEYS.PROJECTS, []);
+            const id = pathname.split('/').pop();
+
+            if (id && id !== 'projects') {
+                const item = allProjects.find(i => i.id === id);
+                if (item) return { data: item };
+            }
+
+            const status = searchParams.get('status');
+            if (status) {
+                return { data: allProjects.filter(p => p.status === status) };
+            }
             return { data: allProjects };
         }
-        
+
+        // Events
+        if (pathname.startsWith('/api/events')) {
+            const allEvents = getFromStorage(STORAGE_KEYS.EVENTS, []);
+            const id = pathname.split('/').pop();
+
+            if (id && id !== 'events') {
+                const item = allEvents.find(i => i.id === id);
+                if (item) return { data: item };
+            }
+            return { data: allEvents };
+        }
+
+        // Tenders
+        if (pathname.startsWith('/api/tenders')) {
+            const allTenders = getFromStorage(STORAGE_KEYS.TENDERS, []);
+            const id = pathname.split('/').pop();
+
+            if (id && id !== 'tenders') {
+                const item = allTenders.find(i => i.id === id);
+                if (item) return { data: item };
+            }
+            return { data: allTenders };
+        }
+
         // Feedback
-        if (endpoint === '/api/feedback/all') {
+        if (pathname === '/api/feedback/all') {
             return { data: getFromStorage(STORAGE_KEYS.FEEDBACK, []) };
         }
-        
-        // Events
-        if (endpoint === '/api/events') {
-            return { data: getFromStorage(STORAGE_KEYS.EVENTS, []) };
-        }
-        
-        // Tenders
-        if (endpoint === '/api/tenders') {
-            return { data: getFromStorage(STORAGE_KEYS.TENDERS, []) };
-        }
-        
+
         // Special Days
-        if (endpoint === '/api/holidaygreetings') {
+        if (pathname === '/api/holidaygreetings') {
             return { data: getFromStorage(STORAGE_KEYS.SPECIAL_DAYS, []) };
         }
-        
+
         // Settings
-        if (endpoint === '/api/sitesettings/links') {
+        if (pathname === '/api/sitesettings/links') {
             const settings = getFromStorage(STORAGE_KEYS.SETTINGS, {});
             return { data: settings.links || [] };
         }
-        if (endpoint === '/api/sitesettings/social') {
+        if (pathname === '/api/sitesettings/social') {
             const settings = getFromStorage(STORAGE_KEYS.SETTINGS, {});
             return { data: settings.social || [] };
         }
-        if (endpoint === '/api/sitesettings/slides') {
+        if (pathname === '/api/sitesettings/slides') {
             const settings = getFromStorage(STORAGE_KEYS.SETTINGS, {});
             return { data: settings.slides || [] };
         }
-        if (endpoint === '/api/sitesettings/services') {
+        if (pathname === '/api/sitesettings/services') {
             const settings = getFromStorage(STORAGE_KEYS.SETTINGS, {});
             return { data: settings.services || [] };
         }
-        if (endpoint === '/api/sitesettings/weather-prayer') {
+        if (pathname === '/api/sitesettings/weather-prayer') {
             return { data: getFromStorage(STORAGE_KEYS.WEATHER_PRAYER, {}) };
         }
-        
+
         // President
-        if (endpoint === '/api/president') {
+        if (pathname === '/api/president') {
             return { data: getFromStorage(STORAGE_KEYS.PRESIDENT, {}) };
         }
-        
+
         // Staff
-        if (endpoint === '/api/governance/staff') {
+        if (pathname === '/api/governance/staff') {
             return { data: getFromStorage(STORAGE_KEYS.STAFF, []) };
         }
-        
+
         // Services (Marriages, Deceased)
-        if (endpoint === '/api/services/marriages') {
+        if (pathname === '/api/services/marriages') {
             return { data: getFromStorage(STORAGE_KEYS.MARRIAGES, []) };
         }
-        if (endpoint === '/api/services/deceased') {
+        if (pathname === '/api/services/deceased') {
             return { data: getFromStorage(STORAGE_KEYS.DECEASED, []) };
         }
-        
+
         // Businesses
-        if (endpoint === '/api/business') {
+        if (pathname === '/api/business') {
             return { data: getFromStorage(STORAGE_KEYS.BUSINESSES, []) };
         }
-        
+
         // Reports
-        if (endpoint === '/api/governance/reports') {
+        if (pathname === '/api/governance/reports') {
             return { data: getFromStorage(STORAGE_KEYS.REPORTS, []) };
         }
-        
+
         // Strategic Plan
-        if (endpoint === '/api/strategicplan') {
+        if (pathname === '/api/strategicplan') {
             return { data: getFromStorage(STORAGE_KEYS.STRATEGIC_PLAN, []) };
         }
-        
+
         // Council Members
-        if (endpoint === '/api/Council' || endpoint === '/api/council') {
+        if (pathname === '/api/Council' || pathname === '/api/council') {
             return { data: getFromStorage(STORAGE_KEYS.COUNCIL, []) };
         }
-        
+
         // Committee Members
-        if (endpoint === '/api/Committee' || endpoint === '/api/committee') {
+        if (pathname === '/api/Committee' || pathname === '/api/committee') {
             return { data: getFromStorage(STORAGE_KEYS.COMMITTEE, []) };
         }
-        
+
         return { data: [] };
     }
 
